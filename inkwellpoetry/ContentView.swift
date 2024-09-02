@@ -14,14 +14,22 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            NavigationLink {
-                if let todayEntry = getTodayEntry() {
-                    GameView(entry: todayEntry)
-                } else {
-                    Text("Error loading today's entry")
+            VStack {
+                NavigationLink {
+                    if let todayEntry = getTodayEntry() {
+                        GameView(entry: todayEntry)
+                    } else {
+                        Text("Error loading today's entry")
+                    }
+                } label: {
+                    Text("Today's Game")
                 }
-            } label: {
-                Text("Game View")
+                
+                NavigationLink {
+                    ArchiveView()
+                } label: {
+                    Text("Archive")
+                }
             }
         }
         .onAppear(perform: checkAndCreateTodayEntry)

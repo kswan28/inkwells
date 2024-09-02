@@ -17,7 +17,7 @@ struct GameView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                InkspillBackground(geometry: geometry)
+                InkspillBackground(geometry: geometry, date: entry.date)
                 
                 ForEach(entry.wordList.indices, id: \.self) { index in
                     WordTile(word: entry.wordList[index], location: $entry.tileLocations[index], type: entry.wordList[index].type)
@@ -48,7 +48,7 @@ struct GameView: View {
     @MainActor
     private func captureScreenshot(of geometry: GeometryProxy) async {
         let renderer = ImageRenderer(content: ZStack {
-            InkspillBackground(geometry: geometry)
+            InkspillBackground(geometry: geometry, date: entry.date)
             ForEach(entry.wordList.indices, id: \.self) { index in
                 WordTile(word: entry.wordList[index], location: .constant(entry.tileLocations[index]), type: entry.wordList[index].type)
             }
@@ -70,14 +70,32 @@ struct GameView: View {
 
 struct InkspillBackground: View {
     let geometry: GeometryProxy
+    let date: Date
     
     var body: some View {
-        Image("inkspill")
-            .resizable()
-            .frame(height: geometry.size.height * 0.8)
-            .frame(maxHeight: .infinity, alignment: .top)
-            .frame(width: geometry.size.width * 0.95)
-            .clipped()
+        ZStack {
+            Image("inkspill")
+                .resizable()
+                .frame(height: geometry.size.height * 0.8)
+                .frame(maxHeight: .infinity, alignment: .top)
+                .frame(width: geometry.size.width * 0.95)
+                .clipped()
+            
+            VStack {
+                Spacer()
+                VStack {
+                    Text("Inkwell")
+                        .font(.caption)
+                        .fontWeight(.bold)
+                    Text(date, style: .date)
+                        .font(.caption2)
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.top, geometry.safeAreaInsets.top + 10)
+                Spacer()
+            }
+            .foregroundColor(.white)
+        }
     }
 }
 
