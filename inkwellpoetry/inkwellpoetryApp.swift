@@ -13,5 +13,6 @@ struct inkwellpoetryApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: [InkwellEntryModel.self])
     }
 }
