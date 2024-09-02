@@ -13,12 +13,21 @@ struct GameView: View {
     @Environment(\.modelContext) private var modelContext
     
     var body: some View {
-        ZStack {
-            ForEach(entry.wordList.indices, id: \.self) { index in
-                WordTile(word: entry.wordList[index], location: $entry.tileLocations[index], type: entry.wordList[index].type)
-                    .onChange(of: entry.tileLocations[index].x) { _, _ in
-                        saveChanges()
-                    }
+        GeometryReader { geometry in
+            ZStack {
+                Image("inkspill")
+                    .resizable()
+                    .frame(height: geometry.size.height * 0.8)
+                    .frame(maxHeight: .infinity, alignment: .top)
+                    .frame(width: geometry.size.width * 0.95)
+                    .clipped()
+                
+                ForEach(entry.wordList.indices, id: \.self) { index in
+                    WordTile(word: entry.wordList[index], location: $entry.tileLocations[index], type: entry.wordList[index].type)
+                        .onChange(of: entry.tileLocations[index].x) { _, _ in
+                            saveChanges()
+                        }
+                }
             }
         }
     }
