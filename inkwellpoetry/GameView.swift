@@ -11,16 +11,13 @@ import SwiftData
 struct GameView: View {
     @Bindable var entry: InkwellEntryModel
     @Environment(\.modelContext) private var modelContext
+    @State private var isSharePresented = false
+    @State private var screenshotImage: UIImage?
     
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                Image("inkspill")
-                    .resizable()
-                    .frame(height: geometry.size.height * 0.8)
-                    .frame(maxHeight: .infinity, alignment: .top)
-                    .frame(width: geometry.size.width * 0.95)
-                    .clipped()
+                InkspillBackground(geometry: geometry)
                 
                 ForEach(entry.wordList.indices, id: \.self) { index in
                     WordTile(word: entry.wordList[index], location: $entry.tileLocations[index], type: entry.wordList[index].type)
@@ -29,6 +26,36 @@ struct GameView: View {
                         }
                 }
             }
+            .overlay(alignment: .topTrailing) {
+                Button(action: {
+                    Task {
+                        await captureScreenshot(of: geometry)
+                        isSharePresented = true
+                    }
+                }) {
+                    Image(systemName: "square.and.arrow.up")
+                        .padding()
+                }
+            }
+            .sheet(isPresented: $isSharePresented) {
+                if let screenshot = screenshotImage {
+                    ActivityViewController(activityItems: [screenshot])
+                }
+            }
+        }
+    }
+    
+    @MainActor
+    private func captureScreenshot(of geometry: GeometryProxy) async {
+        let renderer = ImageRenderer(content: ZStack {
+            InkspillBackground(geometry: geometry)
+            ForEach(entry.wordList.indices, id: \.self) { index in
+                WordTile(word: entry.wordList[index], location: .constant(entry.tileLocations[index]), type: entry.wordList[index].type)
+            }
+        })
+        renderer.scale = UIScreen.main.scale
+        if let uiImage = renderer.uiImage {
+            screenshotImage = uiImage
         }
     }
     
@@ -38,6 +65,19 @@ struct GameView: View {
         } catch {
             print("Error saving changes: \(error)")
         }
+    }
+}
+
+struct InkspillBackground: View {
+    let geometry: GeometryProxy
+    
+    var body: some View {
+        Image("inkspill")
+            .resizable()
+            .frame(height: geometry.size.height * 0.8)
+            .frame(maxHeight: .infinity, alignment: .top)
+            .frame(width: geometry.size.width * 0.95)
+            .clipped()
     }
 }
 
@@ -84,10 +124,16 @@ struct WordTile: View {
             )
             .animation(.interactiveSpring(), value: isDragging)
     }
+}
+
+struct ActivityViewController: UIViewControllerRepresentable {
+    let activityItems: [Any]
     
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    }
     
-    
-    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
 #Preview {
