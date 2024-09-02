@@ -15,7 +15,7 @@ struct GameView: View {
     var body: some View {
         ZStack {
             ForEach(entry.wordList.indices, id: \.self) { index in
-                WordTile(word: entry.wordList[index], location: $entry.tileLocations[index])
+                WordTile(word: entry.wordList[index], location: $entry.tileLocations[index], type: entry.wordList[index].type)
                     .onChange(of: entry.tileLocations[index].x) { _, _ in
                         saveChanges()
                     }
@@ -37,11 +37,25 @@ struct WordTile: View {
     @Binding var location: TileLocation
     @State private var dragOffset: CGSize = .zero
     @GestureState private var isDragging: Bool = false
+    var type: WordType
+    
+    private var backgroundColor: Color {
+        switch type {
+          case .noun:
+              return .blue
+          case .verb:
+              return .green
+          case .adjective:
+              return .orange
+          case .adverb:
+              return .purple
+          }
+      }
     
     var body: some View {
         Text(word.text)
             .padding()
-            .background(Color.blue)
+            .background(backgroundColor)
             .foregroundColor(.white)
             .cornerRadius(8)
             .position(x: location.x + dragOffset.width, y: location.y + dragOffset.height)
@@ -61,6 +75,10 @@ struct WordTile: View {
             )
             .animation(.interactiveSpring(), value: isDragging)
     }
+    
+    
+    
+    
 }
 
 #Preview {
