@@ -162,7 +162,7 @@ struct InkspillBackground: View {
                 .resizable()
                 .frame(height: geometry.size.height * 0.8)
                 .frame(maxHeight: .infinity, alignment: .top)
-                .frame(width: geometry.size.width * 0.95)
+                .frame(width: geometry.size.width * 0.8)
                 .clipped()
             
             VStack {

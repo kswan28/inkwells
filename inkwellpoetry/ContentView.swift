@@ -16,11 +16,8 @@ struct ContentView: View {
         NavigationStack {
             VStack {
                 NavigationLink {
-                    if let todayEntry = getTodayEntry() {
-                        GameView(entry: todayEntry)
-                    } else {
-                        Text("Error loading today's entry")
-                    }
+                    GameView(entry: getTodayEntry() ?? getPuzzleOfTheDay())
+                        .onAppear(perform: checkAndCreateTodayEntry)
                 } label: {
                     Text("Today's Game")
                 }
@@ -32,7 +29,8 @@ struct ContentView: View {
                 }
             }
         }
-        .onAppear(perform: checkAndCreateTodayEntry)
+        // Remove the onAppear modifier
+        // .onAppear(perform: checkAndCreateTodayEntry)
     }
     
     private func checkAndCreateTodayEntry() {
@@ -53,7 +51,10 @@ struct ContentView: View {
         dateFormatter.dateFormat = "yyyyMMdd"
         let dateString = dateFormatter.string(from: Date())
         
-        var generator = SeededRandomNumberGenerator(seed: dateString.hash)
+        // Use a more robust seed generation method
+        let seed = dateString.utf8.reduce(0) { ($0 << 8) | Int($1) }
+        var generator = SeededRandomNumberGenerator(seed: seed)
+        
         let randomCommons = Array(WordList.common.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .noun) } //figure out how to fix this
         let randomNouns = Array(WordList.nouns.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .noun) }
         let randomVerbs = Array(WordList.verbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .verb) }
@@ -88,19 +89,20 @@ struct ContentView: View {
     }
 }
 
-// Add this struct for seeded random number generation
+// Update the SeededRandomNumberGenerator to use UInt64 for better randomness
 struct SeededRandomNumberGenerator: RandomNumberGenerator {
-    let seed: Int
-    var currentValue: Int
+    private var state: UInt64
 
     init(seed: Int) {
-        self.seed = seed
-        self.currentValue = seed
+        self.state = UInt64(seed)
     }
 
     mutating func next() -> UInt64 {
-        currentValue = (currentValue &* 1103515245 &+ 12345) & 0x7FFFFFFF
-        return UInt64(currentValue)
+        state = state &+ 0x9e3779b97f4a7c15
+        var z = state
+        z = (z ^ (z >> 30)) &* 0xbf58476d1ce4e5b9
+        z = (z ^ (z >> 27)) &* 0x94d049bb133111eb
+        return z ^ (z >> 31)
     }
 }
 
