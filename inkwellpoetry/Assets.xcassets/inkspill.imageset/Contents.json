@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "inkspill 1.png",
+      "filename" : "inkspill.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "inkspill 1@2x.png",
+      "filename" : "inkspill@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "inkspill 1@3x.png",
+      "filename" : "inkspill@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

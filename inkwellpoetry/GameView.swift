@@ -16,7 +16,6 @@ struct GameView: View {
     @State private var currentLine: PathData?
     @State private var drawingColor: Color = .black
     @State private var lineWidth: CGFloat = 2
-    @StateObject private var undoManager = DrawingUndoManager()
     @State private var smoothedPath: [CGPoint] = []
     @State private var lastPoint: CGPoint?
 
@@ -61,34 +60,35 @@ struct GameView: View {
                             .frame(width: 30, height: 30)
                         
                         Slider(value: $lineWidth, in: 1...10)
-                            .frame(width: geometry.size.width * 0.5)
+                            .frame(width: geometry.size.width * 0.2)
                         
-                        Text(String(format: "%.1f", lineWidth))
-                            .font(.caption)
+//                        Text(String(format: "%.1f", lineWidth))
+//                            .font(.caption)
                         
+                        // Replace the undo button with a trash can button
                         Button(action: {
-                            undoLastPath()
+                            removeAllLines()
                         }) {
-                            Image(systemName: "arrow.uturn.backward")
+                            Image(systemName: "trash")
                                 .foregroundColor(.primary)
                         }
-                        .disabled(!undoManager.canUndo())
+                     Spacer()
+                        Button(action: {
+                            Task {
+                                await captureScreenshot(of: geometry)
+                                isSharePresented = true
+                            }
+                        }) {
+                            Image(systemName: "square.and.arrow.up")
+                                .padding()
+                        }
+                        
+                        
                     }
                     .padding()
                     .background(Color.white.opacity(0.8))
                     .cornerRadius(10)
                     .padding(.bottom)
-                }
-            }
-            .overlay(alignment: .topTrailing) {
-                Button(action: {
-                    Task {
-                        await captureScreenshot(of: geometry)
-                        isSharePresented = true
-                    }
-                }) {
-                    Image(systemName: "square.and.arrow.up")
-                        .padding()
                 }
             }
             .sheet(isPresented: $isSharePresented) {
@@ -147,14 +147,11 @@ struct GameView: View {
     private func finishDrawing() {
         if var line = currentLine {
             line.points = smoothedPath
-            undoManager.registerUndo(currentPaths: entry.pathData) {
-                entry.pathData.append(line)
-                self.saveChanges()
-            }
             entry.pathData.append(line)
             currentLine = nil
             smoothedPath = []
             lastPoint = nil
+            saveChanges()
         }
     }
     
@@ -166,11 +163,10 @@ struct GameView: View {
         )
     }
     
-    private func undoLastPath() {
-        undoManager.undo { paths in
-            entry.pathData = paths
-            saveChanges()
-        }
+    // Add this new function to remove all lines
+    private func removeAllLines() {
+        entry.pathData.removeAll()
+        saveChanges()
     }
 }
 
@@ -179,29 +175,24 @@ struct InkspillBackground: View {
     let date: Date
     
     var body: some View {
-        ZStack {
-            Image("inkspill")
-                .resizable()
-                .frame(height: geometry.size.height * 0.8)
-                .frame(maxHeight: .infinity, alignment: .top)
-                .frame(width: geometry.size.width * 0.8)
-                .clipped()
+        VStack(spacing: 12) {
+            Text("Inkwell")
+                .font(.title2)
+                .fontWeight(.bold)
+            Text(date, style: .date)
+                .font(.subheadline)
             
-            VStack {
-                Spacer()
-                VStack {
-                    Text("Inkwell")
-                        .font(.caption)
-                        .fontWeight(.bold)
-                    Text(date, style: .date)
-                        .font(.caption2)
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.top, geometry.safeAreaInsets.top + 10)
-                Spacer()
-            }
-            .foregroundColor(.white)
+                Image("inkspill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: geometry.size.width * 0.8)
+            //.frame(maxHeight: .infinity)
+
+            Spacer()
         }
+        .frame(maxWidth: .infinity)
+        //.padding(.top, geometry.safeAreaInsets.top + 10)
+        .foregroundColor(.black)
     }
 }
 
@@ -269,27 +260,4 @@ extension CGPoint {
     func distance(to point: CGPoint) -> CGFloat {
         return sqrt(pow(x - point.x, 2) + pow(y - point.y, 2))
     }
-}
-
-// Update this class at the end of the file
-class DrawingUndoManager: ObservableObject {
-    private var undoStack: [PathData] = []
-
-    func registerUndo(currentPaths: [PathData], redoHandler: @escaping () -> Void) {
-        undoStack.append(contentsOf: currentPaths)
-        objectWillChange.send()
-    }
-
-    func undo(completion: ([PathData]) -> Void) {
-        guard !undoStack.isEmpty else { return }
-        let lastPaths = undoStack.removeLast()
-        completion([lastPaths])
-        objectWillChange.send()
-    }
-
-    func canUndo() -> Bool {
-        return !undoStack.isEmpty
-    }
-
-    // canRedo() function removed
 }
