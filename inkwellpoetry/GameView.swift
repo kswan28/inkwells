@@ -18,11 +18,12 @@ struct GameView: View {
     @State private var lineWidth: CGFloat = 2
     @State private var smoothedPath: [CGPoint] = []
     @State private var lastPoint: CGPoint?
+    @State private var formattedDate: String = ""
 
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                InkspillBackground(geometry: geometry, date: entry.date)
+                InkspillBackground(geometry: geometry, date: entry.date, formattedDateString: formattedDate)
                 
                 Canvas { context, size in
                     for path in entry.pathData {
@@ -92,12 +93,22 @@ struct GameView: View {
                 }
             }
         }
+        .onAppear {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .long
+            formattedDate = dateFormatter.string(from: entry.date)
+        }
     }
     
     @MainActor
     private func captureScreenshot(of geometry: GeometryProxy) async {
+        // Format the date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        formattedDate = dateFormatter.string(from: entry.date)
+        
         let renderer = ImageRenderer(content: ZStack {
-            InkspillBackground(geometry: geometry, date: entry.date)
+            InkspillBackground(geometry: geometry, date: entry.date, formattedDateString: formattedDate)
             
             Canvas { context, size in
                 for path in entry.pathData {
@@ -168,19 +179,20 @@ struct GameView: View {
 struct InkspillBackground: View {
     let geometry: GeometryProxy
     let date: Date
+    let formattedDateString: String
     
     var body: some View {
         VStack(spacing: 12) {
             Text("Inkwell")
                 .font(.title2)
                 .fontWeight(.bold)
-            Text(date, style: .date)
+            Text(formattedDateString)
                 .font(.subheadline)
             
-                Image("inkspill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: geometry.size.width * 0.8)
+            Image("inkspill")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: geometry.size.width * 0.8)
             //.frame(maxHeight: .infinity)
 
             Spacer()
