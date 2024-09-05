@@ -29,8 +29,7 @@ struct ContentView: View {
                 }
             }
         }
-        // Remove the onAppear modifier
-        // .onAppear(perform: checkAndCreateTodayEntry)
+        
     }
     
     private func checkAndCreateTodayEntry() {

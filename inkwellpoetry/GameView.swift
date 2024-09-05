@@ -17,6 +17,8 @@ struct GameView: View {
     @State private var drawingColor: Color = .black
     @State private var lineWidth: CGFloat = 2
     @StateObject private var undoManager = DrawingUndoManager()
+    @State private var smoothedPath: [CGPoint] = []
+    @State private var lastPoint: CGPoint?
 
     var body: some View {
         GeometryReader { geometry in
@@ -31,7 +33,7 @@ struct GameView: View {
                     }
                     if let currentLine = currentLine {
                         var swiftUIPath = Path()
-                        swiftUIPath.addLines(currentLine.points)
+                        swiftUIPath.addLines(smoothedPath)
                         context.stroke(swiftUIPath, with: .color(currentLine.color), lineWidth: currentLine.lineWidth)
                     }
                 }
@@ -41,14 +43,7 @@ struct GameView: View {
                             handleDrawing(value: value)
                         }
                         .onEnded { _ in
-                            if let line = currentLine {
-                                undoManager.registerUndo(currentPaths: entry.pathData) {
-                                    entry.pathData.append(line)
-                                    self.saveChanges()
-                                }
-                                entry.pathData.append(line)
-                                currentLine = nil
-                            }
+                            finishDrawing()
                         }
                 )
                 
@@ -139,9 +134,36 @@ struct GameView: View {
         let newPoint = value.location
         if currentLine == nil {
             currentLine = PathData(points: [newPoint], color: drawingColor, lineWidth: lineWidth)
+            smoothedPath = [newPoint]
+            lastPoint = newPoint
         } else {
-            currentLine?.points.append(newPoint)
+            guard let lastPoint = lastPoint else { return }
+            let smoothedPoint = smoothPoint(start: lastPoint, end: newPoint)
+            smoothedPath.append(smoothedPoint)
+            self.lastPoint = smoothedPoint
         }
+    }
+    
+    private func finishDrawing() {
+        if var line = currentLine {
+            line.points = smoothedPath
+            undoManager.registerUndo(currentPaths: entry.pathData) {
+                entry.pathData.append(line)
+                self.saveChanges()
+            }
+            entry.pathData.append(line)
+            currentLine = nil
+            smoothedPath = []
+            lastPoint = nil
+        }
+    }
+    
+    private func smoothPoint(start: CGPoint, end: CGPoint) -> CGPoint {
+        let alpha: CGFloat = 0.3
+        return CGPoint(
+            x: start.x + (end.x - start.x) * alpha,
+            y: start.y + (end.y - start.y) * alpha
+        )
     }
     
     private func undoLastPath() {
