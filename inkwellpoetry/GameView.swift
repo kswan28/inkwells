@@ -52,44 +52,39 @@ struct GameView: View {
                             saveChanges()
                         }
                 }
-                
-                VStack {
-                    Spacer()
-                    HStack {
-                        ColorPicker("", selection: $drawingColor)
-                            .frame(width: 30, height: 30)
-                        
-                        Slider(value: $lineWidth, in: 1...10)
-                            .frame(width: geometry.size.width * 0.2)
-                        
-//                        Text(String(format: "%.1f", lineWidth))
-//                            .font(.caption)
-                        
-                        // Replace the undo button with a trash can button
-                        Button(action: {
-                            removeAllLines()
-                        }) {
-                            Image(systemName: "trash")
-                                .foregroundColor(.primary)
-                        }
-                     Spacer()
-                        Button(action: {
-                            Task {
-                                await captureScreenshot(of: geometry)
-                                isSharePresented = true
-                            }
-                        }) {
-                            Image(systemName: "square.and.arrow.up")
-                                .padding()
-                        }
-                        
-                        
+            }
+            .overlay(alignment: .bottom) {
+                // Control panel
+                HStack {
+                    ColorPicker("", selection: $drawingColor)
+                        .frame(width: 30, height: 30)
+                    
+                    Slider(value: $lineWidth, in: 1...10)
+                        .frame(width: geometry.size.width * 0.2)
+                    
+                    Button(action: {
+                        removeAllLines()
+                    }) {
+                        Image(systemName: "trash")
+                            .foregroundColor(.primary)
                     }
-                    .padding()
-                    .background(Color.white.opacity(0.8))
-                    .cornerRadius(10)
-                    .padding(.bottom)
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        Task {
+                            await captureScreenshot(of: geometry)
+                            isSharePresented = true
+                        }
+                    }) {
+                        Image(systemName: "square.and.arrow.up")
+                            .padding()
+                    }
                 }
+                .padding()
+                //.background(Color.white.opacity(0.8))
+                .cornerRadius(10)
+                .padding(.bottom)
             }
             .sheet(isPresented: $isSharePresented) {
                 if let screenshot = screenshotImage {
