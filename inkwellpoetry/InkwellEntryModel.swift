@@ -32,7 +32,7 @@ struct Word: Codable {
 }
 
 enum WordType: String, Codable {
-    case noun, verb, adjective, adverb // Add more types as needed
+    case noun, verb, adjective, adverb, common, preposition, suffix // Add more types as needed
 }
 
 struct TileLocation: Codable {

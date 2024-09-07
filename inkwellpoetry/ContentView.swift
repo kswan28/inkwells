@@ -54,14 +54,15 @@ struct ContentView: View {
         let seed = dateString.utf8.reduce(0) { ($0 << 8) | Int($1) }
         var generator = SeededRandomNumberGenerator(seed: seed)
         
-        let randomCommons = Array(WordList.common.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .noun) } //figure out how to fix this
+        let randomCommons = Array(WordList.common.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .common) }
         let randomNouns = Array(WordList.nouns.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .noun) }
         let randomVerbs = Array(WordList.verbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .verb) }
         let randomAdjectives = Array(WordList.adjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
+        let randomSuffixes = Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix)}
         let randomAdverb = Word(text: WordList.adverbs.shuffled(using: &generator).first ?? "", type: .adverb)
-        let randomPreposition = Word(text: WordList.prepositions.shuffled(using: &generator).first ?? "", type: .adverb) //figure out how to fix this
+        let randomPreposition = Word(text: WordList.prepositions.shuffled(using: &generator).first ?? "", type: .preposition)
         
-        let wordList = randomCommons + randomNouns + randomVerbs + randomAdjectives + [randomAdverb, randomPreposition]
+        let wordList = randomCommons + randomNouns + randomVerbs + randomAdjectives + randomSuffixes + [randomAdverb, randomPreposition]
         
         // Generate tile locations in a cluster at the center of the screen
         let screenWidth: CGFloat = UIScreen.main.bounds.width

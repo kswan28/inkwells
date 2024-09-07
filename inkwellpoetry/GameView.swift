@@ -220,6 +220,12 @@ struct WordTile: View {
               return .orange
           case .adverb:
               return .purple
+        case .common:
+            return .yellow
+        case .preposition:
+            return .gray
+        case .suffix:
+            return .pink
           }
       }
     
