@@ -15,6 +15,7 @@
 		C00123562C8646D600DE0A7B /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123552C8646D600DE0A7B /* GameView.swift */; };
 		C00123582C8646EF00DE0A7B /* WordList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123572C8646EF00DE0A7B /* WordList.swift */; };
 		C001235A2C8684E000DE0A7B /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123592C8684E000DE0A7B /* ArchiveView.swift */; };
+		C001235E2C8CF58500DE0A7B /* FontHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001235D2C8CF58500DE0A7B /* FontHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,16 @@
 		C00123552C8646D600DE0A7B /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		C00123572C8646EF00DE0A7B /* WordList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordList.swift; sourceTree = "<group>"; };
 		C00123592C8684E000DE0A7B /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
+		C001235D2C8CF58500DE0A7B /* FontHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontHelper.swift; sourceTree = "<group>"; };
+		C00123602C8CF61100DE0A7B /* Arvo-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arvo-Bold.ttf"; sourceTree = "<group>"; };
+		C00123622C8CF61200DE0A7B /* Arvo-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arvo-BoldItalic.ttf"; sourceTree = "<group>"; };
+		C00123632C8CF61200DE0A7B /* Arvo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arvo-Regular.ttf"; sourceTree = "<group>"; };
+		C00123642C8CF6C900DE0A7B /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
+		C00123672C8CF6C900DE0A7B /* Lato-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Thin.ttf"; sourceTree = "<group>"; };
+		C001236A2C8CF6C900DE0A7B /* Lato-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ThinItalic.ttf"; sourceTree = "<group>"; };
+		C001236B2C8CF6C900DE0A7B /* Lato-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Italic.ttf"; sourceTree = "<group>"; };
+		C001236C2C8CF6C900DE0A7B /* Lato-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-LightItalic.ttf"; sourceTree = "<group>"; };
+		C001236D2C8CF6C900DE0A7B /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +76,8 @@
 				C00123552C8646D600DE0A7B /* GameView.swift */,
 				C00123592C8684E000DE0A7B /* ArchiveView.swift */,
 				C00123572C8646EF00DE0A7B /* WordList.swift */,
+				C001235D2C8CF58500DE0A7B /* FontHelper.swift */,
+				C001235F2C8CF60200DE0A7B /* Fonts */,
 				C00123492C86458F00DE0A7B /* Assets.xcassets */,
 				C001234B2C86458F00DE0A7B /* Preview Content */,
 			);
@@ -77,6 +90,22 @@
 				C001234C2C86458F00DE0A7B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C001235F2C8CF60200DE0A7B /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				C00123602C8CF61100DE0A7B /* Arvo-Bold.ttf */,
+				C00123622C8CF61200DE0A7B /* Arvo-BoldItalic.ttf */,
+				C00123632C8CF61200DE0A7B /* Arvo-Regular.ttf */,
+				C001236B2C8CF6C900DE0A7B /* Lato-Italic.ttf */,
+				C001236D2C8CF6C900DE0A7B /* Lato-Light.ttf */,
+				C001236C2C8CF6C900DE0A7B /* Lato-LightItalic.ttf */,
+				C00123642C8CF6C900DE0A7B /* Lato-Regular.ttf */,
+				C00123672C8CF6C900DE0A7B /* Lato-Thin.ttf */,
+				C001236A2C8CF6C900DE0A7B /* Lato-ThinItalic.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,6 +183,7 @@
 				C00123542C8645C200DE0A7B /* InkwellEntryModel.swift in Sources */,
 				C00123562C8646D600DE0A7B /* GameView.swift in Sources */,
 				C00123462C86458C00DE0A7B /* inkwellpoetryApp.swift in Sources */,
+				C001235E2C8CF58500DE0A7B /* FontHelper.swift in Sources */,
 				C00123582C8646EF00DE0A7B /* WordList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -67,7 +67,7 @@ struct GameView: View {
                         removeAllLines()
                     }) {
                         Image(systemName: "trash")
-                            .foregroundColor(.primary)
+                            .foregroundColor(.whiteBackground)
                     }
                     
                     Spacer()
@@ -80,6 +80,7 @@ struct GameView: View {
                     }) {
                         Image(systemName: "square.and.arrow.up")
                             .padding()
+                            .foregroundStyle(.whiteBackground)
                     }
                 }
                 .padding()
@@ -171,7 +172,9 @@ struct GameView: View {
     
     // Add this new function to remove all lines
     private func removeAllLines() {
+        print("Removing all lines. Current pathData count: \(entry.pathData.count)") // Debugging line
         entry.pathData.removeAll()
+        print("All lines removed. New pathData count: \(entry.pathData.count)") // Debugging line
         saveChanges()
     }
 }
@@ -182,26 +185,32 @@ struct InkspillBackground: View {
     let formattedDateString: String
     
     var body: some View {
-        VStack(spacing: 12) {
-            Text("Inkwell")
-                .font(.title2)
-                .fontWeight(.bold)
-            Text(formattedDateString)
-                .font(.subheadline)
+        
+        ZStack{
             
-            Image("inkspill")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: geometry.size.width * 0.8)
-            //.frame(maxHeight: .infinity)
-
-            Spacer()
+            Color(.darkNavy)
+                .ignoresSafeArea()
+            
+            VStack {
+                Text("Inkwell")
+                    .font(.modalHeading)
+                Text(formattedDateString)
+                    .font(.featuredText)
+                
+                Image("background-ink2")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: geometry.size.width * 0.8)
+                    .padding(.top, 12)
+                //.frame(maxHeight: .infinity)
+                
+                Spacer()
+            }
+            .frame(maxWidth: .infinity)
+            //.padding(.top, geometry.safeAreaInsets.top + 10)
+            .foregroundColor(.whiteBackground)
         }
-        .frame(maxWidth: .infinity)
-        //.padding(.top, geometry.safeAreaInsets.top + 10)
-        .foregroundColor(.black)
-    }
-}
+    }}
 
 struct WordTile: View {
     let word: Word
@@ -221,7 +230,7 @@ struct WordTile: View {
           case .adverb:
               return .purple
         case .common:
-            return .yellow
+            return .red
         case .preposition:
             return .gray
         case .suffix:
@@ -234,6 +243,7 @@ struct WordTile: View {
             .padding()
             .background(backgroundColor)
             .foregroundColor(.white)
+            .font(.featuredText)
             .cornerRadius(8)
             .position(x: location.x + dragOffset.width, y: location.y + dragOffset.height)
             .gesture(

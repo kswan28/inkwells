@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "inkspill.png",
+      "filename" : "background-bracelet.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "inkspill@2x.png",
+      "filename" : "background-bracelet@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "inkspill@3x.png",
+      "filename" : "background-bracelet@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

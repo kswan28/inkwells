@@ -11,25 +11,108 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var entries: [InkwellEntryModel]
+    @Environment (\.colorScheme) var colorScheme
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                NavigationLink {
-                    GameView(entry: getTodayEntry() ?? getPuzzleOfTheDay())
-                        .onAppear(perform: checkAndCreateTodayEntry)
-                } label: {
-                    Text("Today's Game")
+        
+        
+        ZStack{
+             Rectangle()
+                .foregroundStyle(colorScheme == .dark ? Color.whiteBackgroundContentViewInverted : Color.whiteBackgroundContentView)
+                .ignoresSafeArea()
+            
+            NavigationStack {
+                
+                
+                GeometryReader { geometry in
+                    
+                    
+                    VStack {
+                        
+                        HStack{
+                            //Put menu here
+                            Image(systemName: "gearshape.fill")
+                                .foregroundStyle(.darkNavy)
+                            Spacer()
+                        }
+                        .padding(.top)
+                        .padding(.horizontal)
+                        
+                        
+                        
+                        NavigationLink {
+                            GameView(entry: getTodayEntry() ?? getPuzzleOfTheDay())
+                                .onAppear(perform: checkAndCreateTodayEntry)
+                        } label: {
+                            ZStack{
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(Color.darkNavy, lineWidth: 6)
+                                    .background(Color.lavender)
+                                VStack{
+                                    Spacer()
+                                    HStack{
+                                        Spacer()
+                                        Image("inkwell-logo")
+                                            .resizable()
+                                            .scaledToFit()
+                                        Spacer()
+                                    }
+                                    Spacer()
+                                    HStack{
+                                        
+                                        VStack (alignment: .leading){
+                                            Text("GAME")
+                                                .foregroundStyle(.darkNavy)
+                                                .font(.dateHeader)
+                                            
+                                            Text("Today's Inkwell")
+                                                .foregroundStyle(.darkNavy)
+                                                .font(.screenInstruct)
+                                            
+                                        }
+                                        Spacer()
+                                    }
+                                    .padding()
+                                }
+                            }
+                            .padding()
+                            .frame(height: geometry.size.height * 0.8)
+                            
+                            
+                        }
+                        NavigationLink {
+                            ArchiveView()
+                        } label: {
+                            ZStack{
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(Color.lavender, lineWidth: 6)
+                                VStack{
+                                    Spacer()
+                                    HStack{
+                                        VStack (alignment: .leading){
+                                            Text("ARCHIVES")
+                                                .foregroundStyle(.darkNavy)
+                                                .font(.dateHeader)
+                                            
+                                            Text("All Your Inkwells")
+                                                .foregroundStyle(.darkNavy)
+                                                .font(.screenInstruct)
+                                            
+                                        }
+                                        Spacer()
+                                    }
+                                    .padding()
+                                }
+                            }
+                            .padding(.bottom, 20)
+                            .padding(.horizontal, 20)
+                        }
+                    }
+                    
                 }
                 
-                NavigationLink {
-                    ArchiveView()
-                } label: {
-                    Text("Archive")
-                }
             }
         }
-        
     }
     
     private func checkAndCreateTodayEntry() {
