@@ -16,6 +16,14 @@
 		C00123582C8646EF00DE0A7B /* WordList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123572C8646EF00DE0A7B /* WordList.swift */; };
 		C001235A2C8684E000DE0A7B /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123592C8684E000DE0A7B /* ArchiveView.swift */; };
 		C001235E2C8CF58500DE0A7B /* FontHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001235D2C8CF58500DE0A7B /* FontHelper.swift */; };
+		C001236F2C8E51E100DE0A7B /* TextModalComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001236E2C8E51E100DE0A7B /* TextModalComponent.swift */; };
+		C00123712C8E538B00DE0A7B /* SettingsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123702C8E538B00DE0A7B /* SettingsMenu.swift */; };
+		C00123732C8E53DF00DE0A7B /* SupportEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123722C8E53DF00DE0A7B /* SupportEmail.swift */; };
+		C00123752C8E540B00DE0A7B /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123742C8E540B00DE0A7B /* UIDevice+Extension.swift */; };
+		C00123772C8E543400DE0A7B /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123762C8E543400DE0A7B /* Bundle+Extension.swift */; };
+		C00123792C8E544800DE0A7B /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123782C8E544800DE0A7B /* MailView.swift */; };
+		C001237B2C8E54AE00DE0A7B /* DeviceModels.json in Resources */ = {isa = PBXBuildFile; fileRef = C001237A2C8E54AD00DE0A7B /* DeviceModels.json */; };
+		C001237D2C8E5B6C00DE0A7B /* RemindersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001237C2C8E5B6C00DE0A7B /* RemindersView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +46,14 @@
 		C001236B2C8CF6C900DE0A7B /* Lato-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Italic.ttf"; sourceTree = "<group>"; };
 		C001236C2C8CF6C900DE0A7B /* Lato-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-LightItalic.ttf"; sourceTree = "<group>"; };
 		C001236D2C8CF6C900DE0A7B /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
+		C001236E2C8E51E100DE0A7B /* TextModalComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextModalComponent.swift; sourceTree = "<group>"; };
+		C00123702C8E538B00DE0A7B /* SettingsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenu.swift; sourceTree = "<group>"; };
+		C00123722C8E53DF00DE0A7B /* SupportEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportEmail.swift; sourceTree = "<group>"; };
+		C00123742C8E540B00DE0A7B /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
+		C00123762C8E543400DE0A7B /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
+		C00123782C8E544800DE0A7B /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
+		C001237A2C8E54AD00DE0A7B /* DeviceModels.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeviceModels.json; sourceTree = "<group>"; };
+		C001237C2C8E5B6C00DE0A7B /* RemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,8 +91,16 @@
 				C00123532C8645C200DE0A7B /* InkwellEntryModel.swift */,
 				C00123552C8646D600DE0A7B /* GameView.swift */,
 				C00123592C8684E000DE0A7B /* ArchiveView.swift */,
+				C001236E2C8E51E100DE0A7B /* TextModalComponent.swift */,
+				C00123702C8E538B00DE0A7B /* SettingsMenu.swift */,
+				C001237C2C8E5B6C00DE0A7B /* RemindersView.swift */,
+				C00123722C8E53DF00DE0A7B /* SupportEmail.swift */,
+				C00123742C8E540B00DE0A7B /* UIDevice+Extension.swift */,
+				C00123762C8E543400DE0A7B /* Bundle+Extension.swift */,
+				C00123782C8E544800DE0A7B /* MailView.swift */,
 				C00123572C8646EF00DE0A7B /* WordList.swift */,
 				C001235D2C8CF58500DE0A7B /* FontHelper.swift */,
+				C001237A2C8E54AD00DE0A7B /* DeviceModels.json */,
 				C001235F2C8CF60200DE0A7B /* Fonts */,
 				C00123492C86458F00DE0A7B /* Assets.xcassets */,
 				C001234B2C86458F00DE0A7B /* Preview Content */,
@@ -168,6 +192,7 @@
 			files = (
 				C001234D2C86458F00DE0A7B /* Preview Assets.xcassets in Resources */,
 				C001234A2C86458F00DE0A7B /* Assets.xcassets in Resources */,
+				C001237B2C8E54AE00DE0A7B /* DeviceModels.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,12 +203,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C00123712C8E538B00DE0A7B /* SettingsMenu.swift in Sources */,
+				C001236F2C8E51E100DE0A7B /* TextModalComponent.swift in Sources */,
 				C00123482C86458C00DE0A7B /* ContentView.swift in Sources */,
+				C00123752C8E540B00DE0A7B /* UIDevice+Extension.swift in Sources */,
 				C001235A2C8684E000DE0A7B /* ArchiveView.swift in Sources */,
 				C00123542C8645C200DE0A7B /* InkwellEntryModel.swift in Sources */,
 				C00123562C8646D600DE0A7B /* GameView.swift in Sources */,
+				C00123772C8E543400DE0A7B /* Bundle+Extension.swift in Sources */,
+				C001237D2C8E5B6C00DE0A7B /* RemindersView.swift in Sources */,
+				C00123732C8E53DF00DE0A7B /* SupportEmail.swift in Sources */,
 				C00123462C86458C00DE0A7B /* inkwellpoetryApp.swift in Sources */,
 				C001235E2C8CF58500DE0A7B /* FontHelper.swift in Sources */,
+				C00123792C8E544800DE0A7B /* MailView.swift in Sources */,
 				C00123582C8646EF00DE0A7B /* WordList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

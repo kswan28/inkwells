@@ -28,8 +28,7 @@ struct ContentView: View {
                         
                         HStack{
                             //Put menu here
-                            Image(systemName: "gearshape.fill")
-                                .foregroundStyle(.darkNavy)
+                            SettingsMenu()
                             Spacer()
                         }
                         .padding(.top)
