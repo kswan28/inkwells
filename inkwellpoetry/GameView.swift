@@ -93,38 +93,41 @@ struct GameView: View {
      }
      
     private func captureScreenshot(size: CGSize) {
-         isCapturingScreenshot = true
-         
-         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-             let contentView = GameContentView(
-                 entry: entry,
-                 currentLine: $currentLine,
-                 drawingColor: $drawingColor,
-                 lineWidth: $lineWidth,
-                 smoothedPath: $smoothedPath,
-                 lastPoint: $lastPoint,
-                 formattedDate: $formattedDate,
-                 isCapturingScreenshot: $isCapturingScreenshot, handleDrawing: handleDrawing,
-                 finishDrawing: finishDrawing,
-                 removeAllLines: removeAllLines,
-                 captureScreenshot: { self.captureScreenshot(size: size) }
-             )
-             
-             let renderer = ImageRenderer(content: contentView)
-             renderer.scale = UIScreen.main.scale
-             
-             // Set the proposed size to match the actual view size
-                         renderer.proposedSize = ProposedViewSize(size)
-             
-             if let uiImage = renderer.uiImage {
-                 screenshotImage = uiImage
-                 isCapturingScreenshot = false
-                 isSharePresented = true
-             } else {
-                 isCapturingScreenshot = false
-             }
-         }
-     }
+        isCapturingScreenshot = true
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            // Define the portion of the view to capture
+            let captureView = GameContentView(
+                entry: entry,
+                currentLine: $currentLine,
+                drawingColor: $drawingColor,
+                lineWidth: $lineWidth,
+                smoothedPath: $smoothedPath,
+                lastPoint: $lastPoint,
+                formattedDate: $formattedDate,
+                isCapturingScreenshot: $isCapturingScreenshot,
+                handleDrawing: handleDrawing,
+                finishDrawing: finishDrawing,
+                removeAllLines: removeAllLines,
+                captureScreenshot: { self.captureScreenshot(size: size) }
+            )
+            .frame(width: size.width, height: size.height * 0.7)  // Capture the top 70% which contains inkspill and tiles
+            
+            let renderer = ImageRenderer(content: captureView)
+            renderer.scale = UIScreen.main.scale
+            
+            // Ensure the proposed size matches the inkspill area
+            renderer.proposedSize = ProposedViewSize(CGSize(width: size.width, height: size.height * 0.7))
+            
+            if let uiImage = renderer.uiImage {
+                screenshotImage = uiImage
+                isCapturingScreenshot = false
+                isSharePresented = true
+            } else {
+                isCapturingScreenshot = false
+            }
+        }
+    }
     
     private func saveChanges() {
         do {
