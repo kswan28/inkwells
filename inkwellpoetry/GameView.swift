@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import UIKit
 
 struct GameView: View {
     @Bindable var entry: InkwellEntryModel
@@ -74,8 +75,7 @@ struct GameView: View {
                     
                     Button(action: {
                         Task {
-                            await captureScreenshot(of: geometry)
-                            isSharePresented = true
+                            captureScreenshot()
                         }
                     }) {
                         Image(systemName: "square.and.arrow.up")
@@ -101,32 +101,22 @@ struct GameView: View {
         }
     }
     
-    @MainActor
-    private func captureScreenshot(of geometry: GeometryProxy) async {
-        // Format the date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .long
-        formattedDate = dateFormatter.string(from: entry.date)
+    private func captureScreenshot() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first
+        else { return }
+
+        let bounds = window.bounds
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = window.screen.scale
+        let renderer = UIGraphicsImageRenderer(bounds: bounds, format: format)
         
-        let renderer = ImageRenderer(content: ZStack {
-            InkspillBackground(geometry: geometry, date: entry.date, formattedDateString: formattedDate)
-            
-            Canvas { context, size in
-                for path in entry.pathData {
-                    var swiftUIPath = Path()
-                    swiftUIPath.addLines(path.points)
-                    context.stroke(swiftUIPath, with: .color(path.color), lineWidth: path.lineWidth)
-                }
-            }
-            
-            ForEach(entry.wordList.indices, id: \.self) { index in
-                WordTile(word: entry.wordList[index], location: .constant(entry.tileLocations[index]), type: entry.wordList[index].type)
-            }
-        })
-        renderer.scale = UIScreen.main.scale
-        if let uiImage = renderer.uiImage {
-            screenshotImage = uiImage
+        let screenshot = renderer.image { ctx in
+            window.drawHierarchy(in: bounds, afterScreenUpdates: true)
         }
+        
+        screenshotImage = screenshot
+        isSharePresented = true
     }
     
     private func saveChanges() {
