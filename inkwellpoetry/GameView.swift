@@ -20,39 +20,32 @@ struct GameView: View {
     @State private var smoothedPath: [CGPoint] = []
     @State private var lastPoint: CGPoint?
     @State private var formattedDate: String = ""
+    @State private var isCapturingScreenshot = false
 
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                InkspillBackground(geometry: geometry, date: entry.date, formattedDateString: formattedDate)
-                
-                Canvas { context, size in
-                    for path in entry.pathData {
-                        var swiftUIPath = Path()
-                        swiftUIPath.addLines(path.points)
-                        context.stroke(swiftUIPath, with: .color(path.color), lineWidth: path.lineWidth)
-                    }
-                    if let currentLine = currentLine {
-                        var swiftUIPath = Path()
-                        swiftUIPath.addLines(smoothedPath)
-                        context.stroke(swiftUIPath, with: .color(currentLine.color), lineWidth: currentLine.lineWidth)
-                    }
-                }
-                .gesture(
-                    DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                        .onChanged { value in
-                            handleDrawing(value: value)
-                        }
-                        .onEnded { _ in
-                            finishDrawing()
-                        }
+                GameContentView(
+                    entry: entry,
+                    currentLine: $currentLine,
+                    drawingColor: $drawingColor,
+                    lineWidth: $lineWidth,
+                    smoothedPath: $smoothedPath,
+                    lastPoint: $lastPoint,
+                    formattedDate: $formattedDate,
+                    isCapturingScreenshot: $isCapturingScreenshot, handleDrawing: handleDrawing,
+                    finishDrawing: finishDrawing,
+                    removeAllLines: removeAllLines,
+                    captureScreenshot: { captureScreenshot(size: geometry.size) }
                 )
                 
-                ForEach(entry.wordList.indices, id: \.self) { index in
-                    WordTile(word: entry.wordList[index], location: $entry.tileLocations[index], type: entry.wordList[index].type)
-                        .onChange(of: entry.tileLocations[index].x) { _, _ in
-                            saveChanges()
-                        }
+                
+                if isCapturingScreenshot {
+                    ProgressView()
+                        .scaleEffect(2)
+                        .frame(width: 100, height: 100)
+                        .background(Color.black.opacity(0.9))
+                        .cornerRadius(15)
                 }
             }
             .overlay(alignment: .bottom) {
@@ -74,50 +67,64 @@ struct GameView: View {
                     Spacer()
                     
                     Button(action: {
-                        Task {
-                            captureScreenshot()
-                        }
+                        captureScreenshot(size: geometry.size)
                     }) {
                         Image(systemName: "square.and.arrow.up")
                             .padding()
                             .foregroundStyle(.whiteBackground)
                     }
+                    .disabled(isCapturingScreenshot)
                 }
                 .padding()
-                //.background(Color.white.opacity(0.8))
                 .cornerRadius(10)
                 .padding(.bottom)
             }
-            .sheet(isPresented: $isSharePresented) {
-                if let screenshot = screenshotImage {
-                    ActivityViewController(activityItems: [screenshot])
-                }
-            }
         }
-        .onAppear {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .long
-            formattedDate = dateFormatter.string(from: entry.date)
-        }
-    }
-    
-    private func captureScreenshot() {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let window = windowScene.windows.first
-        else { return }
-
-        let bounds = window.bounds
-        let format = UIGraphicsImageRendererFormat()
-        format.scale = window.screen.scale
-        let renderer = UIGraphicsImageRenderer(bounds: bounds, format: format)
-        
-        let screenshot = renderer.image { ctx in
-            window.drawHierarchy(in: bounds, afterScreenUpdates: true)
-        }
-        
-        screenshotImage = screenshot
-        isSharePresented = true
-    }
+         .sheet(isPresented: $isSharePresented) {
+             if let screenshot = screenshotImage {
+                 ActivityViewController(activityItems: [screenshot])
+             }
+         }
+         .onAppear {
+             let dateFormatter = DateFormatter()
+             dateFormatter.dateStyle = .long
+             formattedDate = dateFormatter.string(from: entry.date)
+         }
+     }
+     
+    private func captureScreenshot(size: CGSize) {
+         isCapturingScreenshot = true
+         
+         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+             let contentView = GameContentView(
+                 entry: entry,
+                 currentLine: $currentLine,
+                 drawingColor: $drawingColor,
+                 lineWidth: $lineWidth,
+                 smoothedPath: $smoothedPath,
+                 lastPoint: $lastPoint,
+                 formattedDate: $formattedDate,
+                 isCapturingScreenshot: $isCapturingScreenshot, handleDrawing: handleDrawing,
+                 finishDrawing: finishDrawing,
+                 removeAllLines: removeAllLines,
+                 captureScreenshot: { self.captureScreenshot(size: size) }
+             )
+             
+             let renderer = ImageRenderer(content: contentView)
+             renderer.scale = UIScreen.main.scale
+             
+             // Set the proposed size to match the actual view size
+                         renderer.proposedSize = ProposedViewSize(size)
+             
+             if let uiImage = renderer.uiImage {
+                 screenshotImage = uiImage
+                 isCapturingScreenshot = false
+                 isSharePresented = true
+             } else {
+                 isCapturingScreenshot = false
+             }
+         }
+     }
     
     private func saveChanges() {
         do {
@@ -262,6 +269,56 @@ struct ActivityViewController: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
+
+struct GameContentView: View {
+    @Bindable var entry: InkwellEntryModel
+    @Binding var currentLine: PathData?
+    @Binding var drawingColor: Color
+    @Binding var lineWidth: CGFloat
+    @Binding var smoothedPath: [CGPoint]
+    @Binding var lastPoint: CGPoint?
+    @Binding var formattedDate: String
+    @Binding var isCapturingScreenshot: Bool
+    
+    var handleDrawing: (DragGesture.Value) -> Void
+    var finishDrawing: () -> Void
+    var removeAllLines: () -> Void
+    var captureScreenshot: () -> Void
+
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                InkspillBackground(geometry: geometry, date: entry.date, formattedDateString: formattedDate)
+                
+                Canvas { context, size in
+                    for path in entry.pathData {
+                        var swiftUIPath = Path()
+                        swiftUIPath.addLines(path.points)
+                        context.stroke(swiftUIPath, with: .color(path.color), lineWidth: path.lineWidth)
+                    }
+                    if let currentLine = currentLine {
+                        var swiftUIPath = Path()
+                        swiftUIPath.addLines(smoothedPath)
+                        context.stroke(swiftUIPath, with: .color(currentLine.color), lineWidth: currentLine.lineWidth)
+                    }
+                }
+                .gesture(
+                    DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                        .onChanged { value in
+                            handleDrawing(value)
+                        }
+                        .onEnded { _ in
+                            finishDrawing()
+                        }
+                )
+                
+                ForEach(entry.wordList.indices, id: \.self) { index in
+                    WordTile(word: entry.wordList[index], location: $entry.tileLocations[index], type: entry.wordList[index].type)
+                }
+            }
+        }
+    }
 }
 
 #Preview {
