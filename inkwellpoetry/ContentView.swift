@@ -13,15 +13,15 @@ struct ContentView: View {
     @Query private var entries: [InkwellEntryModel]
     
     var body: some View {
+        
+        NavigationStack {
             
-            NavigationStack {
+            
+            GeometryReader { geometry in
                 
-                
-                GeometryReader { geometry in
-                    
-                    ZStack{
-                        Color.whiteBackground
-                            .ignoresSafeArea()
+                ZStack{
+                    Color.whiteBackground
+                        .ignoresSafeArea()
                     
                     
                     VStack {
@@ -36,85 +36,96 @@ struct ContentView: View {
                         .padding(.horizontal)
                         .padding(.bottom, 10)
                         
-                        
-                        
-                        NavigationLink {
-                            GameView(entry: getTodayEntry() ?? getPuzzleOfTheDay())
-                                .onAppear(perform: checkAndCreateTodayEntry)
-                        } label: {
-                            ZStack{
-                                RoundedRectangle(cornerRadius: 15)
-                                    .stroke(Color.darkNavy, lineWidth: 12)
-                                    .fill(Color.lavender)
-                                VStack{
-                                    Spacer()
-                                    HStack{
-                                        Spacer()
-                                        Image("inkwell-logo")
-                                            .resizable()
-                                            .scaledToFit()
-                                        Spacer()
-                                    }
-                                    Spacer()
-                                    HStack{
-                                        
-                                        VStack (alignment: .leading){
-                                            Text("GAME")
-                                                .foregroundStyle(.darkNavy)
-                                                .font(.dateHeader)
-                                            
-                                            Text("Today's Inkwell")
-                                                .foregroundStyle(.darkNavy)
-                                                .font(.screenInstruct)
-                                            
-                                        }
-                                        Spacer()
-                                    }
-                                    .padding()
-                                }
-                            }
-                            .frame(height: geometry.size.height * 0.65)
-                            .padding()
-                            
-                            
+                        HStack{
+                            Text("Let's write!")
+                                .foregroundStyle(.darkNavy)
+                                .font(.screenHeading)
+                            Spacer()
                         }
-                        NavigationLink {
-                            ArchiveView()
-                        } label: {
-                            ZStack{
-                                
-                                RoundedRectangle(cornerRadius: 15)
-                                    .stroke(Color.lavender, lineWidth: 12)
-                                    .fill(Color.whiteBackground)
-    
-                                    
-                                VStack{
-                                    Spacer()
-                                    HStack{
-                                        VStack (alignment: .leading){
-                                            Text("ARCHIVES")
-                                                .foregroundStyle(.darkNavy)
-                                                .font(.dateHeader)
-                                            
-                                            Text("Your Inkwells")
-                                                .foregroundStyle(.darkNavy)
-                                                .font(.screenInstruct)
-                                            
+                        .padding(.top)
+                        .padding(.horizontal)
+                        
+                        ScrollView(showsIndicators: false) {
+                            NavigationLink {
+                                GameView(entry: getTodayEntry() ?? getPuzzleOfTheDay())
+                                    .onAppear(perform: checkAndCreateTodayEntry)
+                            } label: {
+                                ZStack{
+                                    RoundedRectangle(cornerRadius: 15)
+                                        .stroke(Color.darkNavy, lineWidth: 12)
+                                        .fill(Color.lavender)
+                                    VStack{
+                                        Spacer()
+                                        HStack{
+                                            Spacer()
+                                            Image("inkwell-logo")
+                                                .resizable()
+                                                .scaledToFit()
+                                            Spacer()
                                         }
                                         Spacer()
+                                        HStack{
+                                            
+                                            VStack (alignment: .leading){
+                                                Text("GAME")
+                                                    .foregroundStyle(.darkNavy)
+                                                    .font(.dateHeader)
+                                                
+                                                Text("Today's Inkwell")
+                                                    .foregroundStyle(.darkNavy)
+                                                    .font(.screenInstruct)
+                                                
+                                            }
+                                            Spacer()
+                                        }
+                                        .padding()
                                     }
-                                    .padding()
                                 }
+                                .frame(height: geometry.size.height * 0.6)
+                                .padding(.horizontal)
+                                .padding(.top, 12)
+                                .padding(.bottom, 2)
+                                
+                                
                             }
-                            .frame(height: geometry.size.height * 0.15)
-                            .padding()
+                            NavigationLink {
+                                ArchiveView()
+                            } label: {
+                                ZStack{
+                                    
+                                    RoundedRectangle(cornerRadius: 15)
+                                        .stroke(Color.lavender, lineWidth: 12)
+                                        .fill(Color.whiteBackground)
+                                    
+                                    
+                                    VStack{
+                                        Spacer()
+                                        HStack{
+                                            VStack (alignment: .leading){
+                                                Text("ARCHIVES")
+                                                    .foregroundStyle(.darkNavy)
+                                                    .font(.dateHeader)
+                                                
+                                                Text("Your Inkwells")
+                                                    .foregroundStyle(.darkNavy)
+                                                    .font(.screenInstruct)
+                                                
+                                            }
+                                            Spacer()
+                                        }
+                                        .padding()
+                                    }
+                                }
+                                .frame(height: geometry.size.height * 0.125)
+                                .padding()
+                            }
                         }
                     }
-                    
                 }
                 
             }
         }
+        
     }
     
     private func checkAndCreateTodayEntry() {
