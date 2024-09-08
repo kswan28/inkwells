@@ -11,20 +11,17 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var entries: [InkwellEntryModel]
-    @Environment (\.colorScheme) var colorScheme
     
     var body: some View {
-        
-        
-        ZStack{
-             Rectangle()
-                .foregroundStyle(colorScheme == .dark ? Color.whiteBackgroundContentViewInverted : Color.whiteBackgroundContentView)
-                .ignoresSafeArea()
             
             NavigationStack {
                 
                 
                 GeometryReader { geometry in
+                    
+                    ZStack{
+                        Color.whiteBackground
+                            .ignoresSafeArea()
                     
                     
                     VStack {
@@ -37,6 +34,7 @@ struct ContentView: View {
                         }
                         .padding(.top)
                         .padding(.horizontal)
+                        .padding(.bottom, 10)
                         
                         
                         
@@ -46,8 +44,8 @@ struct ContentView: View {
                         } label: {
                             ZStack{
                                 RoundedRectangle(cornerRadius: 15)
-                                    .stroke(Color.darkNavy, lineWidth: 6)
-                                    .background(Color.lavender)
+                                    .stroke(Color.darkNavy, lineWidth: 12)
+                                    .fill(Color.lavender)
                                 VStack{
                                     Spacer()
                                     HStack{
@@ -75,8 +73,8 @@ struct ContentView: View {
                                     .padding()
                                 }
                             }
+                            .frame(height: geometry.size.height * 0.65)
                             .padding()
-                            .frame(height: geometry.size.height * 0.8)
                             
                             
                         }
@@ -84,8 +82,12 @@ struct ContentView: View {
                             ArchiveView()
                         } label: {
                             ZStack{
+                                
                                 RoundedRectangle(cornerRadius: 15)
-                                    .stroke(Color.lavender, lineWidth: 6)
+                                    .stroke(Color.lavender, lineWidth: 12)
+                                    .fill(Color.whiteBackground)
+    
+                                    
                                 VStack{
                                     Spacer()
                                     HStack{
@@ -94,7 +96,7 @@ struct ContentView: View {
                                                 .foregroundStyle(.darkNavy)
                                                 .font(.dateHeader)
                                             
-                                            Text("All Your Inkwells")
+                                            Text("Your Inkwells")
                                                 .foregroundStyle(.darkNavy)
                                                 .font(.screenInstruct)
                                             
@@ -104,8 +106,8 @@ struct ContentView: View {
                                     .padding()
                                 }
                             }
-                            .padding(.bottom, 20)
-                            .padding(.horizontal, 20)
+                            .frame(height: geometry.size.height * 0.15)
+                            .padding()
                         }
                     }
                     
