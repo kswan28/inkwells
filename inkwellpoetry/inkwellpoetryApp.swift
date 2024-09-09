@@ -24,39 +24,42 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 struct inkwellpoetryApp: App {
     
     @State private var isLoading = true
+    @AppStorage("onboarding") var needsOnboarding = true
     
     var body: some Scene {
         WindowGroup {
             
-            if isLoading {
-                
-                LoadingScreen()
-                    .onAppear{
-                        // Simulate loading delay
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            
-                            withAnimation{
-                                isLoading = false // Set loading to false after delay
+            ZStack{
+                if isLoading {
+                    LoadingScreen()
+                        .onAppear{
+                            // Simulate loading delay
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                withAnimation{
+                                    isLoading = false // Set loading to false after delay
+                                }
                             }
                         }
+                } else {
+                    ContentView()
+                        .modelContainer(for: [InkwellEntryModel.self, Reminder.self])
+                        .onAppear {
+                            // For the support email content, this suppresses constraint warnings
+                            UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
+                            print(UIDevice.current.systemVersion)
+                            print(UIDevice.current.modelName)
+                            print(Bundle.main.displayName)
+                            print(Bundle.main.appVersion)
+                            print(Bundle.main.appBuild)
+                        }
+                    
+                    // Show OnboardingView if onboarding is needed
+                    if needsOnboarding {
+                        OnboardingView(needsOnboarding: $needsOnboarding)
                     }
+                }
             }
-            
-            else {
-                ContentView()
-                                  .modelContainer(for: [InkwellEntryModel.self, Reminder.self])
-                                  .onAppear {
-                                      // For the support email content, this suppresses constraint warnings
-                                      UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
-                                      print(UIDevice.current.systemVersion)
-                                      print(UIDevice.current.modelName)
-                                      print(Bundle.main.displayName)
-                                      print(Bundle.main.appVersion)
-                                      print(Bundle.main.appBuild)
-                                  }
-                          }
-            
         }
-        
     }
 }
+
