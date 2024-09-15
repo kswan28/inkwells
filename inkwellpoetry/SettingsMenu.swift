@@ -9,6 +9,8 @@ import SwiftUI
 import StoreKit
 
 struct SettingsMenu: View {
+    
+    @Environment(\.colorScheme) private var colorScheme
 
     
     @Environment(\.openURL) var openURL
@@ -87,7 +89,7 @@ struct SettingsMenu: View {
             } label: {
                 Image(systemName: "gearshape.fill")
                     .font(.system(size: 18)) // Adjust the size as needed
-                    .foregroundColor(.darkNavy) // Set the color as needed
+                    .foregroundColor(colorScheme == .dark ? Color.allwhite : Color.darkNavy)
             }
             .menuStyle(.borderlessButton)
             .tint(.darkNavy)
@@ -115,7 +117,7 @@ struct SettingsMenu: View {
                 get: { showFAQPage },
                 set: { showFAQPage = $0 }
             ))  {
-                TextModalComponent(modalTitle: "About this app", modalHeaderIcon: "doc.questionmark", modalHeading1: "What is the Inkwells app?", modalText1: "This tiny app offers a daily word game to spark your creativity and make writing easier.", modalHeading2: "Why did you create this app?", modalText2: "Words are magical. By putting words together in unexpected ways, it can bring joy, delight, and a bit of whimsy to your life.", modalHeading3: "Who can see what I post?", modalText3: "Unless you choose to share a post, what you record is just for you. This app will store data either locally on your device or in iCloud (if you have iCloud turned on for the app). Your app data is not stored or shared anywhere else.", modalHeading4: "What happens if I delete this app?", modalText4: "If you have iCloud turned on for this app, your entries will be saved even if you delete the app and reinstall it later. However, if you're not using iCloud, all of your data will be deleted when you delete the app. This is by design -- you are fully in control of your poems.", modalHeading5: "Will this app work across all of my devices?", modalText5: "This app does have iCloud sync capabilities. If you turn on iCloud for this app, you'll be able to keep your great things in sync between any iOS devices using the same iCloud account.",modalHeading6: "I'm having trouble erasing my drawings on an Inkwell.", modalText6: "We're so sorry about that. It's a known issue and we're working on it. For further help (or if you know how to fix it), contact us at tinyappsfeedback@gmail.com. We'd love to hear from you.",modalHeading7: "Notifications aren't working.",modalText7:"Make sure notifications are turned on in your iOS app settings. For further help, contact us at tinyappsfeedback@gmail.com",modalHeading8: "When I try to give feedback or get help, the app asks me to restore the Mail App.",modalText8: "Sorry about that! The Inkwells App requires the Apple Mail client to send messages to the team. If you use another email client, that's no problem. You can drop us a note anytime at tinyappsfeedback@gmail.com.", modalHeading9: "Who made this app?", modalText9: "This app was made by Tiny App Studio, an organization that likes building software for humans. They were inspired to create the app because, well, they had writer's block a lot. This little game made it a bit better. The team sincerely hopes it makes your day a little easier or more expressive.",modalHeading10: "",modalText10: "",modalHeading11: "",modalText11: "")
+                TextModalComponent(modalTitle: "About this app", modalHeaderIcon: "doc.questionmark", modalHeading1: "What is the Inkwells app?", modalText1: "Inkwells are daily word puzzles that spark your creativity and make writing easier.", modalHeading2: "Why did you create this app?", modalText2: "Words are magical. By putting words together in unexpected ways, it can bring joy, delight, and a bit of whimsy to your life.", modalHeading3: "Who can see what I post?", modalText3: "Unless you choose to share a post, what you write is just for you. This app will store data either locally on your device or in iCloud (if you have iCloud turned on for the app). Your app data is not stored or shared anywhere else.", modalHeading4: "What happens if I delete this app?", modalText4: "If you have iCloud turned on for this app, your entries will be saved even if you delete the app and reinstall it later. However, if you're not using iCloud, all of your data will be deleted when you delete the app. This is by design -- you are fully in control of your poems.", modalHeading5: "Will this app work across all of my devices?", modalText5: "This app does have iCloud sync capabilities. If you turn on iCloud for this app, you'll be able to keep your great things in sync between any iOS devices using the same iCloud account.",modalHeading6: "Notifications aren't working.",modalText6:"Make sure notifications are turned on in your iOS app settings. For further help, contact us at tinyappsfeedback@gmail.com",modalHeading7: "When I try to give feedback or get help, the app asks me to restore the Mail App.",modalText7: "Sorry about that! The Inkwells App requires the Apple Mail client to send messages to the team. If you use another email client, that's no problem. You can drop us a note anytime at tinyappsfeedback@gmail.com.", modalHeading8: "Who made this app?", modalText8: "This app was made by Tiny App Studio, an organization that likes building software for humans. They were inspired to create the app because, well, they had writer's block a lot. This little game made it a bit better. The team sincerely hopes it makes your day a little easier or more expressive.",modalHeading9: "",modalText9: "",modalHeading10: "",modalText10: "",modalHeading11: "",modalText11: "")
                     .presentationBackground(.thinMaterial)
             }
             .sheet(isPresented: Binding(
@@ -153,7 +155,7 @@ struct SettingsMenu: View {
             } label: {
                 Image(systemName: "bell.fill")
                     .font(.system(size: 18)) // Adjust the size as needed
-                    .foregroundColor(.darkNavy) // Set the color as needed
+                    .foregroundColor(colorScheme == .dark ? Color.allwhite : Color.darkNavy) // Set the color as needed
                 
             }.fullScreenCover(isPresented: $showRemindersPage, content: { RemindersView() })
             
@@ -164,7 +166,7 @@ struct SettingsMenu: View {
             } label: {
                 Text("How to play")
                     .font(.screenInstruct)
-                    .foregroundStyle(.darkNavy)
+                    .foregroundColor(colorScheme == .dark ? Color.allwhite : Color.darkNavy)
             }.fullScreenCover(isPresented: $showOnboarding, content: { OnboardingView(needsOnboarding: $needsOnboarding) })
             
         

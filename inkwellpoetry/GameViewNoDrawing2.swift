@@ -9,37 +9,24 @@ import SwiftUI
 import SwiftData
 import UIKit
 
-struct GameView: View {
+struct GameViewNoDrawing2: View {
     @Bindable var entry: InkwellEntryModel
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
     @State private var isSharePresented = false
     @State private var screenshotImage: UIImage?
-    @State private var currentLine: PathData?
-    @State private var drawingColor: Color = .black
-    @State private var lineWidth: CGFloat = 2
-    @State private var smoothedPath: [CGPoint] = []
-    @State private var lastPoint: CGPoint?
     @State private var formattedDate: String = ""
     @State private var isCapturingScreenshot = false
 
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                GameContentView(
+                GameContentView2(
                     entry: entry,
-                    currentLine: $currentLine,
-                    drawingColor: $drawingColor,
-                    lineWidth: $lineWidth,
-                    smoothedPath: $smoothedPath,
-                    lastPoint: $lastPoint,
                     formattedDate: $formattedDate,
-                    isCapturingScreenshot: $isCapturingScreenshot, handleDrawing: handleDrawing,
-                    finishDrawing: finishDrawing,
-                    removeAllLines: removeAllLines,
+                    isCapturingScreenshot: $isCapturingScreenshot,  // Remove handleDrawing
                     captureScreenshot: { captureScreenshot(size: geometry.size) }
                 )
-                
                 
                 if isCapturingScreenshot {
                     ProgressView()
@@ -52,19 +39,6 @@ struct GameView: View {
             .overlay(alignment: .bottom) {
                 // Control panel
                 HStack {
-                    ColorPicker("", selection: $drawingColor)
-                        .frame(width: 30, height: 30)
-                    
-                    Slider(value: $lineWidth, in: 1...10)
-                        .frame(width: geometry.size.width * 0.2)
-                    
-                    Button(action: {
-                        removeAllLines()
-                    }) {
-                        Image(systemName: "trash")
-                            .foregroundColor(.allwhite)
-                    }
-                    
                     Spacer()
                     
                     Button(action: {
@@ -98,18 +72,10 @@ struct GameView: View {
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             // Define the portion of the view to capture
-            let captureView = GameContentView(
+            let captureView = GameContentView2(
                 entry: entry,
-                currentLine: $currentLine,
-                drawingColor: $drawingColor,
-                lineWidth: $lineWidth,
-                smoothedPath: $smoothedPath,
-                lastPoint: $lastPoint,
                 formattedDate: $formattedDate,
                 isCapturingScreenshot: $isCapturingScreenshot,
-                handleDrawing: handleDrawing,
-                finishDrawing: finishDrawing,
-                removeAllLines: removeAllLines,
                 captureScreenshot: { self.captureScreenshot(size: size) }
             )
             .frame(width: size.width, height: size.height * 0.7)  // Capture the top 70% which contains inkspill and tiles
@@ -138,53 +104,19 @@ struct GameView: View {
         }
     }
     
-    private func handleDrawing(value: DragGesture.Value) {
-        let newPoint = value.location
-        if currentLine == nil {
-            currentLine = PathData(points: [newPoint], color: drawingColor, lineWidth: lineWidth)
-            smoothedPath = [newPoint]
-            lastPoint = newPoint
-        } else {
-            guard let lastPoint = lastPoint else { return }
-            let smoothedPoint = smoothPoint(start: lastPoint, end: newPoint)
-            smoothedPath.append(smoothedPoint)
-            self.lastPoint = smoothedPoint
-        }
-    }
-    
-    private func finishDrawing() {
-        if var line = currentLine {
-            line.points = smoothedPath
-            entry.pathData.append(line)
-            currentLine = nil
-            smoothedPath = []
-            lastPoint = nil
-            saveChanges()
-        }
-    }
-    
-    private func smoothPoint(start: CGPoint, end: CGPoint) -> CGPoint {
-        let alpha: CGFloat = 0.3
-        return CGPoint(
-            x: start.x + (end.x - start.x) * alpha,
-            y: start.y + (end.y - start.y) * alpha
-        )
-    }
-    
-    // Add this new function to remove all lines
-    private func removeAllLines() {
-        print("Removing all lines. Current pathData count: \(entry.pathData.count)") // Debugging line
-        entry.pathData.removeAll()
-        print("All lines removed. New pathData count: \(entry.pathData.count)") // Debugging line
-        saveChanges()
-    }
+    // Remove drawing-related methods
+    // private func handleDrawing(value: DragGesture.Value) { ... }
+    // private func finishDrawing() { ... }
+    // private func smoothPoint(start: CGPoint, end: CGPoint) -> CGPoint { ... }
 }
 
-struct InkspillBackground: View {
+struct InkspillBackground2: View {
+   
+    @Environment (\.colorScheme) private var colorScheme
+    
     let geometry: GeometryProxy
     let date: Date
     let formattedDateString: String
-    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         
@@ -210,11 +142,11 @@ struct InkspillBackground: View {
             }
             .frame(maxWidth: .infinity)
             //.padding(.top, geometry.safeAreaInsets.top + 10)
-            .foregroundColor(colorScheme == .dark ? Color.allwhite : Color.darkNavy)
+            .foregroundColor(.allwhite)
         }
     }}
 
-struct WordTile: View {
+struct WordTile2: View {
     let word: Word
     @Binding var location: TileLocation
     @State private var dragOffset: CGSize = .zero
@@ -266,7 +198,7 @@ struct WordTile: View {
     }
 }
 
-struct ActivityViewController: UIViewControllerRepresentable {
+struct ActivityViewController2: UIViewControllerRepresentable {
     let activityItems: [Any]
     
     func makeUIViewController(context: Context) -> UIActivityViewController {
@@ -276,50 +208,20 @@ struct ActivityViewController: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
-struct GameContentView: View {
+struct GameContentView2: View {
     @Bindable var entry: InkwellEntryModel
-    @Binding var currentLine: PathData?
-    @Binding var drawingColor: Color
-    @Binding var lineWidth: CGFloat
-    @Binding var smoothedPath: [CGPoint]
-    @Binding var lastPoint: CGPoint?
     @Binding var formattedDate: String
     @Binding var isCapturingScreenshot: Bool
     
-    var handleDrawing: (DragGesture.Value) -> Void
-    var finishDrawing: () -> Void
-    var removeAllLines: () -> Void
     var captureScreenshot: () -> Void
 
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                InkspillBackground(geometry: geometry, date: entry.date, formattedDateString: formattedDate)
-                
-                Canvas { context, size in
-                    for path in entry.pathData {
-                        var swiftUIPath = Path()
-                        swiftUIPath.addLines(path.points)
-                        context.stroke(swiftUIPath, with: .color(path.color), lineWidth: path.lineWidth)
-                    }
-                    if let currentLine = currentLine {
-                        var swiftUIPath = Path()
-                        swiftUIPath.addLines(smoothedPath)
-                        context.stroke(swiftUIPath, with: .color(currentLine.color), lineWidth: currentLine.lineWidth)
-                    }
-                }
-                .gesture(
-                    DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                        .onChanged { value in
-                            handleDrawing(value)
-                        }
-                        .onEnded { _ in
-                            finishDrawing()
-                        }
-                )
+                InkspillBackground2(geometry: geometry, date: entry.date, formattedDateString: formattedDate)
                 
                 ForEach(entry.wordList.indices, id: \.self) { index in
-                    WordTile(word: entry.wordList[index], location: $entry.tileLocations[index], type: entry.wordList[index].type)
+                    WordTile2(word: entry.wordList[index], location: $entry.tileLocations[index], type: entry.wordList[index].type)
                 }
             }
         }
@@ -327,9 +229,5 @@ struct GameContentView: View {
 }
 
 
-// Add this extension at the end of the file
-extension CGPoint {
-    func distance(to point: CGPoint) -> CGFloat {
-        return sqrt(pow(x - point.x, 2) + pow(y - point.y, 2))
-    }
-}
+
+

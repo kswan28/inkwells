@@ -9,6 +9,9 @@ import SwiftUI
 import SwiftData
 
 struct ArchiveView: View {
+    
+    @Environment(\.colorScheme) private var colorScheme
+    
     @Query private var entries: [InkwellEntryModel]
     
     var body: some View {
@@ -21,14 +24,14 @@ struct ArchiveView: View {
                 VStack{
                     Text("Your Inkwells")
                         .font(.modalHeading)
-                        .foregroundStyle(.whiteBackground)
+                        .foregroundColor(.allwhite)
                 }
                 .padding()
                 
                     ScrollView {
                             LazyVGrid(columns: Array(repeating: GridItem(), count: UIDevice.current.model == "iPad" ? 3 : 2), spacing: 20) {
                                 ForEach(entries.sorted(by: { $0.date > $1.date }), id: \.self) { entry in
-                                    NavigationLink(destination: GameView(entry: entry)) {
+                                    NavigationLink(destination: GameViewNoDrawing2(entry: entry)) {
                                         EntryTile(entry: entry)
                                     }
                                 }
@@ -46,17 +49,23 @@ struct ArchiveView: View {
 
 struct EntryTile: View {
     let entry: InkwellEntryModel
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(formattedDate)
-                .font(.dateHeader)
-                .foregroundStyle(.darkNavy)
+            HStack{
+                Text(formattedDate)
+                    .font(.dateHeader)
+                    .foregroundColor(colorScheme == .dark ? Color.allwhite : Color.darkNavy)
+                Text(entry.puzzleType.suffix(1))
+                    .font(.dateHeader)
+                
+            }
             
                 ForEach(entry.wordList, id: \.text) { word in
                     Text(word.text)
                         .font(.featuredText)
-                        .foregroundColor(.darkNavy)
+                        .foregroundColor(colorScheme == .dark ? Color.allwhite : Color.darkNavy)
                         .opacity(0.8)
                 }
             

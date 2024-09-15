@@ -47,6 +47,9 @@ struct RemindersView: View {
     @State private var notificationEnabled = false
     @State private var refreshData = UUID()
     
+    @State private var selectedAMPM = "AM"
+    let ampmOptions = ["AM", "PM"]
+    
     let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     let hours = Array(1...12)
     let minutes = Array(0...59)
@@ -56,7 +59,7 @@ struct RemindersView: View {
             ZStack {
                 Rectangle()
                     .ignoresSafeArea()
-                    .foregroundColor(.whiteBackground)
+                    .foregroundColor(.allwhite)
                 
                 VStack(alignment: .leading, spacing: 0) {
 
@@ -155,7 +158,8 @@ struct RemindersView: View {
                           ZStack {
                               RoundedRectangle(cornerRadius: 15)
                                   .frame(width: 72, height: 48)
-                                  .foregroundColor(.whiteBackground)
+                                  .foregroundColor(.gray)
+                                  .opacity(0.4)
                               Text("Delete")
                                   .foregroundColor(.darkNavy)
                                   .font(.smallHeading)
@@ -236,16 +240,34 @@ struct RemindersView: View {
                 .pickerStyle(WheelPickerStyle())
                 .frame(width: 48)
                 
-                Picker("AM/PM", selection: $isAM) {
-                    Text("AM").tag(true)
-                        .font(.smallHeading)
-                        .foregroundColor(colorScheme == .dark ? .darkNavy : .darkNavy)
-                    Text("PM").tag(false)
-                        .font(.smallHeading)
-                        .foregroundColor(colorScheme == .dark ? .darkNavy : .darkNavy)
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .frame(width: 100)
+                HStack {
+                                            ForEach(ampmOptions, id: \.self) { option in
+                                                Button(action: {
+                                                    selectedAMPM = option
+                                                    isAM = (option == "AM")
+                                                }) {
+                                                    Text(option)
+                                                        .font(.dateHeader)
+                                                        .foregroundStyle(.darkNavy)
+                                                        .padding(.horizontal, 8)
+                                                        .padding(.vertical, 4)
+                                                        .background(selectedAMPM == option ? Color.lavender : Color.gray)
+                                                        .cornerRadius(4)
+                                                }
+                                            }
+                                        }
+                                        .frame(width: 100)
+                
+//                Picker("AM/PM", selection: $isAM) {
+//                    Text("AM").tag(true)
+//                        .font(.smallHeading)
+//                        .foregroundColor(colorScheme == .dark ? .darkNavy : .darkNavy)
+//                    Text("PM").tag(false)
+//                        .font(.smallHeading)
+//                        .foregroundColor(colorScheme == .dark ? .darkNavy : .darkNavy)
+//                }
+//                .pickerStyle(SegmentedPickerStyle())
+//                .frame(width: 100)
             }
             .padding(.bottom, 24)
             
@@ -257,7 +279,7 @@ struct RemindersView: View {
                         .frame(height: 60)
                         .foregroundColor(.darkAccent)
                     Text("Set your reminders")
-                        .foregroundColor(.whiteBackground)
+                        .foregroundColor(.allwhite)
                         .font(.screenInstruct)
                 }
                 .padding()

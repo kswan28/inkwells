@@ -10,7 +10,11 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.colorScheme) private var colorScheme
     @Query private var entries: [InkwellEntryModel]
+    
+    @AppStorage("selectedPuzzleType") private var selectedPuzzleType: String = "classic 🎲" // Default puzzle type
+       @State private var showAlert: Bool = false
     
     var body: some View {
         
@@ -35,18 +39,46 @@ struct ContentView: View {
                         .padding(.horizontal)
                         .padding(.bottom, 10)
                         
-                        HStack{
-                            Text("Let's write!")
-                                .foregroundStyle(.darkNavy)
-                                .font(.screenHeading)
-                            Spacer()
-                        }
-                        .padding(.top)
-                        .padding(.horizontal)
+//                        HStack{
+//                            Text("Let's write!")
+//                                .foregroundStyle(.darkNavy)
+//                                .font(.screenHeading)
+//                            Spacer()
+//                        }
+//                        .padding(.top)
+//                        .padding(.horizontal)
+                        
+                        // Puzzle Type Picker
+                                              Picker("Select Puzzle Type", selection: $selectedPuzzleType) {
+                                                  Text("Classic 🎲").tag("classic 🎲")
+                                                  Text("Spooky 👻").tag("spooky 👻")
+                                                  Text("Swifty 😻").tag("swifty 😻")
+                                                  // Add more puzzle types as needed
+                                              }
+                                              .pickerStyle(SegmentedPickerStyle())
+                                              .padding(4)
+                                              .frame(maxWidth: geometry.size.width * 0.8)
+                                              .onChange(of: selectedPuzzleType) { oldValue, newValue in
+                                                  if let todayEntry = getTodayEntry(), todayEntry.puzzleType != newValue {
+                                                      showAlert = true
+                                                  }
+                                              }
+                                              
+                                              // Alert for overriding the current puzzle
+                                              .alert("Overwrite today's puzzle?", isPresented: $showAlert) {
+                                                  Button("Cancel", role: .cancel) {
+                                                      if let currentEntry = getTodayEntry() {
+                                                                            selectedPuzzleType = currentEntry.puzzleType
+                                                                        }
+                                                  }
+                                                  Button("Overwrite", role: .destructive) {
+                                                      overrideCurrentPuzzle()
+                                                  }
+                                              }
                         
                         ScrollView(showsIndicators: false) {
                             NavigationLink {
-                                GameView(entry: getTodayEntry() ?? getPuzzleOfTheDay())
+                                GameViewNoDrawing2(entry: getTodayEntry() ?? getPuzzleOfTheDay())
                                     .onAppear(perform: checkAndCreateTodayEntry)
                             } label: {
                                 ZStack{
@@ -92,9 +124,20 @@ struct ContentView: View {
                             } label: {
                                 ZStack{
                                     
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .stroke(Color.lavender, lineWidth: 12)
-                                        .fill(Color.whiteBackground)
+                                    if colorScheme == .dark {
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .stroke(colorScheme == .dark ? Color.darkNavy : Color.lavender, lineWidth: 12)
+                                            .fill(colorScheme == .dark ? Color.allwhite : Color.whiteBackground.opacity(0.4))
+                                    }
+                                    
+                                    else {
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .stroke(Color.lavender, lineWidth: 12)
+                                            .fill(Color.whiteBackground)
+                                    }
+                                    
+                                    
+                                  
                                     
                                     
                                     VStack{
@@ -124,6 +167,9 @@ struct ContentView: View {
                 
             }
         }
+        .onAppear {
+            print(selectedPuzzleType)
+        }
         
     }
     
@@ -140,24 +186,56 @@ struct ContentView: View {
         return entries.first(where: { Calendar.current.isDate($0.date, inSameDayAs: today) })
     }
     
+    private func overrideCurrentPuzzle() {
+        if let todayEntry = getTodayEntry() {
+            modelContext.delete(todayEntry)
+        }
+        let newPuzzle = getPuzzleOfTheDay()
+        modelContext.insert(newPuzzle)
+        try? modelContext.save()
+    }
+    
     private func getPuzzleOfTheDay() -> InkwellEntryModel {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
         let dateString = dateFormatter.string(from: Date())
         
+        let puzzleType = selectedPuzzleType
+        
         // Use a more robust seed generation method
         let seed = dateString.utf8.reduce(0) { ($0 << 8) | Int($1) }
         var generator = SeededRandomNumberGenerator(seed: seed)
         
-        let randomCommons = Array(WordList.common.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .common) }
-        let randomNouns = Array(WordList.nouns.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .noun) }
-        let randomVerbs = Array(WordList.verbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .verb) }
-        let randomAdjectives = Array(WordList.adjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
-        let randomSuffixes = Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix)}
-        let randomAdverb = Word(text: WordList.adverbs.shuffled(using: &generator).first ?? "", type: .adverb)
-        let randomPreposition = Word(text: WordList.prepositions.shuffled(using: &generator).first ?? "", type: .preposition)
+        // Get the puzzle type from the current date or logic
+          var wordList: [Word] = []
         
-        let wordList = randomCommons + randomNouns + randomVerbs + randomAdjectives + randomSuffixes + [randomAdverb, randomPreposition]
+        // Conditional logic based on puzzleType
+        switch puzzleType {
+        case "spooky 👻":
+            wordList += Array(WordList.common.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .common) }
+            wordList += Array(WordList.spookynouns.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .noun) }
+            wordList += Array(WordList.spookyverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .verb) }
+            wordList += Array(WordList.spookyadjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
+            wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
+            wordList += Array(WordList.spookyadverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
+            wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
+        case "swifty 😻":
+            wordList += Array(WordList.common.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .common) }
+            wordList += Array(WordList.swiftynouns.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .noun) }
+            wordList += Array(WordList.swiftyverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .verb) }
+            wordList += Array(WordList.swiftyadjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
+            wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
+            wordList += Array(WordList.swiftyadverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
+            wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
+        default:
+            wordList += Array(WordList.common.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .common) }
+            wordList += Array(WordList.nouns.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .noun) }
+            wordList += Array(WordList.verbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .verb) }
+            wordList += Array(WordList.adjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
+            wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
+            wordList += Array(WordList.adverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
+            wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
+        }
         
         // Generate tile locations in a cluster at the center of the screen
         let screenWidth: CGFloat = UIScreen.main.bounds.width
@@ -180,8 +258,9 @@ struct ContentView: View {
         
         // Initialize empty path data
         let pathData: [PathData] = []
-        return InkwellEntryModel(date: Date(), wordList: wordList, tileLocations: tileLocations, pathData: pathData)
+        return InkwellEntryModel(date: Date(), wordList: wordList, tileLocations: tileLocations, pathData: pathData, puzzleType: puzzleType)
     }
+    
 }
 
 // Update the SeededRandomNumberGenerator to use UInt64 for better randomness

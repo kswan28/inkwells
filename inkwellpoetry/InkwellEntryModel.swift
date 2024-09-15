@@ -16,13 +16,15 @@ class InkwellEntryModel {
     var tileLocations: [TileLocation]
     var pathData: [PathData]
     var isEdited: Bool
+    var puzzleType: String
     
-    init(date: Date, wordList: [Word], tileLocations: [TileLocation], pathData: [PathData], isEdited: Bool = false) {
+    init(date: Date, wordList: [Word], tileLocations: [TileLocation], pathData: [PathData], isEdited: Bool = false, puzzleType:String = "classic 🎲") {
         self.date = date
         self.wordList = wordList
         self.tileLocations = tileLocations
         self.pathData = pathData
         self.isEdited = isEdited
+        self.puzzleType = puzzleType
     }
 }
 

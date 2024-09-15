@@ -36,7 +36,7 @@ struct OnboardingViewComponent: View {
                 }, label: {
                     ZStack{
                         Circle()
-                            .foregroundColor(.whiteBackground)
+                            .foregroundColor(.allwhite)
                             .frame(width: 48)
                         Image(systemName: "arrow.forward")
                             .resizable()

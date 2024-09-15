@@ -24,6 +24,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 struct inkwellpoetryApp: App {
     
     @State private var isLoading = true
+    @State private var opacity = 1.0
     @AppStorage("onboarding") var needsOnboarding = true
     
     var body: some Scene {
@@ -31,15 +32,20 @@ struct inkwellpoetryApp: App {
             
             ZStack{
                 if isLoading {
-                    LoadingScreen()
-                        .onAppear{
-                            // Simulate loading delay
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                withAnimation{
-                                    isLoading = false // Set loading to false after delay
-                                }
-                            }
-                        }
+                    LoadingScreen(opacity:$opacity)
+                        .onAppear {
+                                                 // Simulate loading delay
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                                     withAnimation(.easeOut(duration: 1.5)) {
+                                                         opacity = 0 // Fade out the loading screen over 1.5 seconds
+                                                     }
+                                                     
+                                                     // Set isLoading to false after the fade-out animation
+                                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                                         isLoading = false
+                                                     }
+                                                 }
+                                             }
                 } else {
                     ContentView()
                         .modelContainer(for: [InkwellEntryModel.self, Reminder.self])
@@ -51,6 +57,7 @@ struct inkwellpoetryApp: App {
                             print(Bundle.main.displayName)
                             print(Bundle.main.appVersion)
                             print(Bundle.main.appBuild)
+                            
                         }
                     
                     // Show OnboardingView if onboarding is needed

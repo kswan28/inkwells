@@ -5,12 +5,13 @@ import Lottie
 
 struct LoadingScreen: View {
     
-    @State private var randomAnimation: String = ""
+    @Binding var opacity: Double
     
     
     var body: some View {
         LottieView(animation: .named("inkwell"))
             .looping()
+            .opacity(opacity)
     }
     
     
