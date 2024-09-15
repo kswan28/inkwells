@@ -48,6 +48,30 @@ struct WordList {
         "planet", "arch"
     ]
     
+    static let swiftynouns = [
+        "lavender", "incense", "rosé", "maroon", "ruby", "wine", "legacy", "hero", "rose", "starlight",
+        "moonstone", "karma", "vigilante", "champagne", "poets", "muse", "aurora", "Windermere", "Wicklow", "neon",
+        "streetlight", "sapphire", "cat", "cheeks", "skies", "whisper", "storyline", "pen", "signature", "mirror", "soul",
+        "memories", "bloodstain", "collarbone", "cruelty", "ghost", "crown", "machine", "lightning", "trophies", "fireside",
+        "eyelids", "graveyard", "secrets", "predictions", "islands", "fables", "stardust", "promises", "headlines", "storyline",
+        "afternoon", "phantom", "currents", "spotlight", "cheerleaders", "fireworks", "daisies", "champion", "battle", "mistake",
+        "dreams", "storyline", "vows", "stars", "ashes", "petals", "stones", "tattoo", "windows", "thunder", "symphony", "wilderness",
+        "footprints", "rooftops", "shadow", "snowstorm"
+      ]
+    
+    static let spookynouns = [
+        "ghost", "pumpkin", "witch", "bat", "skeleton", "zombie", "vampire", "werewolf",
+        "monster", "goblin", "spider", "web", "cat", "owl", "moon", "star", "night",
+        "shadow", "costume", "mask", "candy", "treat", "trick", "cauldron", "broom",
+        "wand", "potion", "spell", "curse", "mummy", "tomb", "grave", "cemetery",
+        "castle", "dungeon", "tower", "fog", "mist", "cloud", "wind", "thunder",
+        "lightning", "rain", "storm", "leaf", "branch", "tree", "forest", "jack-o-lantern",
+        "candle", "lantern", "flashlight", "darkness", "attic", "basement", "closet",
+        "mirror", "reflection", "shadow", "silhouette", "footstep", "whisper", "howl",
+        "screech", "hoot", "creak", "rattle", "clank", "thud", "boo", "cobweb",
+        "dust", "bone", "skull", "eye", "fang", "claw"
+      ]
+    
     static let verbs = [
         "hang", "say", "tell", "ask", "caught", "find", "shine", "listen", "dry",
         "glitter", "nestle", "flicker", "glow", "soul", "form", "cloak", "walk",
@@ -66,6 +90,30 @@ struct WordList {
         "scream", "lungs", "weep", "devastate", "shatter", "watch", "dance", "touch",
         "show", "believe", "tell", "ask"
     ]
+    
+    static let swiftyverbs = [
+        "whisper", "haunt", "paint", "ignite", "carve", "bleed", "linger", "glow", "vibe", "sparkle",
+        "echo", "grin", "crash", "bend", "roar", "drown", "shatter", "chase", "pierce", "shine",
+        "embrace", "crumble", "scream", "vanish", "explode", "collapse", "pulse", "collapse", "freeze", "collide",
+        "caress", "drift", "hiss", "gather", "tear", "curse", "sway", "howl", "sigh", "murmur",
+        "weave", "fall", "blaze", "weave", "rush", "etch", "glimmer", "swoon", "erupt", "ripple",
+        "reverberate", "swirl", "echo", "sink", "sweep", "twist", "devour", "tangle", "glow", "rush",
+        "burn", "whirl", "weep", "tremble", "flicker", "shimmer", "trace", "burst", "sprint", "crawl",
+        "fade", "slam", "soar", "roam", "scatter", "collapse", "wade", "breathe"
+      ]
+    
+    static let spookyverbs = [
+        "haunt", "scare", "frighten", "spook", "creep", "lurk", "hide", "sneak",
+        "pounce", "howl", "growl", "hiss", "screech", "whisper", "moan", "groan",
+        "rattle", "shake", "shiver", "tremble", "quake", "float", "hover", "glide",
+        "swoop", "flap", "crawl", "slither", "slink", "scurry", "dash", "vanish",
+        "appear", "transform", "morph", "change", "disguise", "mask", "conceal",
+        "reveal", "uncover", "discover", "enchant", "bewitch", "cast", "conjure",
+        "summon", "banish", "exorcise", "hunt", "chase", "pursue", "escape", "flee",
+        "run", "hurry", "rush", "tiptoe", "creep", "sneak", "skulk", "prowl",
+        "stalk", "loom", "tower", "shadow", "darken", "dim", "glow", "shine",
+        "flicker", "flash", "blink", "wink", "stare", "glare", "leer"
+      ]
     
     static let adjectives = [
         "cool", "pale", "sharp", "sacred", "beautiful", "dark", "infinite", "unhurried",
@@ -87,6 +135,31 @@ struct WordList {
         "vacant", "vivid", "warlike", "weak", "weird", "wild", "wooden"
     ]
     
+    static let swiftyadjectives = [
+        "lavender", "maroon", "scarlet", "golden", "crimson", "shattered", "faded", "vivid", "hazy", "burning",
+        "frantic", "twisted", "scarred", "shattered", "bruised", "timeless", "mystical", "boundless", "radiant", "frozen",
+        "electric", "sacred", "reckless", "fleeting", "invisible", "untamed", "sultry", "haunting", "wild", "mysterious",
+        "silent", "eternal", "fierce", "tangled", "flawless", "glistening", "blinding", "broken", "soaring", "weightless",
+        "ephemeral", "brave", "tragic", "sweeping", "restless", "silken", "glowing", "bitter", "unforgiven", "fleeting",
+        "velvet", "hopeless", "reckless", "battered", "thunderous", "delicate", "ashen", "twinkling", "cold", "enchanted",
+        "breathless", "untouched", "silent", "vibrant", "distant", "graceful", "shadowed", "infinite", "exhausting", "faded",
+        "battered", "invisible", "intangible", "noble", "poetic"
+      ]
+    
+    static let spookyadjectives = [
+        "spooky", "scary", "creepy", "eerie", "ghostly", "haunted", "mysterious", "shadowy",
+        "dark", "gloomy", "misty", "foggy", "murky", "dim", "moonlit", "starry",
+        "nocturnal", "supernatural", "magical", "enchanted", "cursed", "hexed", "bewitched",
+        "ancient", "old", "crumbling", "dusty", "cobwebbed", "rusty", "creaky",
+        "squeaky", "rattling", "clanking", "howling", "growling", "hissing", "whispering",
+        "silent", "quiet", "loud", "startling", "surprising", "sudden", "swift",
+        "slow", "lumbering", "sneaky", "sly", "tricky", "clever", "mischievous",
+        "playful", "silly", "funny", "weird", "strange", "odd", "peculiar", "bizarre",
+        "extraordinary", "unnatural", "otherworldly", "unearthly", "skeletal", "bony",
+        "fanged", "clawed", "furry", "scaly", "slimy", "sticky", "gooey", "oozy",
+        "smoky", "wispy", "flickering", "glowing", "shimmering"
+      ]
+    
     static let adverbs = [
         "warmly", "barely", "sleepily", "sadly", "slowly", "here", "there", "clumsily",
         "curiously", "wistfully", "farthest", "endlessly", "darkest", "boldly",
@@ -97,6 +170,33 @@ struct WordList {
         "seemingly", "rarely", "obediently", "naturally", "increasingly",
         "noiselessly", "deafeningly", "weakly", "cruelly"
     ]
+    
+    static let swiftyadverbs = [
+        "brightly", "softly", "endlessly", "silently", "wildly", "recklessly", "bravely", "gently", "swiftly", "urgently",
+        "silently", "boldly", "tragically", "timelessly", "fiercely", "tenderly", "quietly", "endlessly", "constantly", "frantically",
+        "desperately", "hopelessly", "recklessly", "shamelessly", "boldly", "dangerously", "bravely", "fearlessly", "quickly", "barely",
+        "secretly", "eternally", "softly", "mysteriously", "silently", "vividly", "tenderly", "delicately", "coldly", "wildly",
+        "rapidly", "fearlessly", "boldly", "constantly", "frantically", "desperately", "endlessly", "bravely", "urgently", "quietly",
+        "patiently", "restlessly", "shamelessly", "softly", "quickly", "quietly", "softly", "tragically", "silently", "fiercely",
+        "bravely", "endlessly", "softly", "rapidly", "coldly", "vividly", "secretly", "timelessly", "tragically", "desperately",
+        "hopelessly", "wildly", "boldly", "fiercely"
+      ]
+    
+    static let spookyadverbs =  [
+        "spookily", "scarily", "creepily", "eerily", "mysteriously", "hauntingly", "ghostly",
+        "darkly", "gloomily", "mistily", "murkily", "dimly", "shadowy", "nocturnally",
+        "supernaturally", "magically", "enchantingly", "cursedly", "anciently", "dustily",
+        "creakily", "squeakily", "rattlingly", "clankingly", "howlingly", "growlingly",
+        "hissingly", "whisperingly", "silently", "quietly", "loudly", "startlingly",
+        "surprisingly", "suddenly", "swiftly", "slowly", "lumberingly", "sneakily",
+        "slyly", "trickily", "cleverly", "mischievously", "playfully", "sillily",
+        "funnily", "weirdly", "strangely", "oddly", "peculiarly", "bizarrely",
+        "extraordinarily", "unnaturally", "otherworldly", "unearthly", "skeletally",
+        "fanged", "furry", "scaly", "slimily", "stickily", "gooily", "oozily",
+        "smokily", "wispily", "flickeringly", "glowingly", "shimmeringly", "carefully",
+        "cautiously", "bravely", "fearfully", "nervously", "anxiously", "excitedly",
+        "thrillingly"
+      ]
     
     static let prepositions = [
         "above", "about", "around", "between", "despite", "except", "without", "within",

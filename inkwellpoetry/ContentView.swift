@@ -80,7 +80,7 @@ struct ContentView: View {
                                         .padding()
                                     }
                                 }
-                                .frame(height: geometry.size.height * 0.6)
+                                .frame(height: geometry.size.height * 0.65)
                                 .padding(.horizontal)
                                 .padding(.top, 12)
                                 .padding(.bottom, 2)

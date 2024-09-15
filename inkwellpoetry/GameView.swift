@@ -222,19 +222,19 @@ struct WordTile: View {
     private var backgroundColor: Color {
         switch type {
           case .noun:
-              return .blue
+            return Color.noun
           case .verb:
-              return .green
+            return Color.verb
           case .adjective:
-              return .orange
+            return Color.adjective
           case .adverb:
-              return .purple
+            return Color.adverb
         case .common:
-            return .red
+            return Color.common
         case .preposition:
-            return .gray
+            return Color.common
         case .suffix:
-            return .pink
+            return Color.suffix
           }
       }
     
@@ -242,7 +242,7 @@ struct WordTile: View {
         Text(word.text)
             .padding()
             .background(backgroundColor)
-            .foregroundColor(.white)
+            .foregroundColor(.darkNavy)
             .font(.featuredText)
             .cornerRadius(8)
             .position(x: location.x + dragOffset.width, y: location.y + dragOffset.height)

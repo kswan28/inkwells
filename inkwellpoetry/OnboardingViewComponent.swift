@@ -17,7 +17,7 @@ struct OnboardingViewComponent: View {
     
     var body: some View {
         ZStack {
-            RadialGradientRectangle()
+            Color.lavender
             
             VStack (alignment: .center) {
                 Image(onboardingImage)
@@ -42,7 +42,7 @@ struct OnboardingViewComponent: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(height: 24)
-                            .foregroundColor(.whiteBackground)
+                            .foregroundColor(.darkNavy)
                     }
                     .padding(.top, 120)
                 })

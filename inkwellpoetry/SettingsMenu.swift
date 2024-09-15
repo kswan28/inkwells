@@ -28,7 +28,9 @@ struct SettingsMenu: View {
     @State var showPrivacyPage = false
     @State var showWhatsNewPage = false
     @State var showRemindersPage = false
+    @State var showOnboarding = false
     @AppStorage("showPresentIcon1") private var showPresentIcon1 = true
+    @AppStorage("onboarding") var needsOnboarding = false
     
     
     
@@ -153,7 +155,19 @@ struct SettingsMenu: View {
                     .font(.system(size: 18)) // Adjust the size as needed
                     .foregroundColor(.darkNavy) // Set the color as needed
                 
-            }
+            }.fullScreenCover(isPresented: $showRemindersPage, content: { RemindersView() })
+            
+            Spacer()
+            
+            Button{
+                showOnboarding = true
+            } label: {
+                Text("How to play")
+                    .font(.screenInstruct)
+                    .foregroundStyle(.darkNavy)
+            }.fullScreenCover(isPresented: $showOnboarding, content: { OnboardingView(needsOnboarding: $needsOnboarding) })
+            
+        
             
             
             
@@ -175,7 +189,7 @@ struct SettingsMenu: View {
         //            WhatsNewPhoto()
         //        })
         
-        .fullScreenCover(isPresented: $showRemindersPage, content: { RemindersView() })
+        
         
 
     }

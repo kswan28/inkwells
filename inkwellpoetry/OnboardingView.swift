@@ -12,11 +12,11 @@ struct OnboardingView: View {
         ZStack {
 //            if !fadeOut {
                 ZStack {
-                    RadialGradientRectangle()
+                    Color.lavender
                     
                     TabView(selection: $selectedOnboardingView) {
                         
-                        OnboardingViewComponent(onboardingImage: "Onboarding1", onboardingHeadline: "When the journey ahead looks tough...", onboardingSubheadline: "", buttonAction: {
+                        OnboardingViewComponent(onboardingImage: "onboarding1", onboardingHeadline: "Welcome to Inkwell!", onboardingSubheadline: "Inkwells spark your creativity every day.", buttonAction: {
                             withAnimation {
                                 selectedOnboardingView = 1
                             }
@@ -24,7 +24,7 @@ struct OnboardingView: View {
                         .tag(0)
                         .ignoresSafeArea()
                         
-                        OnboardingViewComponent(onboardingImage: "Onboarding2", onboardingHeadline: "...remember how far you've come.", onboardingSubheadline: "(Phew, that's a long way!)", buttonAction: {
+                        OnboardingViewComponent(onboardingImage: "onboarding2", onboardingHeadline: "To play:", onboardingSubheadline: "Slide the word tiles until you create a poem or lyric.", buttonAction: {
                             withAnimation {
                                 selectedOnboardingView = 2
                             }
@@ -32,14 +32,24 @@ struct OnboardingView: View {
                         .tag(1)
                         .ignoresSafeArea()
                         
-                        OnboardingViewComponent(onboardingImage: "Onboarding3", onboardingHeadline: "This app will save your wins along the way.", onboardingSubheadline: "(There's a lot to celebrate!)", buttonAction: {
+                        OnboardingViewComponent(onboardingImage: "onboarding3", onboardingHeadline: "To finish:", onboardingSubheadline: "Push any words you don't need to the bottom.", buttonAction: {
+                            withAnimation {
+                                selectedOnboardingView = 3
+                            }
+                        })
+                        .tag(2)
+                        .ignoresSafeArea()
+                        
+                        OnboardingViewComponent(onboardingImage: "onboarding4", onboardingHeadline: "Share!", onboardingSubheadline: "Share your masterpiece with friends each day. #Inkwells", buttonAction: {
                             withAnimation {
                                 needsOnboarding = false
                                 dismiss()
                             }
                         })
-                        .tag(2)
+                        .tag(3)
                         .ignoresSafeArea()
+                        
+                        
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
                     .ignoresSafeArea()
@@ -58,6 +68,9 @@ struct OnboardingView: View {
                             Circle()
                                 .frame(width: 10)
                                 .foregroundStyle(selectedOnboardingView == 2 ? .darkNavy: .gray)
+                            Circle()
+                                .frame(width: 10)
+                                .foregroundStyle(selectedOnboardingView == 3 ? .darkNavy: .gray)
                             Spacer()
                         }
                         .padding(.bottom, 120)
