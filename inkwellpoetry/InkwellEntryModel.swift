@@ -11,14 +11,32 @@ import SwiftUI
 
 @Model
 class InkwellEntryModel {
-    var date: Date
-    var wordList: [Word]
-    var tileLocations: [TileLocation]
-    var pathData: [PathData]
-    var isEdited: Bool
-    var puzzleType: String
+    var date: Date = Date.now
+    var wordList: [Word] = [
+        Word(text: "", type: .noun),
+    ]
+    var tileLocations: [TileLocation] = [
+        TileLocation(id: UUID(), x: 0.0, y: 0.0),
+    ]
+    var pathData: [PathData] = [
+        PathData(points: [CGPoint(x: 0, y: 0), CGPoint(x: 1, y: 1)], color: Color.red, lineWidth: 2.0),
+    ]
     
-    init(date: Date, wordList: [Word], tileLocations: [TileLocation], pathData: [PathData], isEdited: Bool = false, puzzleType:String = "classic 🎲") {
+    var isEdited: Bool = false
+    var puzzleType: String = "classic 🎲"
+    
+    init(date: Date = Date(),
+         wordList: [Word] = [
+            Word(text: "", type: .noun),
+        ],
+         tileLocations: [TileLocation] = [
+            TileLocation(id: UUID(), x: 0.0, y: 0.0),
+        ],
+         pathData: [PathData] = [
+            PathData(points: [CGPoint(x: 0, y: 0), CGPoint(x: 1, y: 1)], color: Color.red, lineWidth: 2.0),
+        ],
+         isEdited: Bool = false,
+         puzzleType:String = "classic 🎲") {
         self.date = date
         self.wordList = wordList
         self.tileLocations = tileLocations
