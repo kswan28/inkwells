@@ -24,6 +24,7 @@ class InkwellEntryModel {
     
     var isEdited: Bool = false
     var puzzleType: String = "classic 🎲"
+    var isFavorite: Bool = false
     
     init(date: Date = Date(),
          wordList: [Word] = [
@@ -36,13 +37,15 @@ class InkwellEntryModel {
             PathData(points: [CGPoint(x: 0, y: 0), CGPoint(x: 1, y: 1)], color: Color.red, lineWidth: 2.0),
          ],
          isEdited: Bool = false,
-         puzzleType: String = "classic 🎲") {
+         puzzleType: String = "classic 🎲",
+         isFavorite: Bool = false) {
         self.date = date
         self.wordList = wordList
         self.tileLocations = tileLocations
         self.pathData = pathData
         self.isEdited = isEdited
         self.puzzleType = puzzleType
+        self.isFavorite = isFavorite
     }
 }
 
