@@ -212,6 +212,22 @@
       "model":"iPhone 15 Pro Max"
    },
    {
+      "identifier":"iPhone17,1",
+      "model":"iPhone 16 Pro"
+   },
+   {
+      "identifier":"iPhone17,2",
+      "model":"iPhone 16 Pro Max"
+   },
+   {
+      "identifier":"iPhone17,3",
+      "model":"iPhone 16"
+   },
+   {
+      "identifier":"iPhone17,4",
+      "model":"iPhone 16 Plus"
+   },
+   {
       "identifier":"iPod1,1",
       "model":"1st Gen iPod"
    },
