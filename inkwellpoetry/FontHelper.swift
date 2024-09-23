@@ -17,6 +17,7 @@ extension Font {
     static var smallHeading = Font.custom ("Arvo-Bold", size: 16)
     static var dateHeader = Font.custom ("Arvo-Bold", size: 10)
     
+    static var onboardingText = Font.custom("Lato-Regular", size: 20)
     static var screenInstruct = Font.custom("Lato-Regular", size: 18)
     static var featuredText = Font.custom("Lato-Regular", size: 16)
     static var regularTextBig = Font.custom ("Lato-Regular", size: 12)

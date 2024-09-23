@@ -16,7 +16,7 @@ class InkwellEntryModel {
         Word(text: "", type: .noun),
     ]
     var tileLocations: [TileLocation] = [
-        TileLocation(id: UUID(), x: 0.0, y: 0.0),
+        TileLocation(id: UUID(), xPercentage: 0.0, yPercentage: 0.0),
     ]
     var pathData: [PathData] = [
         PathData(points: [CGPoint(x: 0, y: 0), CGPoint(x: 1, y: 1)], color: Color.red, lineWidth: 2.0),
@@ -28,15 +28,15 @@ class InkwellEntryModel {
     init(date: Date = Date(),
          wordList: [Word] = [
             Word(text: "", type: .noun),
-        ],
+         ],
          tileLocations: [TileLocation] = [
-            TileLocation(id: UUID(), x: 0.0, y: 0.0),
-        ],
+            TileLocation(id: UUID(), xPercentage: 0.0, yPercentage: 0.0),
+         ],
          pathData: [PathData] = [
             PathData(points: [CGPoint(x: 0, y: 0), CGPoint(x: 1, y: 1)], color: Color.red, lineWidth: 2.0),
-        ],
+         ],
          isEdited: Bool = false,
-         puzzleType:String = "classic 🎲") {
+         puzzleType: String = "classic 🎲") {
         self.date = date
         self.wordList = wordList
         self.tileLocations = tileLocations
@@ -52,13 +52,13 @@ struct Word: Codable {
 }
 
 enum WordType: String, Codable {
-    case noun, verb, adjective, adverb, common, preposition, suffix // Add more types as needed
+    case noun, verb, adjective, adverb, common, preposition, suffix
 }
 
-struct TileLocation: Codable {
+struct TileLocation: Codable, Identifiable {
     var id: UUID
-    var x: Double
-    var y: Double
+    var xPercentage: Double?
+    var yPercentage: Double?
 }
 
 struct PathData: Codable {

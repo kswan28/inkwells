@@ -7,6 +7,7 @@
 
 import SwiftUI
 import StoreKit
+import SwiftData
 
 struct SettingsMenu: View {
     
@@ -33,6 +34,10 @@ struct SettingsMenu: View {
     @State var showOnboarding = false
     @AppStorage("showPresentIcon1") private var showPresentIcon1 = true
     @AppStorage("onboarding") var needsOnboarding = false
+    
+    @Environment(\.modelContext) var modelContext
+    @Query private var entries: [InkwellEntryModel]
+    
     
     
     
@@ -87,7 +92,7 @@ struct SettingsMenu: View {
                 
                 
             } label: {
-                Image(systemName: "gearshape.fill")
+            Image(systemName: "gearshape.fill")
                     .font(.system(size: 18)) // Adjust the size as needed
                     .foregroundColor(colorScheme == .dark ? Color.allwhite : Color.darkNavy)
             }
@@ -158,6 +163,17 @@ struct SettingsMenu: View {
                     .foregroundColor(colorScheme == .dark ? Color.allwhite : Color.darkNavy) // Set the color as needed
                 
             }.fullScreenCover(isPresented: $showRemindersPage, content: { RemindersView() })
+
+            //Temporary button to delete entries if you need to update the SwiftData Model
+//            Button {
+//                
+//                deleteAllEntries()
+//                
+//            } label: {
+//                Image(systemName: "xmark")
+//                    .font(.system(size: 18))
+//                    .foregroundColor(colorScheme == .dark ? Color.allwhite :Color.darkNavy)
+//            }
             
             Spacer()
             
@@ -201,6 +217,13 @@ struct SettingsMenu: View {
                SKStoreReviewController.requestReview(in: scene)
            }
        }
+    
+//    private func deleteAllEntries() {
+//        for entry in entries {
+//            modelContext.delete(entry)
+//        }
+//        try? modelContext.save() // Ensure changes are saved after deletion
+//    }
         
     }
 

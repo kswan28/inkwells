@@ -207,7 +207,7 @@ struct ContentView: View {
         var generator = SeededRandomNumberGenerator(seed: seed)
         
         // Get the puzzle type from the current date or logic
-          var wordList: [Word] = []
+        var wordList: [Word] = []
         
         // Conditional logic based on puzzleType
         switch puzzleType {
@@ -238,22 +238,23 @@ struct ContentView: View {
         }
         
         // Generate tile locations in a cluster at the center of the screen
-        let screenWidth: CGFloat = UIScreen.main.bounds.width
-        let screenHeight: CGFloat = UIScreen.main.bounds.height
-        let tileWidth: CGFloat = 60 // Adjust as needed
-        let tileHeight: CGFloat = 30 // Adjust as needed
-        let clusterWidth: CGFloat = tileWidth * 3 + 20 // 3 tiles per row, 10 spacing between tiles
-        let clusterHeight: CGFloat = tileHeight * 4 + 30 // 4 rows, 10 spacing between rows
+        let tilesPerRow = 3
+        let rows = 5
+        let spacing = 0.02 // 2% of screen width/height
+        let tileWidth = (1.0 - (Double(tilesPerRow + 1) * spacing)) / Double(tilesPerRow)
+        let tileHeight = tileWidth / 2 // Assuming tile height is half of its width
+        let clusterWidth = Double(tilesPerRow) * tileWidth + (Double(tilesPerRow - 1) * spacing)
+        let clusterHeight = Double(rows) * tileHeight + (Double(rows - 1) * spacing)
 
-        let centerX = screenWidth / 2
-        let centerY = screenHeight / 2
+        let centerX = 0.5
+        let centerY = 0.5
 
         let tileLocations = wordList.enumerated().map { (index, word) in
-            let row = index / 3 // 3 tiles per row
-            let column = index % 3
-            let x = centerX - clusterWidth / 2 + CGFloat(column) * (tileWidth + 10)
-            let y = centerY - clusterHeight / 2 + CGFloat(row) * (tileHeight + 10)
-            return TileLocation(id: UUID(), x: x, y: y)
+            let row = index / tilesPerRow
+            let column = index % tilesPerRow
+            let xPercentage = centerX - (clusterWidth / 2) + (Double(column) * (tileWidth + spacing))
+            let yPercentage = centerY - (clusterHeight / 2) + (Double(row) * (tileHeight + spacing))
+            return TileLocation(id: UUID(), xPercentage: xPercentage, yPercentage: yPercentage)
         }
         
         // Initialize empty path data

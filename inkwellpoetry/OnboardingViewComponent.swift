@@ -24,13 +24,14 @@ struct OnboardingViewComponent: View {
                     .resizable()
                     .frame(width: 320, height:320)
                 Text(onboardingHeadline)
-                    .font(.modalHeading)
+                    .font(.screenHeading)
                     .foregroundStyle(.darkNavy)
                     .padding(.top, 24)
                 Text(onboardingSubheadline)
-                    .font(.regularTextBig)
+                    .font(.onboardingText)
                     .foregroundStyle(.darkNavy)
                     .padding(.top, 2)
+                    .frame(width: 320)
                 Button(action: {
                     buttonAction()
                 }, label: {
@@ -44,7 +45,7 @@ struct OnboardingViewComponent: View {
                             .frame(height: 24)
                             .foregroundColor(.darkNavy)
                     }
-                    .padding(.top, 120)
+                    .padding(.top, 100)
                 })
             }
         }

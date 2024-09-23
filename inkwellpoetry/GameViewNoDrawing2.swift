@@ -17,6 +17,7 @@ struct GameViewNoDrawing2: View {
     @State private var screenshotImage: UIImage?
     @State private var formattedDate: String = ""
     @State private var isCapturingScreenshot = false
+    @State private var capturedGeometrySize: CGSize?
 
     var body: some View {
         GeometryReader { geometry in
@@ -25,7 +26,7 @@ struct GameViewNoDrawing2: View {
                     entry: entry,
                     formattedDate: $formattedDate,
                     isCapturingScreenshot: $isCapturingScreenshot,  // Remove handleDrawing
-                    captureScreenshot: { captureScreenshot(size: geometry.size) }
+                    captureScreenshot: { captureScreenshot(size: capturedGeometrySize ?? geometry.size) }
                 )
                 
                 if isCapturingScreenshot {
@@ -42,7 +43,8 @@ struct GameViewNoDrawing2: View {
                     Spacer()
                     
                     Button(action: {
-                        captureScreenshot(size: geometry.size)
+                        capturedGeometrySize = geometry.size
+                        captureScreenshot(size: capturedGeometrySize ?? geometry.size)
                     }) {
                         Image(systemName: "square.and.arrow.up")
                             .padding()
@@ -57,7 +59,7 @@ struct GameViewNoDrawing2: View {
         }
          .sheet(isPresented: $isSharePresented) {
              if let screenshot = screenshotImage {
-                 ActivityViewController(activityItems: [screenshot])
+                 ActivityViewController2(activityItems: [screenshot])
              }
          }
          .onAppear {
@@ -65,6 +67,7 @@ struct GameViewNoDrawing2: View {
              dateFormatter.dateStyle = .long
              formattedDate = dateFormatter.string(from: entry.date)
          }
+         
      }
      
     private func captureScreenshot(size: CGSize) {
@@ -152,16 +155,17 @@ struct WordTile2: View {
     @State private var dragOffset: CGSize = .zero
     @GestureState private var isDragging: Bool = false
     var type: WordType
+    let geometry: GeometryProxy
     
     private var backgroundColor: Color {
         switch type {
-          case .noun:
+        case .noun:
             return Color.noun
-          case .verb:
+        case .verb:
             return Color.verb
-          case .adjective:
+        case .adjective:
             return Color.adjective
-          case .adverb:
+        case .adverb:
             return Color.adverb
         case .common:
             return Color.common
@@ -169,8 +173,8 @@ struct WordTile2: View {
             return Color.common
         case .suffix:
             return Color.suffix
-          }
-      }
+        }
+    }
     
     var body: some View {
         Text(word.text)
@@ -179,7 +183,10 @@ struct WordTile2: View {
             .foregroundColor(.darkNavy)
             .font(.featuredText)
             .cornerRadius(8)
-            .position(x: location.x + dragOffset.width, y: location.y + dragOffset.height)
+            .position(
+                x: geometry.size.width * (location.xPercentage ?? 0.0) + dragOffset.width,
+                y: geometry.size.height * (location.yPercentage ?? 0.0) + dragOffset.height
+            )
             .gesture(
                 DragGesture()
                     .updating($isDragging) { _, state, _ in
@@ -189,8 +196,10 @@ struct WordTile2: View {
                         dragOffset = value.translation
                     }
                     .onEnded { value in
-                        location.x += value.translation.width
-                        location.y += value.translation.height
+                        let newX = geometry.size.width * (location.xPercentage ?? 0.0) + value.translation.width
+                        let newY = geometry.size.height * (location.yPercentage ?? 0.0) + value.translation.height
+                        location.xPercentage = newX / geometry.size.width
+                        location.yPercentage = newY / geometry.size.height
                         dragOffset = .zero
                     }
             )
@@ -221,7 +230,12 @@ struct GameContentView2: View {
                 InkspillBackground2(geometry: geometry, date: entry.date, formattedDateString: formattedDate)
                 
                 ForEach(entry.wordList.indices, id: \.self) { index in
-                    WordTile2(word: entry.wordList[index], location: $entry.tileLocations[index], type: entry.wordList[index].type)
+                    WordTile2(
+                        word: entry.wordList[index],
+                        location: $entry.tileLocations[index],
+                        type: entry.wordList[index].type,
+                        geometry: geometry
+                    )
                 }
             }
         }
