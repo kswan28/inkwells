@@ -12,8 +12,12 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
     @Query private var entries: [InkwellEntryModel]
+    @Query private var customPuzzleSettings: [CustomPuzzleSettingsModel]
     
-    @AppStorage("selectedPuzzleType") private var selectedPuzzleType: String = "classic 🎲" // Default puzzle type
+    @State private var localSelectedPuzzleType: String = "classic 🎲"
+    
+    
+    
        @State private var showAlert: Bool = false
     
     var body: some View {
@@ -39,36 +43,38 @@ struct ContentView: View {
                         .padding(.horizontal)
                         .padding(.bottom, 10)
                         
-//                        HStack{
-//                            Text("Let's write!")
-//                                .foregroundStyle(.darkNavy)
-//                                .font(.screenHeading)
-//                            Spacer()
-//                        }
-//                        .padding(.top)
-//                        .padding(.horizontal)
+                        //                        HStack{
+                        //                            Text("Let's write!")
+                        //                                .foregroundStyle(.darkNavy)
+                        //                                .font(.screenHeading)
+                        //                            Spacer()
+                        //                        }
+                        //                        .padding(.top)
+                        //                        .padding(.horizontal)
                         
-                        // Puzzle Type Picker
-                                              Picker("Select Puzzle Type", selection: $selectedPuzzleType) {
-                                                  Text("Classic 🎲").tag("classic 🎲")
-                                                  Text("Spooky 👻").tag("spooky 👻")
-                                                  Text("Swifty 😻").tag("swifty 😻")
-                                                  // Add more puzzle types as needed
-                                              }
-                                              .pickerStyle(SegmentedPickerStyle())
-                                              .padding(4)
-                                              .frame(maxWidth: geometry.size.width * 0.8)
-                                              .onChange(of: selectedPuzzleType) { oldValue, newValue in
-                                                  if let todayEntry = getTodayEntry(), todayEntry.puzzleType != newValue {
-                                                      showAlert = true
-                                                  }
-                                              }
+                        // Update the Picker to use the new selectedPuzzleType computed property
+                        Picker("Select Puzzle Type", selection: $localSelectedPuzzleType) {
+                            Text("Classic 🎲").tag("classic 🎲")
+                            Text("Spooky 👻").tag("spooky 👻")
+                            Text("Swifty 😻").tag("swifty 😻")
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
+                        .padding(4)
+                        .frame(maxWidth: geometry.size.width * 0.8)
+                        .onChange(of: localSelectedPuzzleType) { oldValue, newValue in
+                                                   updateSelectedPuzzleType(newValue)
+                                                   if let todayEntry = getTodayEntry(), todayEntry.puzzleType != newValue {
+                                                       showAlert = true
+                                                   }
+                                               }
+                    
+                    
                                               
                                               // Alert for overriding the current puzzle
                                               .alert("Overwrite today's puzzle?", isPresented: $showAlert) {
                                                   Button("Cancel", role: .cancel) {
                                                       if let currentEntry = getTodayEntry() {
-                                                                            selectedPuzzleType = currentEntry.puzzleType
+                                                          localSelectedPuzzleType = currentEntry.puzzleType
                                                                         }
                                                   }
                                                   Button("Overwrite", role: .destructive) {
@@ -168,10 +174,31 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            print(selectedPuzzleType)
+            initializeSelectedPuzzleType()
         }
         
     }
+    
+    private func initializeSelectedPuzzleType() {
+         if let settings = customPuzzleSettings.first {
+             localSelectedPuzzleType = settings.selectedPuzzleSet ?? "classic 🎲"
+         } else {
+             let newSettings = CustomPuzzleSettingsModel()
+             modelContext.insert(newSettings)
+             try? modelContext.save()
+             localSelectedPuzzleType = newSettings.selectedPuzzleSet ?? "classic 🎲"
+         }
+     }
+     
+     private func updateSelectedPuzzleType(_ newValue: String) {
+         if let settings = customPuzzleSettings.first {
+             settings.selectedPuzzleSet = newValue
+         } else {
+             let newSettings = CustomPuzzleSettingsModel(selectedPuzzleSet: newValue)
+             modelContext.insert(newSettings)
+         }
+         try? modelContext.save()
+     }
     
     private func checkAndCreateTodayEntry() {
         let today = Calendar.current.startOfDay(for: Date())
@@ -200,7 +227,7 @@ struct ContentView: View {
         dateFormatter.dateFormat = "yyyyMMdd"
         let dateString = dateFormatter.string(from: Date())
         
-        let puzzleType = selectedPuzzleType
+        let puzzleType = localSelectedPuzzleType
         
         // Use a more robust seed generation method
         let seed = dateString.utf8.reduce(0) { ($0 << 8) | Int($1) }
@@ -240,14 +267,14 @@ struct ContentView: View {
         // Generate tile locations in a cluster at the center of the screen
         let tilesPerRow = 3
         let rows = 5
-        let spacing = 0.02 // 2% of screen width/height
-        let tileWidth = (1.0 - (Double(tilesPerRow + 1) * spacing)) / Double(tilesPerRow)
+        let spacing = 0.005 // 2% of screen width/height
+        let tileWidth = (0.5 - (Double(tilesPerRow + 1) * spacing)) / Double(tilesPerRow)
         let tileHeight = tileWidth / 2 // Assuming tile height is half of its width
         let clusterWidth = Double(tilesPerRow) * tileWidth + (Double(tilesPerRow - 1) * spacing)
         let clusterHeight = Double(rows) * tileHeight + (Double(rows - 1) * spacing)
 
-        let centerX = 0.5
-        let centerY = 0.5
+        let centerX = 0.6
+        let centerY = 0.55
 
         let tileLocations = wordList.enumerated().map { (index, word) in
             let row = index / tilesPerRow

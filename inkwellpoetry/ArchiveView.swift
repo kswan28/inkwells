@@ -11,8 +11,9 @@ import SwiftData
 struct ArchiveView: View {
     
     @Environment(\.colorScheme) private var colorScheme
-    
+    @Environment(\.modelContext) private var modelContext
     @Query private var entries: [InkwellEntryModel]
+    @State private var entryToDelete: InkwellEntryModel?
     
     var body: some View {
         
@@ -28,24 +29,42 @@ struct ArchiveView: View {
                 }
                 .padding()
                 
-                    ScrollView {
-                            LazyVGrid(columns: Array(repeating: GridItem(), count: UIDevice.current.model == "iPad" ? 3 : 2), spacing: 20) {
-                                ForEach(entries.sorted(by: { $0.date > $1.date }), id: \.self) { entry in
-                                    NavigationLink(destination: GameViewNoDrawing2(entry: entry)) {
-                                        EntryTile(entry: entry)
+                ScrollView {
+                                    LazyVGrid(columns: Array(repeating: GridItem(), count: UIDevice.current.model == "iPad" ? 3 : 2), spacing: 20) {
+                                        ForEach(entries.sorted(by: { $0.date > $1.date }), id: \.self) { entry in
+                                            NavigationLink(destination: GameViewNoDrawing2(entry: entry)) {
+                                                EntryTile(entry: entry)
+                                                    .contextMenu {
+                                                        Button(role: .destructive) {
+                                                            entryToDelete = entry
+                                                        } label: {
+                                                            Label("Delete", systemImage: "trash")
+                                                        }
+                                                    }
+                                            }
+                                        }
                                     }
                                 }
+                                .padding()
                             }
-                        
+                        }
+                        .alert("Delete this Inkwell?", isPresented: Binding<Bool>(
+                            get: { entryToDelete != nil },
+                            set: { if !$0 { entryToDelete = nil } }
+                        )) {
+                            Button("Cancel", role: .cancel) { }
+                            Button("Delete", role: .destructive) {
+                                if let entryToDelete = entryToDelete {
+                                    modelContext.delete(entryToDelete)
+                                    try? modelContext.save()
+                                }
+                                entryToDelete = nil
+                            }
+                        } message: {
+                            Text("This action cannot be undone.")
+                        }
                     }
-                    .padding()
-                    
-                
-                
-            }
-        }
-    }
-}
+                }
 
 struct EntryTile: View {
     let entry: InkwellEntryModel
@@ -57,17 +76,29 @@ struct EntryTile: View {
                 Text(formattedDate)
                     .font(.dateHeader)
                     .foregroundColor(colorScheme == .dark ? Color.allwhite : Color.darkNavy)
-                Text(entry.puzzleType.suffix(1))
-                    .font(.dateHeader)
+                
+                Button {
+                    //write the favorite status
+                    entry.isFavorite.toggle()
+                } label: {
+                    Image(systemName: entry.isFavorite == true ? "heart.fill" : "heart")
+                        .font(.dateHeader)
+                        .foregroundColor(colorScheme == .dark ? Color.allwhite : Color.darkNavy)
+                        
+                }
+                .symbolEffect(.bounce.up, value: entry.isFavorite)
                 
             }
-            
                 ForEach(entry.wordList, id: \.text) { word in
                     Text(word.text)
                         .font(.featuredText)
                         .foregroundColor(colorScheme == .dark ? Color.allwhite : Color.darkNavy)
                         .opacity(0.8)
                 }
+            Text("Puzzle style: \(entry.puzzleType.suffix(1))")
+                .font(.dateHeader)
+                .foregroundColor(colorScheme == .dark ? Color.allwhite : Color.darkNavy)
+                .opacity(0.8)
             
         }
         .padding()

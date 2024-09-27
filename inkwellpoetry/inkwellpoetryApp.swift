@@ -48,7 +48,7 @@ struct inkwellpoetryApp: App {
                                              }
                 } else {
                     ContentView()
-                        .modelContainer(for: [InkwellEntryModel.self, Reminder.self])
+                        .modelContainer(for: [InkwellEntryModel.self, Reminder.self, CustomPuzzleSettingsModel.self])
                         .onAppear {
                             // For the support email content, this suppresses constraint warnings
                             UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")

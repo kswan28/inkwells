@@ -31,6 +31,7 @@
 		C001238A2C8E74E000DE0A7B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123892C8E74E000DE0A7B /* OnboardingView.swift */; };
 		C0B586762C97AA6F0020FE7A /* GameViewNoDrawing2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B586752C97AA6F0020FE7A /* GameViewNoDrawing2.swift */; };
 		C0B586DF2C97CEDE0020FE7A /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = C0B586DE2C97CEDE0020FE7A /* Lottie */; };
+		C0D2D3172CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2D3162CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,7 @@
 		C00985592C9FC8A9006782F4 /* inkwellpoetry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = inkwellpoetry.entitlements; sourceTree = "<group>"; };
 		C0B586752C97AA6F0020FE7A /* GameViewNoDrawing2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewNoDrawing2.swift; sourceTree = "<group>"; };
 		C0B586DC2C97CEB20020FE7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C0D2D3162CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPuzzleSettingsModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 				C00985592C9FC8A9006782F4 /* inkwellpoetry.entitlements */,
 				C0B586DC2C97CEB20020FE7A /* Info.plist */,
 				C00123452C86458C00DE0A7B /* inkwellpoetryApp.swift */,
+				C0D2D3162CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift */,
 				C00123472C86458C00DE0A7B /* ContentView.swift */,
 				C0B586752C97AA6F0020FE7A /* GameViewNoDrawing2.swift */,
 				C00123892C8E74E000DE0A7B /* OnboardingView.swift */,
@@ -247,6 +250,7 @@
 				C00123772C8E543400DE0A7B /* Bundle+Extension.swift in Sources */,
 				C001237D2C8E5B6C00DE0A7B /* RemindersView.swift in Sources */,
 				C00123882C8E745F00DE0A7B /* OnboardingViewComponent.swift in Sources */,
+				C0D2D3172CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift in Sources */,
 				C00123732C8E53DF00DE0A7B /* SupportEmail.swift in Sources */,
 				C00123462C86458C00DE0A7B /* inkwellpoetryApp.swift in Sources */,
 				C0B586762C97AA6F0020FE7A /* GameViewNoDrawing2.swift in Sources */,
@@ -385,7 +389,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = inkwellpoetry/inkwellpoetry.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"inkwellpoetry/Preview Content\"";
 				DEVELOPMENT_TEAM = 93L3B9MA94;
 				ENABLE_PREVIEWS = YES;
@@ -417,7 +421,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = inkwellpoetry/inkwellpoetry.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"inkwellpoetry/Preview Content\"";
 				DEVELOPMENT_TEAM = 93L3B9MA94;
 				ENABLE_PREVIEWS = YES;
