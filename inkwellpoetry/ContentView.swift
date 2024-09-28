@@ -20,6 +20,7 @@ struct ContentView: View {
     
        @State private var showAlert: Bool = false
     
+    
     var body: some View {
         
         NavigationStack {
@@ -176,6 +177,11 @@ struct ContentView: View {
         .onAppear {
             initializeSelectedPuzzleType()
         }
+        .onChange(of: customPuzzleSettings) { _, newSettings in
+            if let settings = newSettings.first {
+                localSelectedPuzzleType = settings.selectedPuzzleSet ?? "classic 🎲"
+            }
+        }
         
     }
     
@@ -206,6 +212,11 @@ struct ContentView: View {
             let newEntry = getPuzzleOfTheDay()
             modelContext.insert(newEntry)
         }
+        
+        // Check if the custom puzzle settings have changed
+         if let settings = customPuzzleSettings.first, localSelectedPuzzleType != settings.selectedPuzzleSet {
+             localSelectedPuzzleType = settings.selectedPuzzleSet ?? "classic 🎲"
+         }
     }
     
     private func getTodayEntry() -> InkwellEntryModel? {
