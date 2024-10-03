@@ -72,7 +72,7 @@ struct ContentView: View {
                     
                                               
                                               // Alert for overriding the current puzzle
-                                              .alert("Overwrite today's puzzle?", isPresented: $showAlert) {
+                                              .alert("You already started today's puzzle. Do you want to overwrite today's progress so far with a new puzzle in this style?", isPresented: $showAlert) {
                                                   Button("Cancel", role: .cancel) {
                                                       if let currentEntry = getTodayEntry() {
                                                           localSelectedPuzzleType = currentEntry.puzzleType
