@@ -14,6 +14,7 @@ extension Font {
     static var screenHeading = Font.custom("Arvo-Bold", size: 32)
     static var modalHeading = Font.custom("Arvo-Bold", size: 24)
     static var calltoAction = Font.custom("Arvo-Regular", size: 24)
+    static var navigationHeader = Font.custom("Arvo-Bold", size: 18)
     static var smallHeading = Font.custom ("Arvo-Bold", size: 16)
     static var dateHeader = Font.custom ("Arvo-Bold", size: 10)
     

@@ -10,6 +10,7 @@ import SwiftData
 
 struct ArchiveView: View {
     
+    @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.modelContext) private var modelContext
     @Query private var entries: [InkwellEntryModel]
@@ -48,7 +49,22 @@ struct ArchiveView: View {
                                 .padding()
                             }
                         }
-                        .alert("Delete this Inkwell?", isPresented: Binding<Bool>(
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    HStack{
+                        Image(systemName: "arrowshape.backward")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                    }
+                }
+
+            }
+        }
+        .alert("Delete this Inkwell?", isPresented: Binding<Bool>(
                             get: { entryToDelete != nil },
                             set: { if !$0 { entryToDelete = nil } }
                         )) {

@@ -13,6 +13,7 @@ struct GameViewNoDrawing2: View {
     @Bindable var entry: InkwellEntryModel
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.dismiss) var dismiss
     @State private var isSharePresented = false
     @State private var screenshotImage: UIImage?
     @State private var formattedDate: String = ""
@@ -55,6 +56,21 @@ struct GameViewNoDrawing2: View {
                 .padding()
                 .cornerRadius(10)
                 .padding(.bottom)
+            }
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    HStack{
+                        Image(systemName: "arrowshape.backward")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                    }
+                }
+
             }
         }
          .sheet(isPresented: $isSharePresented) {
@@ -154,6 +170,7 @@ struct WordTile2: View {
     @Binding var location: TileLocation
     @State private var dragOffset: CGSize = .zero
     @GestureState private var isDragging: Bool = false
+    @State private var isPressed: Bool = false
     var type: WordType
     let geometry: GeometryProxy
     
@@ -180,9 +197,11 @@ struct WordTile2: View {
         Text(word.text)
             .padding()
             .background(backgroundColor)
-            .foregroundColor(.darkNavy)
+            .foregroundColor(.allwhite)
             .font(.featuredText)
             .cornerRadius(8)
+            .scaleEffect(isPressed ? 0.95 : 1.0)
+            .shadow(radius: isPressed ? 2 : 5)
             .position(
                 x: geometry.size.width * (location.xPercentage ?? 0.0) + dragOffset.width,
                 y: geometry.size.height * (location.yPercentage ?? 0.0) + dragOffset.height
@@ -194,6 +213,7 @@ struct WordTile2: View {
                     }
                     .onChanged { value in
                         dragOffset = value.translation
+                        isPressed = true
                     }
                     .onEnded { value in
                         let newX = geometry.size.width * (location.xPercentage ?? 0.0) + value.translation.width
@@ -201,8 +221,10 @@ struct WordTile2: View {
                         location.xPercentage = newX / geometry.size.width
                         location.yPercentage = newY / geometry.size.height
                         dragOffset = .zero
+                        isPressed = false
                     }
             )
+            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
             .animation(.interactiveSpring(), value: isDragging)
     }
 }
