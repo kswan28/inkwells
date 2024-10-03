@@ -1,5 +1,5 @@
 {
-  "originHash" : "0a79f2009ea5ba6a9e7c2c6471d05458a7ac9a981d2fd7ab914f1eb741af1ea1",
+  "originHash" : "59247522f3a1ef74e1061ea9b5925a39ab4c0385f9e6a293d53cc1f20a03616f",
   "pins" : [
     {
       "identity" : "lottie-ios",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "fe4c6fe3a0aa66cdeb51d549623c82ca9704b9a5",
         "version" : "4.5.0"
+      }
+    },
+    {
+      "identity" : "popupview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Mijick/PopupView",
+      "state" : {
+        "revision" : "60ebc93bbcf06d78b0123389e641c3a451c80f65",
+        "version" : "2.7.1"
       }
     }
   ],
