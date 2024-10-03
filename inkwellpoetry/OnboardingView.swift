@@ -24,7 +24,7 @@ struct OnboardingView: View {
                         .tag(0)
                         .ignoresSafeArea()
                         
-                        OnboardingViewComponent(onboardingImage: "onboarding2", onboardingHeadline: "To play:", onboardingSubheadline: "Slide the word tiles until you create a poem or lyric.", buttonAction: {
+                        OnboardingViewComponent(onboardingImage: "onboarding2", onboardingHeadline: "To play:", onboardingSubheadline: "Slide the word tiles until you create a poem or lyric you like. There's no right or wrong answer. it's up to you to explore.", buttonAction: {
                             withAnimation {
                                 selectedOnboardingView = 2
                             }
