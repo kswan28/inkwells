@@ -10,6 +10,7 @@ import SwiftData
 import UIKit
 import TelemetryDeck
 import MijickPopupView
+import Lottie
 
 struct GameViewNoDrawing2: View {
     @Bindable var entry: InkwellEntryModel
@@ -28,10 +29,13 @@ struct GameViewNoDrawing2: View {
     @State private var animateTiles = false
     @State private var tileScale: CGFloat = 1.0 // New state variable for scale
     @State private var showChangeStylePopup: Bool = false
+    @State private var isPuzzleCompleted: Bool
+    @State private var showPopperAnimation = false
 
-    init(entry: InkwellEntryModel) {
+    init(entry: InkwellEntryModel, isPuzzleCompleted: Bool = false) {
         self.entry = entry
         _selectedPuzzleType = State(initialValue: entry.puzzleType)
+        _isPuzzleCompleted = State(initialValue: isPuzzleCompleted)
     }
 
     var body: some View {
@@ -53,6 +57,8 @@ struct GameViewNoDrawing2: View {
                         .background(Color.black.opacity(0.9))
                         .cornerRadius(15)
                 }
+                
+                AnimationView(isShowing: $showPopperAnimation, animationName: "popper")
             }
             .overlay(alignment: .bottom) {
                 VStack {
@@ -80,7 +86,7 @@ struct GameViewNoDrawing2: View {
                         Spacer()
                         VStack{
                             Spacer()
-                            Text("SHARE")
+                            Text(isPuzzleCompleted ? "SHARE" : "I'M DONE")
                                 .font(.dateHeader)
                                 .foregroundStyle(.allwhite)
                                 .padding(.bottom, 4)
@@ -91,17 +97,20 @@ struct GameViewNoDrawing2: View {
                                     .foregroundStyle(.allwhite)
                                 VStack{
                                     Button(action: {
-                                        capturedGeometrySize = geometry.size
-                                        captureScreenshot(size: capturedGeometrySize ?? geometry.size)
-                                        TelemetryDeck.signal("GameView.shared")
+                                        if isPuzzleCompleted {
+                                            capturedGeometrySize = geometry.size
+                                            captureScreenshot(size: capturedGeometrySize ?? geometry.size)
+                                            TelemetryDeck.signal("GameView.shared")
+                                        } else {
+                                            markPuzzleAsCompleted()
+                                        }
                                     }) {
-                                        Image(systemName: "square.and.arrow.up")
+                                        Image(systemName: isPuzzleCompleted ? "square.and.arrow.up" : "hand.thumbsup.fill")
                                             .padding()
                                             .foregroundStyle(.allwhite)
                                             .font(.navigationHeader)
                                     }
                                     .disabled(isCapturingScreenshot)
-                                    
                                 }
                             }
                         }
@@ -189,6 +198,8 @@ struct GameViewNoDrawing2: View {
         entry.tileLocations = updatedEntry.tileLocations
         entry.pathData = updatedEntry.pathData
         entry.puzzleType = updatedEntry.puzzleType
+        entry.isCompleted = false
+        isPuzzleCompleted = false
         
         saveChanges()
         isPuzzleRefreshing = false
@@ -296,6 +307,22 @@ struct GameViewNoDrawing2: View {
     // private func handleDrawing(value: DragGesture.Value) { ... }
     // private func finishDrawing() { ... }
     // private func smoothPoint(start: CGPoint, end: CGPoint) -> CGPoint { ... }
+    
+    private func markPuzzleAsCompleted() {
+        isPuzzleCompleted = true
+        entry.isCompleted = true
+        try? modelContext.save()
+        
+        // Show the popper animation
+        showPopperAnimation = true
+        
+        // Hide the animation after 2 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            showPopperAnimation = false
+        }
+        
+        TelemetryDeck.signal("GameView.completed")
+    }
 }
 
 struct InkspillBackground2: View {
@@ -529,3 +556,5 @@ struct ChangeInkwellStylePopup: CentrePopup {
             .tapOutsideToDismiss(true)
     }
 }
+
+

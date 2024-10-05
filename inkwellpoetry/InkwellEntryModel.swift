@@ -25,6 +25,7 @@ class InkwellEntryModel {
     var isEdited: Bool = false
     var puzzleType: String = "classic 🎲"
     var isFavorite: Bool = false
+    var isCompleted: Bool = false
     
     init(date: Date = Date(),
          wordList: [Word] = [
@@ -38,7 +39,8 @@ class InkwellEntryModel {
          ],
          isEdited: Bool = false,
          puzzleType: String = "classic 🎲",
-         isFavorite: Bool = false) {
+         isFavorite: Bool = false,
+         isCompleted: Bool = false) {
         self.date = date
         self.wordList = wordList
         self.tileLocations = tileLocations
@@ -46,6 +48,7 @@ class InkwellEntryModel {
         self.isEdited = isEdited
         self.puzzleType = puzzleType
         self.isFavorite = isFavorite
+        self.isCompleted = isCompleted
     }
 }
 
