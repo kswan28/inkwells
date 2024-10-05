@@ -45,7 +45,7 @@ struct OnboardingViewComponent: View {
                             .frame(height: 24)
                             .foregroundColor(.darkNavy)
                     }
-                    .padding(.top, 80)
+                    .padding(.top, 48)
                 })
             }
         }
