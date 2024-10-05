@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import TelemetryDeck
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
@@ -14,29 +15,15 @@ struct ContentView: View {
     @Query private var entries: [InkwellEntryModel]
     @Query private var customPuzzleSettings: [CustomPuzzleSettingsModel]
     
-    @State private var localSelectedPuzzleType: String = "classic 🎲"
-    
-    
-    
-       @State private var showAlert: Bool = false
-    
-    
     var body: some View {
-        
         NavigationStack {
-            
-            
             GeometryReader { geometry in
-                
                 ZStack{
                     Color.whiteBackground
                         .ignoresSafeArea()
                     
-                    
                     VStack {
-                        
                         HStack{
-                            //Put menu here
                             SettingsMenu()
                             Spacer()
                         }
@@ -44,49 +31,18 @@ struct ContentView: View {
                         .padding(.horizontal)
                         .padding(.bottom, 10)
                         
-                        //                        HStack{
-                        //                            Text("Let's write!")
-                        //                                .foregroundStyle(.darkNavy)
-                        //                                .font(.screenHeading)
-                        //                            Spacer()
-                        //                        }
-                        //                        .padding(.top)
-                        //                        .padding(.horizontal)
-                        
-                        // Update the Picker to use the new selectedPuzzleType computed property
-                        Picker("Select Puzzle Type", selection: $localSelectedPuzzleType) {
-                            Text("Classic 🎲").tag("classic 🎲")
-                            Text("Spooky 👻").tag("spooky 👻")
-                            Text("Swifty 😻").tag("swifty 😻")
-                        }
-                        .pickerStyle(SegmentedPickerStyle())
-                        .padding(4)
-                        .frame(maxWidth: geometry.size.width * 0.8)
-                        .onChange(of: localSelectedPuzzleType) { oldValue, newValue in
-                                                   updateSelectedPuzzleType(newValue)
-                                                   if let todayEntry = getTodayEntry(), todayEntry.puzzleType != newValue {
-                                                       showAlert = true
-                                                   }
-                                               }
-                    
-                    
-                                              
-                                              // Alert for overriding the current puzzle
-                                              .alert("You already started today's puzzle. Do you want to overwrite today's progress so far with a new puzzle in this style?", isPresented: $showAlert) {
-                                                  Button("Cancel", role: .cancel) {
-                                                      if let currentEntry = getTodayEntry() {
-                                                          localSelectedPuzzleType = currentEntry.puzzleType
-                                                                        }
-                                                  }
-                                                  Button("Overwrite", role: .destructive) {
-                                                      overrideCurrentPuzzle()
-                                                  }
-                                              }
-                        
                         ScrollView(showsIndicators: false) {
                             NavigationLink {
-                                GameViewNoDrawing2(entry: getTodayEntry() ?? getPuzzleOfTheDay())
-                                    .onAppear(perform: checkAndCreateTodayEntry)
+                                if let todayEntry = getTodayEntry() {
+                                    GameViewNoDrawing2(entry: todayEntry)
+                                } else {
+                                    let newEntry = getPuzzleOfTheDay()
+                                    GameViewNoDrawing2(entry: newEntry)
+                                        .onAppear {
+                                            modelContext.insert(newEntry)
+                                            try? modelContext.save()
+                                        }
+                                }
                             } label: {
                                 ZStack{
                                     RoundedRectangle(cornerRadius: 15)
@@ -119,13 +75,14 @@ struct ContentView: View {
                                         .padding()
                                     }
                                 }
-                                .frame(height: geometry.size.height * 0.65)
+                                .frame(height: geometry.size.height * 0.75)
                                 .padding(.horizontal)
                                 .padding(.top, 12)
                                 .padding(.bottom, 2)
                                 
                                 
                             }
+                            
                             NavigationLink {
                                 ArchiveView()
                             } label: {
@@ -171,52 +128,17 @@ struct ContentView: View {
                         }
                     }
                 }
-                
             }
         }
-        .onAppear {
-            initializeSelectedPuzzleType()
-        }
-        .onChange(of: customPuzzleSettings) { _, newSettings in
-            if let settings = newSettings.first {
-                localSelectedPuzzleType = settings.selectedPuzzleSet ?? "classic 🎲"
-            }
-        }
-        
     }
-    
-    private func initializeSelectedPuzzleType() {
-         if let settings = customPuzzleSettings.first {
-             localSelectedPuzzleType = settings.selectedPuzzleSet ?? "classic 🎲"
-         } else {
-             let newSettings = CustomPuzzleSettingsModel()
-             modelContext.insert(newSettings)
-             try? modelContext.save()
-             localSelectedPuzzleType = newSettings.selectedPuzzleSet ?? "classic 🎲"
-         }
-     }
-     
-     private func updateSelectedPuzzleType(_ newValue: String) {
-         if let settings = customPuzzleSettings.first {
-             settings.selectedPuzzleSet = newValue
-         } else {
-             let newSettings = CustomPuzzleSettingsModel(selectedPuzzleSet: newValue)
-             modelContext.insert(newSettings)
-         }
-         try? modelContext.save()
-     }
     
     private func checkAndCreateTodayEntry() {
         let today = Calendar.current.startOfDay(for: Date())
         if !entries.contains(where: { Calendar.current.isDate($0.date, inSameDayAs: today) }) {
             let newEntry = getPuzzleOfTheDay()
             modelContext.insert(newEntry)
+            try? modelContext.save()
         }
-        
-        // Check if the custom puzzle settings have changed
-         if let settings = customPuzzleSettings.first, localSelectedPuzzleType != settings.selectedPuzzleSet {
-             localSelectedPuzzleType = settings.selectedPuzzleSet ?? "classic 🎲"
-         }
     }
     
     private func getTodayEntry() -> InkwellEntryModel? {
@@ -224,21 +146,12 @@ struct ContentView: View {
         return entries.first(where: { Calendar.current.isDate($0.date, inSameDayAs: today) })
     }
     
-    private func overrideCurrentPuzzle() {
-        if let todayEntry = getTodayEntry() {
-            modelContext.delete(todayEntry)
-        }
-        let newPuzzle = getPuzzleOfTheDay()
-        modelContext.insert(newPuzzle)
-        try? modelContext.save()
-    }
-    
     private func getPuzzleOfTheDay() -> InkwellEntryModel {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
         let dateString = dateFormatter.string(from: Date())
         
-        let puzzleType = localSelectedPuzzleType
+        let puzzleType = customPuzzleSettings.first?.selectedPuzzleSet ?? "classic 🎲"
         
         // Use a more robust seed generation method
         let seed = dateString.utf8.reduce(0) { ($0 << 8) | Int($1) }
