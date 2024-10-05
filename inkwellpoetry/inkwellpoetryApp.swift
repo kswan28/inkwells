@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UserNotifications
+import TelemetryDeck
 
 //App Delegate to help handle notifications
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -26,6 +27,11 @@ struct inkwellpoetryApp: App {
     @State private var isLoading = true
     @State private var opacity = 1.0
     @AppStorage("onboarding") var needsOnboarding = true
+    
+    init() {
+           let config = TelemetryDeck.Config(appID: "***REMOVED***")
+           TelemetryDeck.initialize(config: config)
+       }
     
     var body: some Scene {
         WindowGroup {
@@ -50,6 +56,9 @@ struct inkwellpoetryApp: App {
                     ContentView()
                         .modelContainer(for: [InkwellEntryModel.self, Reminder.self, CustomPuzzleSettingsModel.self])
                         .onAppear {
+                            
+                            TelemetryDeck.signal("App.launched")
+                            
                             // For the support email content, this suppresses constraint warnings
                             UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
                             print(UIDevice.current.systemVersion)

@@ -8,17 +8,29 @@
 import SwiftUI
 import SwiftData
 import UIKit
+import TelemetryDeck
 
 struct GameViewNoDrawing2: View {
     @Bindable var entry: InkwellEntryModel
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) var dismiss
+    @Query private var customPuzzleSettings: [CustomPuzzleSettingsModel]
+    @State private var selectedPuzzleType: String
+    @State private var showAlert: Bool = false
     @State private var isSharePresented = false
     @State private var screenshotImage: UIImage?
     @State private var formattedDate: String = ""
     @State private var isCapturingScreenshot = false
     @State private var capturedGeometrySize: CGSize?
+    @State private var isPuzzleRefreshing = false
+    @State private var animateTiles = false
+    @State private var tileScale: CGFloat = 1.0 // New state variable for scale
+
+    init(entry: InkwellEntryModel) {
+        self.entry = entry
+        _selectedPuzzleType = State(initialValue: entry.puzzleType)
+    }
 
     var body: some View {
         GeometryReader { geometry in
@@ -26,7 +38,9 @@ struct GameViewNoDrawing2: View {
                 GameContentView2(
                     entry: entry,
                     formattedDate: $formattedDate,
-                    isCapturingScreenshot: $isCapturingScreenshot,  // Remove handleDrawing
+                    isCapturingScreenshot: $isCapturingScreenshot,
+                    animateTiles: $animateTiles,
+                    tileScale: $tileScale, // Pass the scale to GameContentView2
                     captureScreenshot: { captureScreenshot(size: capturedGeometrySize ?? geometry.size) }
                 )
                 
@@ -39,23 +53,62 @@ struct GameViewNoDrawing2: View {
                 }
             }
             .overlay(alignment: .bottom) {
-                // Control panel
-                HStack {
-                    Spacer()
-                    
-                    Button(action: {
-                        capturedGeometrySize = geometry.size
-                        captureScreenshot(size: capturedGeometrySize ?? geometry.size)
-                    }) {
-                        Image(systemName: "square.and.arrow.up")
-                            .padding()
-                            .foregroundStyle(.allwhite)
+                VStack {
+                    // Control panel
+                    HStack {
+                        VStack{
+                            Spacer()
+                            Text("INKWELL STYLE")
+                                .font(.dateHeader)
+                                .foregroundStyle(.allwhite)
+                                .padding(.bottom, 4)
+                            ZStack{
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(lineWidth: 2)
+                                    .frame(width:84, height: 120)
+                                    .foregroundStyle(.allwhite)
+                                VStack{
+                                    PuzzleTypeButton(title: "Classic 🎲", type: "classic 🎲", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "classic 🎲") })
+                                    PuzzleTypeButton(title: "Spooky 👻", type: "spooky 👻", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "spooky 👻") })
+                                    PuzzleTypeButton(title: "Swifty 😻", type: "swifty 😻", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "swifty 😻") })
+                                    
+                                }
+                            }
+                        }
+                        Spacer()
+                        VStack{
+                            Spacer()
+                            Text("SHARE")
+                                .font(.dateHeader)
+                                .foregroundStyle(.allwhite)
+                                .padding(.bottom, 4)
+                            ZStack{
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(lineWidth: 2)
+                                    .frame(width:84, height: 120)
+                                    .foregroundStyle(.allwhite)
+                                VStack{
+                                    Button(action: {
+                                        capturedGeometrySize = geometry.size
+                                        captureScreenshot(size: capturedGeometrySize ?? geometry.size)
+                                        TelemetryDeck.signal("GameView.shared")
+                                    }) {
+                                        Image(systemName: "square.and.arrow.up")
+                                            .padding()
+                                            .foregroundStyle(.allwhite)
+                                            .font(.navigationHeader)
+                                    }
+                                    .disabled(isCapturingScreenshot)
+                                    
+                                }
+                            }
+                        }
                     }
-                    .disabled(isCapturingScreenshot)
+                    .padding()
+                    .cornerRadius(10)
+                    .padding(.bottom)
+                    .padding(.horizontal)
                 }
-                .padding()
-                .cornerRadius(10)
-                .padding(.bottom)
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -78,12 +131,24 @@ struct GameViewNoDrawing2: View {
                  ActivityViewController2(activityItems: [screenshot])
              }
          }
+         .alert("Change Inkwell style?", isPresented: $showAlert) {
+             Button("Cancel", role: .cancel) {
+                 selectedPuzzleType = entry.puzzleType
+             }
+             Button("Change", role: .destructive) {
+                 updateExistingEntry()
+                 TelemetryDeck.signal("PuzzleStyle.changed")
+             }
+         } message: {
+             Text("This will update your current Inkwell with a new one in the selected style. Are you sure?")
+         }
          .onAppear {
              let dateFormatter = DateFormatter()
              dateFormatter.dateStyle = .long
              formattedDate = dateFormatter.string(from: entry.date)
+             
+             TelemetryDeck.signal("GameView.opened")
          }
-         
      }
      
     private func captureScreenshot(size: CGSize) {
@@ -95,6 +160,8 @@ struct GameViewNoDrawing2: View {
                 entry: entry,
                 formattedDate: $formattedDate,
                 isCapturingScreenshot: $isCapturingScreenshot,
+                animateTiles: $animateTiles,
+                tileScale: $tileScale,
                 captureScreenshot: { self.captureScreenshot(size: size) }
             )
             .frame(width: size.width, height: size.height * 0.7)  // Capture the top 70% which contains inkspill and tiles
@@ -122,6 +189,109 @@ struct GameViewNoDrawing2: View {
             print("Error saving changes: \(error)")
         }
     }
+    
+    private func updateExistingEntry() {
+        isPuzzleRefreshing = true
+        let updatedEntry = getPuzzleOfTheDay(puzzleType: selectedPuzzleType)
+        
+        entry.wordList = updatedEntry.wordList
+        entry.tileLocations = updatedEntry.tileLocations
+        entry.pathData = updatedEntry.pathData
+        entry.puzzleType = updatedEntry.puzzleType
+        
+        saveChanges()
+        isPuzzleRefreshing = false
+        
+        // Trigger the animation with a longer duration
+        withAnimation(.easeInOut(duration: 0.8)) { // Increased duration to 0.8 seconds
+            animateTiles = true
+            tileScale = 1.5 // Scale up
+        }
+        
+        // Reset the animation flag and scale after a delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            withAnimation(.easeInOut(duration: 0.8)) { // Smoothly scale down
+                tileScale = 1.0 // Scale back down
+            }
+            animateTiles = false
+        }
+    }
+    
+    private func updatePuzzleType(newType: String) {
+        if newType != entry.puzzleType {
+            showAlert = true
+            selectedPuzzleType = newType
+        }
+    }
+    
+    private func getPuzzleOfTheDay(puzzleType: String) -> InkwellEntryModel {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        let dateString = dateFormatter.string(from: Date())
+        
+        // Use the passed puzzleType instead of fetching from customPuzzleSettings
+        // let puzzleType = customPuzzleSettings.first?.selectedPuzzleSet ?? "classic 🎲"
+        
+        // Use a more robust seed generation method
+        let seed = dateString.utf8.reduce(0) { ($0 << 8) | Int($1) }
+        var generator = SeededRandomNumberGenerator(seed: seed)
+        
+        // Get the puzzle type from the current date or logic
+        var wordList: [Word] = []
+        
+        // Conditional logic based on puzzleType
+        switch puzzleType {
+        case "spooky 👻":
+            wordList += Array(WordList.common.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .common) }
+            wordList += Array(WordList.spookynouns.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .noun) }
+            wordList += Array(WordList.spookyverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .verb) }
+            wordList += Array(WordList.spookyadjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
+            wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
+            wordList += Array(WordList.spookyadverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
+            wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
+        case "swifty 😻":
+            wordList += Array(WordList.common.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .common) }
+            wordList += Array(WordList.swiftynouns.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .noun) }
+            wordList += Array(WordList.swiftyverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .verb) }
+            wordList += Array(WordList.swiftyadjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
+            wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
+            wordList += Array(WordList.swiftyadverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
+            wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
+        default:
+            wordList += Array(WordList.common.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .common) }
+            wordList += Array(WordList.nouns.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .noun) }
+            wordList += Array(WordList.verbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .verb) }
+            wordList += Array(WordList.adjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
+            wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
+            wordList += Array(WordList.adverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
+            wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
+        }
+        
+        // Generate tile locations in a cluster at the center of the screen
+        let tilesPerRow = 3
+        let rows = 5
+        let spacing = 0.005 // 2% of screen width/height
+        let tileWidth = (0.5 - (Double(tilesPerRow + 1) * spacing)) / Double(tilesPerRow)
+        let tileHeight = tileWidth / 2 // Assuming tile height is half of its width
+        let clusterWidth = Double(tilesPerRow) * tileWidth + (Double(tilesPerRow - 1) * spacing)
+        let clusterHeight = Double(rows) * tileHeight + (Double(rows - 1) * spacing)
+
+        let centerX = 0.6
+        let centerY = 0.55
+
+        let tileLocations = wordList.enumerated().map { (index, word) in
+            let row = index / tilesPerRow
+            let column = index % tilesPerRow
+            let xPercentage = centerX - (clusterWidth / 2) + (Double(column) * (tileWidth + spacing))
+            let yPercentage = centerY - (clusterHeight / 2) + (Double(row) * (tileHeight + spacing))
+            return TileLocation(id: UUID(), xPercentage: xPercentage, yPercentage: yPercentage)
+        }
+        
+        // Initialize empty path data
+        let pathData: [PathData] = []
+        return InkwellEntryModel(date: Date(), wordList: wordList, tileLocations: tileLocations, pathData: pathData, puzzleType: puzzleType)
+    }
+    
     
     // Remove drawing-related methods
     // private func handleDrawing(value: DragGesture.Value) { ... }
@@ -170,7 +340,6 @@ struct WordTile2: View {
     @Binding var location: TileLocation
     @State private var dragOffset: CGSize = .zero
     @GestureState private var isDragging: Bool = false
-    @State private var isPressed: Bool = false
     var type: WordType
     let geometry: GeometryProxy
     
@@ -200,12 +369,12 @@ struct WordTile2: View {
             .foregroundColor(.allwhite)
             .font(.featuredText)
             .cornerRadius(8)
-            .scaleEffect(isPressed ? 0.95 : 1.0)
-            .shadow(radius: isPressed ? 2 : 5)
             .position(
                 x: geometry.size.width * (location.xPercentage ?? 0.0) + dragOffset.width,
                 y: geometry.size.height * (location.yPercentage ?? 0.0) + dragOffset.height
             )
+            .scaleEffect(isDragging ? 1.05 : 1.0) // Increased scale on press
+            .rotationEffect(.degrees(isDragging ? 1.75 : 0)) // Added rotation on press
             .gesture(
                 DragGesture()
                     .updating($isDragging) { _, state, _ in
@@ -213,7 +382,6 @@ struct WordTile2: View {
                     }
                     .onChanged { value in
                         dragOffset = value.translation
-                        isPressed = true
                     }
                     .onEnded { value in
                         let newX = geometry.size.width * (location.xPercentage ?? 0.0) + value.translation.width
@@ -221,10 +389,8 @@ struct WordTile2: View {
                         location.xPercentage = newX / geometry.size.width
                         location.yPercentage = newY / geometry.size.height
                         dragOffset = .zero
-                        isPressed = false
                     }
             )
-            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
             .animation(.interactiveSpring(), value: isDragging)
     }
 }
@@ -243,7 +409,9 @@ struct GameContentView2: View {
     @Bindable var entry: InkwellEntryModel
     @Binding var formattedDate: String
     @Binding var isCapturingScreenshot: Bool
-    
+    @Binding var animateTiles: Bool
+    @Binding var tileScale: CGFloat // New binding for scale
+
     var captureScreenshot: () -> Void
 
     var body: some View {
@@ -258,12 +426,32 @@ struct GameContentView2: View {
                         type: entry.wordList[index].type,
                         geometry: geometry
                     )
+                    .scaleEffect(animateTiles ? tileScale : 1.0) // Use the tileScale variable
+                    .rotation3DEffect(
+                        .degrees(animateTiles ? 360 : 0),
+                        axis: (x: 0, y: 1, z: 0)
+                    )
                 }
             }
         }
     }
 }
 
-
-
-
+struct PuzzleTypeButton: View {
+    let title: String
+    let type: String
+    @Binding var selectedType: String
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.regularText)
+                .padding(.vertical, 8)
+                .padding(.horizontal, 12)
+                .background(selectedType == type ? Color.allwhite : Color.darkNavy)
+                .foregroundColor(selectedType == type ? Color.darkNavy : Color.allwhite)
+                .cornerRadius(8)
+        }
+    }
+}

@@ -24,7 +24,7 @@ struct OnboardingView: View {
                         .tag(0)
                         .ignoresSafeArea()
                         
-                        OnboardingViewComponent(onboardingImage: "onboarding2", onboardingHeadline: "To play:", onboardingSubheadline: "Slide the word tiles until you create a poem or lyric you like. There's no right or wrong answer. it's up to you to explore.", buttonAction: {
+                        OnboardingViewComponent(onboardingImage: "onboarding2", onboardingHeadline: "To play:", onboardingSubheadline: "Explore the words until you make a poem or lyric you like.", buttonAction: {
                             withAnimation {
                                 selectedOnboardingView = 2
                             }
@@ -32,7 +32,7 @@ struct OnboardingView: View {
                         .tag(1)
                         .ignoresSafeArea()
                         
-                        OnboardingViewComponent(onboardingImage: "onboarding3", onboardingHeadline: "To finish:", onboardingSubheadline: "Push any words you don't need to the bottom.", buttonAction: {
+                        OnboardingViewComponent(onboardingImage: "onboarding3", onboardingHeadline: "To finish:", onboardingSubheadline: "Push any words you don't need to the bottom of the screen.", buttonAction: {
                             withAnimation {
                                 selectedOnboardingView = 3
                             }

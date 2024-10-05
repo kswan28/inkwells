@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import TelemetryDeck
 
 struct ArchiveView: View {
     
@@ -63,6 +64,9 @@ struct ArchiveView: View {
                 }
 
             }
+        }
+        .onAppear{
+            TelemetryDeck.signal("ArchiveView.opened")
         }
         .alert("Delete this Inkwell?", isPresented: Binding<Bool>(
                             get: { entryToDelete != nil },
