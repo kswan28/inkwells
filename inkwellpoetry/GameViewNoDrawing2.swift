@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 import UIKit
 import TelemetryDeck
+import MijickPopupView
 
 struct GameViewNoDrawing2: View {
     @Bindable var entry: InkwellEntryModel
@@ -26,6 +27,7 @@ struct GameViewNoDrawing2: View {
     @State private var isPuzzleRefreshing = false
     @State private var animateTiles = false
     @State private var tileScale: CGFloat = 1.0 // New state variable for scale
+    @State private var showChangeStylePopup: Bool = false
 
     init(entry: InkwellEntryModel) {
         self.entry = entry
@@ -131,17 +133,6 @@ struct GameViewNoDrawing2: View {
                  ActivityViewController2(activityItems: [screenshot])
              }
          }
-         .alert("Change Inkwell style?", isPresented: $showAlert) {
-             Button("Cancel", role: .cancel) {
-                 selectedPuzzleType = entry.puzzleType
-             }
-             Button("Change", role: .destructive) {
-                 updateExistingEntry()
-                 TelemetryDeck.signal("PuzzleStyle.changed")
-             }
-         } message: {
-             Text("This will update your current Inkwell with a new one in the selected style. Are you sure?")
-         }
          .onAppear {
              let dateFormatter = DateFormatter()
              dateFormatter.dateStyle = .long
@@ -219,8 +210,16 @@ struct GameViewNoDrawing2: View {
     
     private func updatePuzzleType(newType: String) {
         if newType != entry.puzzleType {
-            showAlert = true
             selectedPuzzleType = newType
+            ChangeInkwellStylePopup(
+                onCancel: {
+                    selectedPuzzleType = entry.puzzleType
+                },
+                onChange: {
+                    updateExistingEntry()
+                    TelemetryDeck.signal("PuzzleStyle.changed")
+                }
+            ).showAndStack()
         }
     }
     
@@ -364,10 +363,10 @@ struct WordTile2: View {
     
     var body: some View {
         Text(word.text)
-            .padding()
+            .padding(10)
             .background(backgroundColor)
             .foregroundColor(.allwhite)
-            .font(.featuredText)
+            .font(.regularTextBig)
             .cornerRadius(8)
             .position(
                 x: geometry.size.width * (location.xPercentage ?? 0.0) + dragOffset.width,
@@ -453,5 +452,80 @@ struct PuzzleTypeButton: View {
                 .foregroundColor(selectedType == type ? Color.darkNavy : Color.allwhite)
                 .cornerRadius(8)
         }
+    }
+}
+
+struct ChangeInkwellStylePopup: CentrePopup {
+    
+    @Environment (\.colorScheme) var colorScheme
+    
+    let onCancel: () -> Void
+    let onChange: () -> Void
+    
+    func createContent() -> some View {
+            
+            VStack(alignment: .center) {
+                
+                Image("inkwell-logo")
+                    .resizable()
+                    .frame(width:120, height: 120)
+                    .padding(.top)
+                    .padding(.bottom)
+                
+                Text("Change Inkwell style?")
+                    .font(.modalHeading)
+                    .foregroundStyle(.darkNavy)
+                    .padding(.bottom)
+                
+                Text("This will update your current Inkwell with a new one in the selected style.\nAre you sure?")
+                    .font(.featuredText)
+                    .foregroundStyle(.darkNavy)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+                
+                HStack(spacing: 20) {
+                    Button("Cancel") {
+                        onCancel()
+                        dismiss()
+                    }
+                    .padding()
+                    .foregroundColor(Color.darkNavy.opacity(0.8))
+                    .background {
+                        RoundedRectangle(cornerRadius: 8)
+                            //.stroke(.gray, lineWidth: 6)
+                            .fill(.gray)
+                            .opacity(0.4)
+                            .frame(maxWidth: .infinity)
+                        
+                    }
+                    
+                    Button("Change") {
+                        onChange()
+                        dismiss()
+                    }
+                    .padding()
+                    .foregroundColor(.darkNavy)
+                    .background {
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.darkNavy, lineWidth: 6)
+                            .fill(Color.lavender)
+                            .frame(maxWidth: .infinity)
+                        
+                    }
+                    
+                }
+                .padding(.top)
+            }
+            .padding()
+            .background(.allwhite)
+            .cornerRadius(12)
+            .shadow(radius: 10)
+            
+        }
+    
+    func configurePopup(popup: CentrePopupConfig) -> CentrePopupConfig {
+        popup
+            .backgroundColour(.black.opacity(0.4))
+            .tapOutsideToDismiss(true)
     }
 }

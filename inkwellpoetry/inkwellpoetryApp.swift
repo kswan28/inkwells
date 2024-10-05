@@ -8,6 +8,7 @@
 import SwiftUI
 import UserNotifications
 import TelemetryDeck
+import MijickPopupView
 
 //App Delegate to help handle notifications
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -19,6 +20,23 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound, .badge])
     }
+    
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        let sceneConfig = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
+        sceneConfig.delegateClass = CustomPopupSceneDelegate.self
+        return sceneConfig
+    }
+}
+
+class CustomPopupSceneDelegate: PopupSceneDelegate {
+    override init() {
+        super.init()
+        config = { $0
+            .centre { $0
+                .tapOutsideToDismiss(true)
+            }
+        }
+    }
 }
 
 @main
@@ -27,6 +45,7 @@ struct inkwellpoetryApp: App {
     @State private var isLoading = true
     @State private var opacity = 1.0
     @AppStorage("onboarding") var needsOnboarding = true
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     init() {
            let config = TelemetryDeck.Config(appID: "***REMOVED***")
@@ -54,6 +73,7 @@ struct inkwellpoetryApp: App {
                                              }
                 } else {
                     ContentView()
+                        .implementPopupView()
                         .modelContainer(for: [InkwellEntryModel.self, Reminder.self, CustomPuzzleSettingsModel.self])
                         .onAppear {
                             
