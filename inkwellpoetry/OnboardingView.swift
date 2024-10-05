@@ -32,7 +32,7 @@ struct OnboardingView: View {
                         .tag(1)
                         .ignoresSafeArea()
                         
-                        OnboardingViewComponent(onboardingImage: "onboarding3", onboardingHeadline: "To finish:", onboardingSubheadline: "Push any words you don't need to the bottom of the screen.", buttonAction: {
+                        OnboardingViewComponent(onboardingImage: "onboarding3", onboardingHeadline: "To finish:", onboardingSubheadline: "Push any words you don't need to the bottom.", buttonAction: {
                             withAnimation {
                                 selectedOnboardingView = 3
                             }
