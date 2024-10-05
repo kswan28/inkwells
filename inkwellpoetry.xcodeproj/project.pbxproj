@@ -33,6 +33,7 @@
 		C02507862CB1EE2F00BD5C46 /* MijickPopupView in Frameworks */ = {isa = PBXBuildFile; productRef = C02507852CB1EE2F00BD5C46 /* MijickPopupView */; };
 		C02507892CB1EE3600BD5C46 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = C02507882CB1EE3600BD5C46 /* Lottie */; };
 		C025078B2CB1FC2000BD5C46 /* popper.json in Resources */ = {isa = PBXBuildFile; fileRef = C025078A2CB1FC1F00BD5C46 /* popper.json */; };
+		C025078D2CB2009A00BD5C46 /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C025078C2CB2009A00BD5C46 /* AnimationView.swift */; };
 		C0B586762C97AA6F0020FE7A /* GameViewNoDrawing2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B586752C97AA6F0020FE7A /* GameViewNoDrawing2.swift */; };
 		C0D2D3172CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2D3162CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift */; };
 /* End PBXBuildFile section */
@@ -72,6 +73,7 @@
 		C00123892C8E74E000DE0A7B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		C00985592C9FC8A9006782F4 /* inkwellpoetry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = inkwellpoetry.entitlements; sourceTree = "<group>"; };
 		C025078A2CB1FC1F00BD5C46 /* popper.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = popper.json; sourceTree = "<group>"; };
+		C025078C2CB2009A00BD5C46 /* AnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
 		C0B586752C97AA6F0020FE7A /* GameViewNoDrawing2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewNoDrawing2.swift; sourceTree = "<group>"; };
 		C0B586DC2C97CEB20020FE7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0D2D3162CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPuzzleSettingsModel.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				C00123572C8646EF00DE0A7B /* WordList.swift */,
 				C001235D2C8CF58500DE0A7B /* FontHelper.swift */,
 				C001237E2C8E6E5F00DE0A7B /* LoadingScreen.swift */,
+				C025078C2CB2009A00BD5C46 /* AnimationView.swift */,
 				C00123852C8E737C00DE0A7B /* RadialGradientRectangle.swift */,
 				C00123802C8E6E8E00DE0A7B /* inkwell.json */,
 				C001237A2C8E54AD00DE0A7B /* DeviceModels.json */,
@@ -267,6 +270,7 @@
 				C00123462C86458C00DE0A7B /* inkwellpoetryApp.swift in Sources */,
 				C0B586762C97AA6F0020FE7A /* GameViewNoDrawing2.swift in Sources */,
 				C001235E2C8CF58500DE0A7B /* FontHelper.swift in Sources */,
+				C025078D2CB2009A00BD5C46 /* AnimationView.swift in Sources */,
 				C00123792C8E544800DE0A7B /* MailView.swift in Sources */,
 				C00123582C8646EF00DE0A7B /* WordList.swift in Sources */,
 			);

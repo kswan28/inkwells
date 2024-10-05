@@ -34,7 +34,7 @@ struct ArchiveView: View {
                 ScrollView {
                                     LazyVGrid(columns: Array(repeating: GridItem(), count: UIDevice.current.model == "iPad" ? 3 : 2), spacing: 20) {
                                         ForEach(entries.sorted(by: { $0.date > $1.date }), id: \.self) { entry in
-                                            NavigationLink(destination: GameViewNoDrawing2(entry: entry)) {
+                                            NavigationLink(destination: GameViewNoDrawing2(entry: entry, isPuzzleCompleted: entry.isCompleted)) {
                                                 EntryTile(entry: entry)
                                                     .contextMenu {
                                                         Button(role: .destructive) {
