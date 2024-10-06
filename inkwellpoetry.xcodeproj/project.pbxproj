@@ -12,7 +12,6 @@
 		C001234A2C86458F00DE0A7B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C00123492C86458F00DE0A7B /* Assets.xcassets */; };
 		C001234D2C86458F00DE0A7B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C001234C2C86458F00DE0A7B /* Preview Assets.xcassets */; };
 		C00123542C8645C200DE0A7B /* InkwellEntryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123532C8645C200DE0A7B /* InkwellEntryModel.swift */; };
-		C00123562C8646D600DE0A7B /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123552C8646D600DE0A7B /* GameView.swift */; };
 		C00123582C8646EF00DE0A7B /* WordList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123572C8646EF00DE0A7B /* WordList.swift */; };
 		C001235A2C8684E000DE0A7B /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123592C8684E000DE0A7B /* ArchiveView.swift */; };
 		C001235E2C8CF58500DE0A7B /* FontHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001235D2C8CF58500DE0A7B /* FontHelper.swift */; };
@@ -45,7 +44,6 @@
 		C00123492C86458F00DE0A7B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C001234C2C86458F00DE0A7B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C00123532C8645C200DE0A7B /* InkwellEntryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InkwellEntryModel.swift; sourceTree = "<group>"; };
-		C00123552C8646D600DE0A7B /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		C00123572C8646EF00DE0A7B /* WordList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordList.swift; sourceTree = "<group>"; };
 		C00123592C8684E000DE0A7B /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
 		C001235D2C8CF58500DE0A7B /* FontHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontHelper.swift; sourceTree = "<group>"; };
@@ -115,29 +113,13 @@
 				C00985592C9FC8A9006782F4 /* inkwellpoetry.entitlements */,
 				C0B586DC2C97CEB20020FE7A /* Info.plist */,
 				C00123452C86458C00DE0A7B /* inkwellpoetryApp.swift */,
-				C0D2D3162CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift */,
 				C00123472C86458C00DE0A7B /* ContentView.swift */,
 				C0B586752C97AA6F0020FE7A /* GameViewNoDrawing2.swift */,
-				C00123892C8E74E000DE0A7B /* OnboardingView.swift */,
-				C00123872C8E745F00DE0A7B /* OnboardingViewComponent.swift */,
-				C00123532C8645C200DE0A7B /* InkwellEntryModel.swift */,
-				C00123552C8646D600DE0A7B /* GameView.swift */,
 				C00123592C8684E000DE0A7B /* ArchiveView.swift */,
-				C001236E2C8E51E100DE0A7B /* TextModalComponent.swift */,
-				C00123702C8E538B00DE0A7B /* SettingsMenu.swift */,
-				C001237C2C8E5B6C00DE0A7B /* RemindersView.swift */,
-				C00123722C8E53DF00DE0A7B /* SupportEmail.swift */,
-				C00123742C8E540B00DE0A7B /* UIDevice+Extension.swift */,
-				C00123762C8E543400DE0A7B /* Bundle+Extension.swift */,
-				C00123782C8E544800DE0A7B /* MailView.swift */,
-				C00123572C8646EF00DE0A7B /* WordList.swift */,
-				C001235D2C8CF58500DE0A7B /* FontHelper.swift */,
-				C001237E2C8E6E5F00DE0A7B /* LoadingScreen.swift */,
-				C025078C2CB2009A00BD5C46 /* AnimationView.swift */,
-				C00123852C8E737C00DE0A7B /* RadialGradientRectangle.swift */,
-				C00123802C8E6E8E00DE0A7B /* inkwell.json */,
-				C001237A2C8E54AD00DE0A7B /* DeviceModels.json */,
-				C025078A2CB1FC1F00BD5C46 /* popper.json */,
+				C02507922CB33A0600BD5C46 /* DataModels */,
+				C025078E2CB3395400BD5C46 /* Components */,
+				C02507912CB339C100BD5C46 /* Email */,
+				C025078F2CB3398800BD5C46 /* HelpersExtensions */,
 				C001235F2C8CF60200DE0A7B /* Fonts */,
 				C00123492C86458F00DE0A7B /* Assets.xcassets */,
 				C001234B2C86458F00DE0A7B /* Preview Content */,
@@ -167,6 +149,53 @@
 				C001236A2C8CF6C900DE0A7B /* Lato-ThinItalic.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		C025078E2CB3395400BD5C46 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				C001237C2C8E5B6C00DE0A7B /* RemindersView.swift */,
+				C00123702C8E538B00DE0A7B /* SettingsMenu.swift */,
+				C001236E2C8E51E100DE0A7B /* TextModalComponent.swift */,
+				C00123892C8E74E000DE0A7B /* OnboardingView.swift */,
+				C00123872C8E745F00DE0A7B /* OnboardingViewComponent.swift */,
+				C001237E2C8E6E5F00DE0A7B /* LoadingScreen.swift */,
+				C025078C2CB2009A00BD5C46 /* AnimationView.swift */,
+				C00123852C8E737C00DE0A7B /* RadialGradientRectangle.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		C025078F2CB3398800BD5C46 /* HelpersExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				C001235D2C8CF58500DE0A7B /* FontHelper.swift */,
+			);
+			path = HelpersExtensions;
+			sourceTree = "<group>";
+		};
+		C02507912CB339C100BD5C46 /* Email */ = {
+			isa = PBXGroup;
+			children = (
+				C00123722C8E53DF00DE0A7B /* SupportEmail.swift */,
+				C00123782C8E544800DE0A7B /* MailView.swift */,
+				C00123742C8E540B00DE0A7B /* UIDevice+Extension.swift */,
+				C00123762C8E543400DE0A7B /* Bundle+Extension.swift */,
+			);
+			path = Email;
+			sourceTree = "<group>";
+		};
+		C02507922CB33A0600BD5C46 /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				C00123532C8645C200DE0A7B /* InkwellEntryModel.swift */,
+				C0D2D3162CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift */,
+				C00123572C8646EF00DE0A7B /* WordList.swift */,
+				C00123802C8E6E8E00DE0A7B /* inkwell.json */,
+				C001237A2C8E54AD00DE0A7B /* DeviceModels.json */,
+				C025078A2CB1FC1F00BD5C46 /* popper.json */,
+			);
+			path = DataModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,7 +289,6 @@
 				C001235A2C8684E000DE0A7B /* ArchiveView.swift in Sources */,
 				C001237F2C8E6E5F00DE0A7B /* LoadingScreen.swift in Sources */,
 				C00123542C8645C200DE0A7B /* InkwellEntryModel.swift in Sources */,
-				C00123562C8646D600DE0A7B /* GameView.swift in Sources */,
 				C00123862C8E737D00DE0A7B /* RadialGradientRectangle.swift in Sources */,
 				C00123772C8E543400DE0A7B /* Bundle+Extension.swift in Sources */,
 				C001237D2C8E5B6C00DE0A7B /* RemindersView.swift in Sources */,
