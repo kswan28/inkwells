@@ -73,7 +73,7 @@ struct GameViewNoDrawing2: View {
                             ZStack{
                                 RoundedRectangle(cornerRadius: 8)
                                     .stroke(lineWidth: 2)
-                                    .frame(width:84, height: 120)
+                                    .frame(width:96, height: 120)
                                     .foregroundStyle(.allwhite)
                                 VStack{
                                     PuzzleTypeButton(title: "Classic 🎲", type: "classic 🎲", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "classic 🎲") })
@@ -93,7 +93,7 @@ struct GameViewNoDrawing2: View {
                             ZStack{
                                 RoundedRectangle(cornerRadius: 8)
                                     .stroke(lineWidth: 2)
-                                    .frame(width:84, height: 120)
+                                    .frame(width:96, height: 120)
                                     .foregroundStyle(.allwhite)
                                 VStack{
                                     Button(action: {
@@ -399,8 +399,8 @@ struct WordTile2: View {
                 x: geometry.size.width * (location.xPercentage ?? 0.0) + dragOffset.width,
                 y: geometry.size.height * (location.yPercentage ?? 0.0) + dragOffset.height
             )
-            .scaleEffect(isDragging ? 1.05 : 1.0) // Increased scale on press
-            .rotationEffect(.degrees(isDragging ? 1.75 : 0)) // Added rotation on press
+            .scaleEffect(isDragging ? 1.025 : 1.0) // Increased scale on press
+            .rotationEffect(.degrees(isDragging ? 1.5 : 0)) // Added rotation on press
             .gesture(
                 DragGesture()
                     .updating($isDragging) { _, state, _ in
