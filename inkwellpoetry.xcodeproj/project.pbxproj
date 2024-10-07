@@ -29,10 +29,10 @@
 		C00123882C8E745F00DE0A7B /* OnboardingViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123872C8E745F00DE0A7B /* OnboardingViewComponent.swift */; };
 		C001238A2C8E74E000DE0A7B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00123892C8E74E000DE0A7B /* OnboardingView.swift */; };
 		C02507832CB1EE2600BD5C46 /* TelemetryDeck in Frameworks */ = {isa = PBXBuildFile; productRef = C02507822CB1EE2600BD5C46 /* TelemetryDeck */; };
-		C02507862CB1EE2F00BD5C46 /* MijickPopupView in Frameworks */ = {isa = PBXBuildFile; productRef = C02507852CB1EE2F00BD5C46 /* MijickPopupView */; };
 		C02507892CB1EE3600BD5C46 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = C02507882CB1EE3600BD5C46 /* Lottie */; };
 		C025078B2CB1FC2000BD5C46 /* popper.json in Resources */ = {isa = PBXBuildFile; fileRef = C025078A2CB1FC1F00BD5C46 /* popper.json */; };
 		C025078D2CB2009A00BD5C46 /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C025078C2CB2009A00BD5C46 /* AnimationView.swift */; };
+		C04BE8E62CB38A3200D72EA8 /* MijickPopupView in Frameworks */ = {isa = PBXBuildFile; productRef = C04BE8E52CB38A3200D72EA8 /* MijickPopupView */; };
 		C0B586762C97AA6F0020FE7A /* GameViewNoDrawing2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B586752C97AA6F0020FE7A /* GameViewNoDrawing2.swift */; };
 		C0D2D3172CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2D3162CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift */; };
 /* End PBXBuildFile section */
@@ -83,7 +83,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C02507832CB1EE2600BD5C46 /* TelemetryDeck in Frameworks */,
-				C02507862CB1EE2F00BD5C46 /* MijickPopupView in Frameworks */,
+				C04BE8E62CB38A3200D72EA8 /* MijickPopupView in Frameworks */,
 				C02507892CB1EE3600BD5C46 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -216,8 +216,8 @@
 			name = inkwellpoetry;
 			packageProductDependencies = (
 				C02507822CB1EE2600BD5C46 /* TelemetryDeck */,
-				C02507852CB1EE2F00BD5C46 /* MijickPopupView */,
 				C02507882CB1EE3600BD5C46 /* Lottie */,
+				C04BE8E52CB38A3200D72EA8 /* MijickPopupView */,
 			);
 			productName = inkwellpoetry;
 			productReference = C00123422C86458C00DE0A7B /* inkwellpoetry.app */;
@@ -249,8 +249,8 @@
 			mainGroup = C00123392C86458C00DE0A7B;
 			packageReferences = (
 				C02507812CB1EE2600BD5C46 /* XCRemoteSwiftPackageReference "SwiftSDK" */,
-				C02507842CB1EE2F00BD5C46 /* XCRemoteSwiftPackageReference "PopupView" */,
 				C02507872CB1EE3600BD5C46 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				C04BE8E42CB38A3200D72EA8 /* XCRemoteSwiftPackageReference "PopupView" */,
 			);
 			productRefGroup = C00123432C86458C00DE0A7B /* Products */;
 			projectDirPath = "";
@@ -522,20 +522,20 @@
 				minimumVersion = 2.4.1;
 			};
 		};
-		C02507842CB1EE2F00BD5C46 /* XCRemoteSwiftPackageReference "PopupView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Mijick/PopupView";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.7.1;
-			};
-		};
 		C02507872CB1EE3600BD5C46 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.5.0;
+			};
+		};
+		C04BE8E42CB38A3200D72EA8 /* XCRemoteSwiftPackageReference "PopupView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Mijick/PopupView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -546,15 +546,15 @@
 			package = C02507812CB1EE2600BD5C46 /* XCRemoteSwiftPackageReference "SwiftSDK" */;
 			productName = TelemetryDeck;
 		};
-		C02507852CB1EE2F00BD5C46 /* MijickPopupView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C02507842CB1EE2F00BD5C46 /* XCRemoteSwiftPackageReference "PopupView" */;
-			productName = MijickPopupView;
-		};
 		C02507882CB1EE3600BD5C46 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C02507872CB1EE3600BD5C46 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		C04BE8E52CB38A3200D72EA8 /* MijickPopupView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C04BE8E42CB38A3200D72EA8 /* XCRemoteSwiftPackageReference "PopupView" */;
+			productName = MijickPopupView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
