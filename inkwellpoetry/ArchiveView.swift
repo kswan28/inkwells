@@ -31,6 +31,25 @@ struct ArchiveView: View {
                 }
                 .padding()
                 
+                
+                
+                if entries.isEmpty {
+                        VStack (alignment: .center){
+                            Text("👋")
+                                .font(.screenHeading)
+                            Text("No Inkwells yet!")
+                                .font(.smallHeading)
+                                .foregroundStyle(.allwhite)
+                            Text("Go back and click on 'Today's Inkwell'\nto complete your first Inkwell.")
+                                .font(.regularTextBig)
+                                .foregroundStyle(.allwhite)
+                                .multilineTextAlignment(.center)
+                    }
+                    .padding()
+                }
+                
+                
+                
                 ScrollView {
                                     LazyVGrid(columns: Array(repeating: GridItem(), count: UIDevice.current.model == "iPad" ? 3 : 2), spacing: 20) {
                                         ForEach(entries.sorted(by: { $0.date > $1.date }), id: \.self) { entry in

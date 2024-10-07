@@ -126,6 +126,7 @@ struct GameViewNoDrawing2: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
+                    saveChanges()
                     dismiss()
                 } label: {
                     HStack{
@@ -136,6 +137,17 @@ struct GameViewNoDrawing2: View {
                 }
 
             }
+        }
+        .alert("Change Inkwell style?", isPresented: $showAlert) {
+            Button("Cancel", role: .cancel) {
+                selectedPuzzleType = entry.puzzleType
+            }
+            Button("Change", role: .destructive) {
+                updateExistingEntry()
+                TelemetryDeck.signal("PuzzleStyle.changed")
+            }
+        } message: {
+            Text("This will replace your Inkwell with a new one in the selected style. Are you sure?")
         }
          .sheet(isPresented: $isSharePresented) {
              if let screenshot = screenshotImage {
@@ -219,20 +231,29 @@ struct GameViewNoDrawing2: View {
         }
     }
     
-    private func updatePuzzleType(newType: String) {
+    
+    //temporary alert until new pop up plug in starts working again
+    private func updatePuzzleType(newType:String) {
         if newType != entry.puzzleType {
             selectedPuzzleType = newType
-            ChangeInkwellStylePopup(
-                onCancel: {
-                    selectedPuzzleType = entry.puzzleType
-                },
-                onChange: {
-                    updateExistingEntry()
-                    TelemetryDeck.signal("PuzzleStyle.changed")
-                }
-            ).showAndStack()
+            showAlert = true
         }
     }
+    
+//    private func updatePuzzleType(newType: String) {
+//        if newType != entry.puzzleType {
+//            selectedPuzzleType = newType
+//            ChangeInkwellStylePopup(
+//                onCancel: {
+//                    selectedPuzzleType = entry.puzzleType
+//                },
+//                onChange: {
+//                    updateExistingEntry()
+//                    TelemetryDeck.signal("PuzzleStyle.changed")
+//                }
+//            ).showAndStack()
+//        }
+//    }
     
     private func getPuzzleOfTheDay(puzzleType: String) -> InkwellEntryModel {
         let dateFormatter = DateFormatter()
@@ -327,7 +348,7 @@ struct GameViewNoDrawing2: View {
 
 struct InkspillBackground2: View {
    
-    @Environment (\.colorScheme) private var colorScheme
+    @Environment(\.colorScheme) private var colorScheme
     
     let geometry: GeometryProxy
     let date: Date
@@ -484,7 +505,7 @@ struct PuzzleTypeButton: View {
 
 struct ChangeInkwellStylePopup: CentrePopup {
     
-    @Environment (\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var colorScheme
     
     let onCancel: () -> Void
     let onChange: () -> Void

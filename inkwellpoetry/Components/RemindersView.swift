@@ -30,8 +30,8 @@ final class Reminder {
 }
 
 struct RemindersView: View {
-    @Environment (\.colorScheme) var colorScheme
-    @Environment (\.dismiss) private var dismiss
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.dismiss) private var dismiss
     
     @Environment(\.modelContext) private var modelContext
     @Query private var reminders: [Reminder]
