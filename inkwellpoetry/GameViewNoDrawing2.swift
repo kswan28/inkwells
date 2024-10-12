@@ -420,10 +420,10 @@ struct WordTile2: View {
     
     var body: some View {
         Text(word.text)
-            .padding(10)
+            .padding(UIDevice.current.userInterfaceIdiom == .pad ? 14 : 10)
             .background(backgroundColor)
             .foregroundColor(.allwhite)
-            .font(.regularTextBig)
+            .font(UIDevice.current.userInterfaceIdiom == .pad ? .featuredText : .regularTextBig)
             .cornerRadius(8)
             .position(
                 x: geometry.size.width * (location.xPercentage ?? 0.0) + dragOffset.width,
