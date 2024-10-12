@@ -60,7 +60,7 @@ struct inkwellpoetryApp: App {
                     LoadingScreen(opacity:$opacity)
                         .onAppear {
                                                  // Simulate loading delay
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                                      withAnimation(.easeOut(duration: 1.5)) {
                                                          opacity = 0 // Fade out the loading screen over 1.5 seconds
                                                      }

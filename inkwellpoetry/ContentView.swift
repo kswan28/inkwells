@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  inkwellpoetry
-//
-//  Created by Kristen Swanson on 9/2/24.
-//
-
 import SwiftUI
 import SwiftData
 import TelemetryDeck
@@ -14,16 +7,17 @@ struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Query private var entries: [InkwellEntryModel]
     @Query private var customPuzzleSettings: [CustomPuzzleSettingsModel]
+    @State private var contentOpacity: CGFloat = 0.0
     
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
-                ZStack{
+                ZStack {
                     Color.whiteBackground
                         .ignoresSafeArea()
                     
                     VStack {
-                        HStack{
+                        HStack {
                             SettingsMenu()
                             Spacer()
                         }
@@ -32,101 +26,38 @@ struct ContentView: View {
                         .padding(.bottom, 10)
                         
                         ScrollView(showsIndicators: false) {
-                            NavigationLink {
-                                if let todayEntry = getTodayEntry() {
-                                    GameViewNoDrawing2(entry: todayEntry, isPuzzleCompleted: todayEntry.isCompleted)
-                                } else {
-                                    let newEntry = getPuzzleOfTheDay()
-                                    GameViewNoDrawing2(entry: newEntry, isPuzzleCompleted: false)
-                                        .onAppear {
-                                            modelContext.insert(newEntry)
-                                            try? modelContext.save()
+                        
+                                VStack {
+                                    NavigationLink {
+                                        if let todayEntry = getTodayEntry() {
+                                            GameViewNoDrawing2(entry: todayEntry, isPuzzleCompleted: todayEntry.isCompleted)
+                                        } else {
+                                            let newEntry = getPuzzleOfTheDay()
+                                            GameViewNoDrawing2(entry: newEntry, isPuzzleCompleted: false)
+                                                .onAppear {
+                                                    modelContext.insert(newEntry)
+                                                    try? modelContext.save()
+                                                }
                                         }
-                                }
-                            } label: {
-                                ZStack{
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .stroke(Color.darkNavy, lineWidth: 12)
-                                        .fill(Color.lavender)
-                                    VStack{
-                                        Spacer()
-                                        HStack{
-                                            Spacer()
-                                            Image("inkwell-logo")
-                                                .resizable()
-                                                .scaledToFit()
-                                            Spacer()
-                                        }
-                                        Spacer()
-                                        HStack{
-                                            
-                                            VStack (alignment: .leading){
-                                                Text("GAME")
-                                                    .foregroundStyle(.darkNavy)
-                                                    .font(.dateHeader)
-                                                
-                                                Text("Today's Inkwell")
-                                                    .foregroundStyle(.darkNavy)
-                                                    .font(.screenInstruct)
-                                                
-                                            }
-                                            Spacer()
-                                        }
-                                        .padding()
+                                    } label: {
+                                        TodayInkwellButton(geometry: geometry)
+                                    }
+                                    
+                                    NavigationLink {
+                                        ArchiveView()
+                                    } label: {
+                                        ArchivesButton(geometry: geometry, colorScheme: colorScheme)
                                     }
                                 }
-                                .frame(height: geometry.size.height * 0.75)
-                                .padding(.horizontal)
-                                .padding(.top, 12)
-                                .padding(.bottom, 2)
-                                
-                                
-                            }
+                                .opacity(contentOpacity)
                             
-                            NavigationLink {
-                                ArchiveView()
-                            } label: {
-                                ZStack{
-                                    
-                                    if colorScheme == .dark {
-                                        RoundedRectangle(cornerRadius: 15)
-                                            .stroke(colorScheme == .dark ? Color.darkNavy : Color.lavender, lineWidth: 12)
-                                            .fill(colorScheme == .dark ? Color.allwhite : Color.whiteBackground.opacity(0.4))
-                                    }
-                                    
-                                    else {
-                                        RoundedRectangle(cornerRadius: 15)
-                                            .stroke(Color.lavender, lineWidth: 12)
-                                            .fill(Color.whiteBackground)
-                                    }
-                                    
-                                    
-                                  
-                                    
-                                    
-                                    VStack{
-                                        Spacer()
-                                        HStack{
-                                            VStack (alignment: .leading){
-                                                Text("ARCHIVES")
-                                                    .foregroundStyle(.darkNavy)
-                                                    .font(.dateHeader)
-                                                
-                                                Text("Your Inkwells")
-                                                    .foregroundStyle(.darkNavy)
-                                                    .font(.screenInstruct)
-                                                
-                                            }
-                                            Spacer()
-                                        }
-                                        .padding()
-                                    }
-                                }
-                                .frame(height: geometry.size.height * 0.125)
-                                .padding()
-                            }
                         }
                     }
+                }
+                .onAppear {
+                    withAnimation(.easeIn(duration: 0.75)) {
+                                          contentOpacity = 1.0
+                                      }
                 }
             }
         }
@@ -153,14 +84,11 @@ struct ContentView: View {
         
         let puzzleType = customPuzzleSettings.first?.selectedPuzzleSet ?? "classic 🎲"
         
-        // Use a more robust seed generation method
         let seed = dateString.utf8.reduce(0) { ($0 << 8) | Int($1) }
         var generator = SeededRandomNumberGenerator(seed: seed)
         
-        // Get the puzzle type from the current date or logic
         var wordList: [Word] = []
         
-        // Conditional logic based on puzzleType
         switch puzzleType {
         case "spooky 👻":
             wordList += Array(WordList.common.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .common) }
@@ -188,12 +116,11 @@ struct ContentView: View {
             wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
         }
         
-        // Generate tile locations in a cluster at the center of the screen
         let tilesPerRow = 3
         let rows = 5
-        let spacing = 0.005 // 2% of screen width/height
+        let spacing = 0.005
         let tileWidth = (0.5 - (Double(tilesPerRow + 1) * spacing)) / Double(tilesPerRow)
-        let tileHeight = tileWidth / 2 // Assuming tile height is half of its width
+        let tileHeight = tileWidth / 2
         let clusterWidth = Double(tilesPerRow) * tileWidth + (Double(tilesPerRow - 1) * spacing)
         let clusterHeight = Double(rows) * tileHeight + (Double(rows - 1) * spacing)
 
@@ -208,14 +135,85 @@ struct ContentView: View {
             return TileLocation(id: UUID(), xPercentage: xPercentage, yPercentage: yPercentage)
         }
         
-        // Initialize empty path data
         let pathData: [PathData] = []
         return InkwellEntryModel(date: Date(), wordList: wordList, tileLocations: tileLocations, pathData: pathData, puzzleType: puzzleType)
     }
-    
 }
 
-// Update the SeededRandomNumberGenerator to use UInt64 for better randomness
+struct TodayInkwellButton: View {
+    let geometry: GeometryProxy
+    
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 15)
+                //.stroke(Color.darkNavy, lineWidth: 12)
+                .fill(Color.lavender)
+            
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Image("inkwell-logo")
+                        .resizable()
+                        .scaledToFit()
+                    Spacer()
+                }
+                Spacer()
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("GAME")
+                            .foregroundStyle(.darkNavy)
+                            .font(.dateHeader)
+                        
+                        Text("Today's Inkwell")
+                            .foregroundStyle(.darkNavy)
+                            .font(.screenInstruct)
+                    }
+                    Spacer()
+                }
+                .padding()
+            }
+        }
+        .frame(height: geometry.size.height * 0.75)
+        .padding(.horizontal)
+        .padding(.top, 12)
+        .padding(.bottom, 2)
+    }
+}
+
+struct ArchivesButton: View {
+    let geometry: GeometryProxy
+    let colorScheme: ColorScheme
+    
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 15)
+                //.stroke(colorScheme == .dark ? Color.darkNavy : Color.lavender, lineWidth: 12)
+                .fill(colorScheme == .dark ? Color.allwhite : Color.secondary.opacity(0.2))
+                
+            
+            VStack {
+                Spacer()
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("ARCHIVES")
+                            .foregroundStyle(.darkNavy)
+                            .font(.dateHeader)
+                        
+                        Text("Your Inkwells")
+                            .foregroundStyle(.darkNavy)
+                            .font(.screenInstruct)
+                    }
+                    Spacer()
+                }
+                .padding()
+            }
+        }
+        .frame(height: geometry.size.height * 0.125)
+        .padding()
+    }
+}
+
 struct SeededRandomNumberGenerator: RandomNumberGenerator {
     private var state: UInt64
 
