@@ -362,6 +362,7 @@ struct InkspillBackground2: View {
     let geometry: GeometryProxy
     let date: Date
     let formattedDateString: String
+    let puzzleType: String
     
     var body: some View {
         
@@ -371,10 +372,12 @@ struct InkspillBackground2: View {
                 .ignoresSafeArea()
             
             VStack {
-                Text("Inkwell")
+                Text("Inkwell\(puzzleType.suffix(2))")
                     .font(.modalHeading)
-                Text(formattedDateString)
-                    .font(.featuredText)
+                    .padding(.top, UIDevice.current.userInterfaceIdiom == .pad ? 20 : 8)
+                    Text(formattedDateString)
+                        .font(.featuredText)
+                
                 
                 Image("background-ink2")
                     .resizable()
@@ -473,7 +476,7 @@ struct GameContentView2: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                InkspillBackground2(geometry: geometry, date: entry.date, formattedDateString: formattedDate)
+                InkspillBackground2(geometry: geometry, date: entry.date, formattedDateString: formattedDate, puzzleType: entry.puzzleType)
                 
                 ForEach(entry.wordList.indices, id: \.self) { index in
                     WordTile2(
