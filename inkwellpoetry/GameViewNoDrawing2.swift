@@ -32,10 +32,10 @@ struct GameViewNoDrawing2: View {
     @State private var isPuzzleCompleted: Bool
     @State private var showPopperAnimation = false
 
-    init(entry: InkwellEntryModel, isPuzzleCompleted: Bool = false) {
+    init(entry: InkwellEntryModel, isPuzzleCompleted: Bool) {
         self.entry = entry
         _selectedPuzzleType = State(initialValue: entry.puzzleType)
-        _isPuzzleCompleted = State(initialValue: isPuzzleCompleted)
+        _isPuzzleCompleted = State(initialValue: entry.isCompleted)
     }
 
     var body: some View {
@@ -332,7 +332,16 @@ struct GameViewNoDrawing2: View {
     private func markPuzzleAsCompleted() {
         isPuzzleCompleted = true
         entry.isCompleted = true
-        try? modelContext.save()
+        
+        // Delay the save operation slightly to ensure view updates are complete
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            do {
+                try self.modelContext.save()
+                print("Puzzle completion status saved successfully")
+            } catch {
+                print("Failed to save puzzle completion status: \(error)")
+            }
+        }
         
         // Show the popper animation
         showPopperAnimation = true
