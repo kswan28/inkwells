@@ -34,10 +34,10 @@ struct ContentView: View {
                         ScrollView(showsIndicators: false) {
                             NavigationLink {
                                 if let todayEntry = getTodayEntry() {
-                                    GameViewNoDrawing2(entry: todayEntry)
+                                    GameViewNoDrawing2(entry: todayEntry, isPuzzleCompleted: todayEntry.isCompleted)
                                 } else {
                                     let newEntry = getPuzzleOfTheDay()
-                                    GameViewNoDrawing2(entry: newEntry)
+                                    GameViewNoDrawing2(entry: newEntry, isPuzzleCompleted: false)
                                         .onAppear {
                                             modelContext.insert(newEntry)
                                             try? modelContext.save()
