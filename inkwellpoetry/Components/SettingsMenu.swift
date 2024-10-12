@@ -61,19 +61,19 @@ struct SettingsMenu: View {
                 {Label("Get help", systemImage: "lifepreserver")
                 }
                 
-                //Second section -- Add this section after the app is live in the App Store
-                // Divider()
+                //Second section -- App review and share app
+                 Divider()
                 
-                //                Button(action: {
-                //                    requestAppReview()
-                //                }) {
-                //                    Label("Rate the app", systemImage: "star")
-                //                }
-                //
-                //                ShareLink(item: URL(string: "populate with link")!, subject:Text("Inkwells App"), message: Text("Check out the Inkwells Poetry App!"))
-                //                {
-                //                    Label("Share the app", systemImage: "square.and.arrow.up")
-                //                }
+                                Button(action: {
+                                    requestAppReview()
+                                }) {
+                                    Label("Rate the app", systemImage: "star")
+                                }
+                
+                                ShareLink(item: URL(string: "https://apps.apple.com/us/app/inkwells/id6689493263")!, subject:Text("Inkwells App"), message: Text("Check out the Inkwells App!"))
+                                {
+                                    Label("Share the app", systemImage: "square.and.arrow.up")
+                                }
                 
                 Divider()
                 
