@@ -121,7 +121,7 @@ struct EntryTile: View {
                     entry.isFavorite.toggle()
                 } label: {
                     Image(systemName: entry.isFavorite == true ? "heart.fill" : "heart")
-                        .font(.dateHeader)
+                        .font(.regularTextBig)
                         .foregroundColor(colorScheme == .dark ? Color.allwhite : Color.darkNavy)
                         
                 }
