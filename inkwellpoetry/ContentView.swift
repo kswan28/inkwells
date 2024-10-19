@@ -125,7 +125,7 @@ struct ContentView: View {
         let clusterHeight = Double(rows) * tileHeight + (Double(rows - 1) * spacing)
 
         let centerX = 0.6
-        let centerY = 0.55
+        let centerY = 0.38
 
         let tileLocations = wordList.enumerated().map { (index, word) in
             let row = index / tilesPerRow
@@ -146,7 +146,7 @@ struct TodayInkwellButton: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 15)
-                //.stroke(Color.darkNavy, lineWidth: 12)
+                .stroke(Color.darkNavy, lineWidth: 2)
                 .fill(Color.lavender)
             
             VStack {
@@ -188,8 +188,8 @@ struct ArchivesButton: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 15)
-                //.stroke(colorScheme == .dark ? Color.darkNavy : Color.lavender, lineWidth: 12)
-                .fill(colorScheme == .dark ? Color.allwhite : Color.secondary.opacity(0.2))
+                .stroke(colorScheme == .dark ? Color.darkNavy : Color.lavender, lineWidth: 2)
+                .fill(colorScheme == .dark ? Color.allwhite : Color.allwhite)
                 
             
             VStack {
