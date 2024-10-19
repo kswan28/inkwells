@@ -147,7 +147,7 @@ struct GameViewNoDrawing2: View {
                 TelemetryDeck.signal("PuzzleStyle.changed")
             }
         } message: {
-            Text("This will replace your Inkwell with a new one in the selected style. Are you sure?")
+            Text("This will replace your current Inkwell.\nAre you sure?")
         }
          .sheet(isPresented: $isSharePresented) {
              if let screenshot = screenshotImage {
@@ -537,7 +537,7 @@ struct ChangeInkwellStylePopup: CentrePopup {
                     .foregroundStyle(.darkNavy)
                     .padding(.bottom)
                 
-                Text("This will update your current Inkwell with a new one in the selected style.\nAre you sure?")
+                Text("Changing the puzzle style will replace your current Inkwell.\nAre you sure?")
                     .font(.featuredText)
                     .foregroundStyle(.darkNavy)
                     .multilineTextAlignment(.center)
