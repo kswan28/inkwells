@@ -172,7 +172,7 @@ struct RemindersView: View {
               .padding(.bottom, 20)
               .background(
                   RoundedRectangle(cornerRadius: 15)
-                    .stroke(Color.darkNavy, lineWidth: 6)
+                    .stroke(Color.darkNavy, lineWidth: 2)
                       .fill(.lavender))
           
       }

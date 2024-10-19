@@ -308,7 +308,7 @@ struct GameViewNoDrawing2: View {
         let clusterHeight = Double(rows) * tileHeight + (Double(rows - 1) * spacing)
 
         let centerX = 0.6
-        let centerY = 0.55
+        let centerY = 0.38
 
         let tileLocations = wordList.enumerated().map { (index, word) in
             let row = index / tilesPerRow
