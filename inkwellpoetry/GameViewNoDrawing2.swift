@@ -34,8 +34,15 @@ struct GameViewNoDrawing2: View {
 
     init(entry: InkwellEntryModel, isPuzzleCompleted: Bool) {
         self.entry = entry
-        _selectedPuzzleType = State(initialValue: entry.puzzleType)
+        // Reset spooky puzzle type to classic
+        let initialPuzzleType = entry.puzzleType == "spooky 👻" ? "classic 🎲" : entry.puzzleType
+        _selectedPuzzleType = State(initialValue: initialPuzzleType)
         _isPuzzleCompleted = State(initialValue: entry.isCompleted)
+        
+        // Update the entry's puzzle type if it was spooky
+        if entry.puzzleType == "spooky 👻" {
+            entry.puzzleType = "classic 🎲"
+        }
     }
 
     var body: some View {
