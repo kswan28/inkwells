@@ -82,7 +82,8 @@ struct ContentView: View {
         dateFormatter.dateFormat = "yyyyMMdd"
         let dateString = dateFormatter.string(from: Date())
         
-        let puzzleType = customPuzzleSettings.first?.selectedPuzzleSet ?? "classic 🎲"
+        let selectedPuzzleSet = customPuzzleSettings.first?.selectedPuzzleSet ?? "classic 🎲"
+        let puzzleType = selectedPuzzleSet == "spooky 👻" ? "classic 🎲" : selectedPuzzleSet
         
         let seed = dateString.utf8.reduce(0) { ($0 << 8) | Int($1) }
         var generator = SeededRandomNumberGenerator(seed: seed)
