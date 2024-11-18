@@ -72,6 +72,32 @@ struct WordList {
         "dust", "bone", "skull", "eye", "fang", "claw"
       ]
     
+    static let merrynouns = [
+        "snow", "ice", "snowflake", "blizzard", "frost", "icicle", "winter", "snowman",
+        "sled", "skates", "skis", "mittens", "gloves", "scarf", "hat", "earmuffs",
+        "boots", "coat", "sweater", "blanket", "fireplace", "cocoa", "marshmallow",
+        "cookie", "gingerbread", "candy", "chocolate", "present", "gift", "ribbon",
+        "bow", "wrapping", "paper", "card", "letter", "stamp", "envelope", "address",
+        "party", "celebration", "feast", "dinner", "family", "friend", "guest",
+        "host", "home", "house", "cabin", "chimney", "roof", "window", "door",
+        "wreath", "holly", "ivy", "mistletoe", "pine", "spruce", "fir", "branch",
+        "needle", "cone", "tree", "ornament", "star", "angel", "bell", "candle",
+        "light", "lamp", "lantern", "tinsel", "garland", "decoration", "stocking",
+        "candy cane", "reindeer", "sleigh", "Santa", "elf", "workshop", "North Pole",
+        "menorah", "dreidel", "gelt", "latke", "sufganiyot", "oil", "temple",
+        "miracle", "shamash", "wax", "flame", "blessing", "prayer", "song", "game",
+        "gift", "night", "story", "tradition", "village", "town", "city", "square",
+        "shop", "store", "market", "mall", "money", "coin", "dollar", "sale",
+        "shopping", "list", "carol", "music", "song", "singer", "choir", "bell",
+        "chime", "ring", "sound", "echo", "voice", "laugh", "smile", "joy",
+        "peace", "hope", "wish", "dream", "wonder", "magic", "sparkle", "shine",
+        "glow", "twinkle", "flicker", "flash", "ray", "beam", "sun", "moon",
+        "sky", "cloud", "storm", "wind", "breeze", "chill", "frost", "crystal",
+        "pearl", "silver", "gold", "metal", "glass", "wood", "cloth", "fabric",
+        "silk", "wool", "cotton", "fleece", "velvet", "ribbon", "lace", "pattern",
+        "design", "shape", "swirl", "spiral", "circle", "square", "heart"
+      ]
+    
     static let verbs = [
         "hang", "say", "tell", "ask", "caught", "find", "shine", "listen", "dry",
         "glitter", "nestle", "flicker", "glow", "soul", "form", "cloak", "walk",
@@ -113,6 +139,33 @@ struct WordList {
         "run", "hurry", "rush", "tiptoe", "creep", "sneak", "skulk", "prowl",
         "stalk", "loom", "tower", "shadow", "darken", "dim", "glow", "shine",
         "flicker", "flash", "blink", "wink", "stare", "glare", "leer"
+      ]
+    
+    static let merryverbs = [
+        "snow", "freeze", "frost", "chill", "shiver", "bundle", "wrap", "cover",
+        "protect", "warm", "heat", "toast", "bake", "cook", "simmer", "boil",
+        "prepare", "mix", "stir", "blend", "sprinkle", "dust", "sparkle", "shine",
+        "glow", "twinkle", "flicker", "flash", "beam", "radiate", "illuminate",
+        "light", "brighten", "decorate", "trim", "adorn", "embellish", "garnish",
+        "arrange", "display", "show", "present", "give", "receive", "exchange",
+        "share", "spread", "distribute", "deliver", "send", "mail", "post",
+        "address", "write", "sign", "seal", "stamp", "pack", "wrap", "tie",
+        "secure", "tape", "glue", "stick", "attach", "connect", "join", "link",
+        "bind", "fasten", "clip", "pin", "hang", "mount", "place", "position",
+        "set", "adjust", "align", "center", "balance", "steady", "stabilize",
+        "protect", "guard", "watch", "observe", "see", "look", "view", "witness",
+        "celebrate", "party", "feast", "dine", "eat", "drink", "toast", "cheer",
+        "laugh", "smile", "sing", "carol", "chant", "hum", "whistle", "play",
+        "dance", "skip", "jump", "hop", "slide", "glide", "skate", "ski",
+        "sled", "ride", "travel", "journey", "venture", "explore", "discover",
+        "find", "seek", "search", "hunt", "gather", "collect", "accumulate",
+        "store", "save", "keep", "preserve", "maintain", "hold", "carry", "lift",
+        "raise", "elevate", "climb", "ascend", "rise", "soar", "float", "drift",
+        "fall", "descend", "drop", "settle", "land", "rest", "pause", "stop",
+        "wait", "anticipate", "expect", "hope", "wish", "dream", "imagine",
+        "envision", "create", "make", "build", "construct", "craft", "shape",
+        "form", "mold", "design", "plan", "organize", "arrange", "sort", "stack",
+        "pile", "group", "gather", "assemble", "combine", "merge", "blend", "mix"
       ]
     
     static let adjectives = [
@@ -160,6 +213,35 @@ struct WordList {
         "smoky", "wispy", "flickering", "glowing", "shimmering"
       ]
     
+    static let merryadjectives = [
+        "snowy", "icy", "frosty", "frozen", "cold", "chilly", "crisp", "cool",
+        "wintry", "seasonal", "festive", "merry", "jolly", "cheerful", "happy",
+        "joyful", "peaceful", "quiet", "silent", "still", "calm", "serene",
+        "tranquil", "gentle", "soft", "light", "fluffy", "powdery", "crystalline",
+        "sparkly", "shiny", "glowing", "bright", "brilliant", "radiant", "luminous",
+        "twinkling", "flickering", "flashing", "dazzling", "gleaming", "glistening",
+        "shimmering", "glittering", "sparkling", "decorative", "ornamental", "fancy",
+        "elaborate", "detailed", "intricate", "delicate", "fine", "precious",
+        "valuable", "special", "unique", "rare", "wonderful", "magical", "enchanted",
+        "mystical", "mysterious", "miraculous", "amazing", "incredible", "fantastic",
+        "marvelous", "spectacular", "stunning", "beautiful", "pretty", "lovely",
+        "charming", "delightful", "pleasant", "nice", "sweet", "warm", "cozy",
+        "comfortable", "snug", "toasty", "heated", "blessed", "sacred", "holy",
+        "spiritual", "religious", "traditional", "cultural", "familiar", "nostalgic",
+        "memorable", "unforgettable", "remarkable", "notable", "significant",
+        "important", "meaningful", "thoughtful", "considerate", "kind", "generous",
+        "giving", "sharing", "caring", "loving", "friendly", "welcoming", "hospitable",
+        "gracious", "thankful", "grateful", "appreciative", "blessed", "fortunate",
+        "lucky", "hopeful", "optimistic", "positive", "upbeat", "enthusiastic",
+        "excited", "eager", "ready", "prepared", "organized", "neat", "tidy",
+        "clean", "fresh", "new", "novel", "modern", "current", "timely", "seasonal",
+        "annual", "yearly", "regular", "consistent", "reliable", "steady", "stable",
+        "secure", "safe", "protected", "sheltered", "covered", "wrapped", "bundled",
+        "layered", "thick", "heavy", "substantial", "solid", "firm", "strong",
+        "sturdy", "durable", "lasting", "enduring", "permanent", "eternal", "endless",
+        "infinite", "boundless", "limitless", "vast", "expansive", "wide", "broad"
+      ]
+    
     static let adverbs = [
         "warmly", "barely", "sleepily", "sadly", "slowly", "here", "there", "clumsily",
         "curiously", "wistfully", "farthest", "endlessly", "darkest", "boldly",
@@ -196,6 +278,38 @@ struct WordList {
         "smokily", "wispily", "flickeringly", "glowingly", "shimmeringly", "carefully",
         "cautiously", "bravely", "fearfully", "nervously", "anxiously", "excitedly",
         "thrillingly"
+      ]
+    
+    static let merryadverbs = [
+        "snowily", "icily", "frostily", "coldly", "chilly", "crisply", "coolly",
+        "winterly", "seasonally", "festively", "merrily", "jollily", "cheerfully",
+        "happily", "joyfully", "peacefully", "quietly", "silently", "calmly",
+        "serenely", "tranquilly", "gently", "softly", "lightly", "fluffily",
+        "sparklingly", "shinily", "glowingly", "brightly", "brilliantly", "radiantly",
+        "luminously", "twinklingly", "flickeringly", "flashingly", "dazzlingly",
+        "gleamingly", "glisteringly", "shimmeringly", "glitteringly", "decoratively",
+        "ornamentally", "fancily", "elaborately", "delicately", "finely", "preciously",
+        "specially", "uniquely", "rarely", "wonderfully", "magically", "enchantingly",
+        "mystically", "mysteriously", "miraculously", "amazingly", "incredibly",
+        "fantastically", "marvelously", "spectacularly", "stunningly", "beautifully",
+        "prettily", "lovelily", "charmingly", "delightfully", "pleasantly", "nicely",
+        "sweetly", "warmly", "cozily", "comfortably", "snugly", "blessedly", "sacredly",
+        "holily", "spiritually", "religiously", "traditionally", "culturally",
+        "familiarly", "nostalgically", "memorably", "remarkably", "notably",
+        "significantly", "importantly", "meaningfully", "thoughtfully", "considerately",
+        "kindly", "generously", "givingly", "caringly", "lovingly", "friendly",
+        "welcomingly", "hospitably", "graciously", "thankfully", "gratefully",
+        "appreciatively", "fortunately", "luckily", "hopefully", "optimistically",
+        "positively", "enthusiastically", "excitedly", "eagerly", "readily",
+        "preparedly", "organizedly", "neatly", "tidily", "cleanly", "freshly",
+        "newly", "currently", "timely", "seasonally", "annually", "yearly",
+        "regularly", "consistently", "reliably", "steadily", "stably", "securely",
+        "safely", "protectively", "shelteringly", "coveredly", "wrappedly",
+        "bundledly", "layeredly", "thickly", "heavily", "substantially", "solidly",
+        "firmly", "strongly", "sturdily", "durably", "lastingly", "enduringly",
+        "permanently", "eternally", "endlessly", "infinitely", "boundlessly",
+        "limitlessly", "vastly", "expansively", "widely", "broadly", "completely",
+        "fully", "totally", "entirely", "absolutely", "perfectly", "precisely"
       ]
     
     static let prepositions = [
