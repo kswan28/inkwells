@@ -77,7 +77,7 @@ struct GameViewNoDrawing2: View {
                                     .foregroundStyle(.allwhite)
                                 VStack{
                                     PuzzleTypeButton(title: "Classic 🎲", type: "classic 🎲", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "classic 🎲") })
-                                    PuzzleTypeButton(title: "Spooky 👻", type: "spooky 👻", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "spooky 👻") })
+                                    PuzzleTypeButton(title: "Merry ☃️", type: "merry ☃️", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "merry ☃️") })
                                     PuzzleTypeButton(title: "Swifty 😻", type: "swifty 😻", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "swifty 😻") })
                                     
                                 }
@@ -287,6 +287,14 @@ struct GameViewNoDrawing2: View {
             wordList += Array(WordList.swiftyadjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
             wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
             wordList += Array(WordList.swiftyadverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
+            wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
+        case "merry ☃️":
+            wordList += Array(WordList.common.shuffled(using: &generator).prefix(5)).map { Word(text: $0, type: .common) }
+            wordList += Array(WordList.merrynouns.shuffled(using: &generator).prefix(4)).map { Word(text: $0, type: .noun) }
+            wordList += Array(WordList.merryverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .verb) }
+            wordList += Array(WordList.merryadjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
+            wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
+            wordList += Array(WordList.merryadverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
             wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
         default:
             wordList += Array(WordList.common.shuffled(using: &generator).prefix(5)).map { Word(text: $0, type: .common) }

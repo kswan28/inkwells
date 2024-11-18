@@ -106,6 +106,14 @@ struct ContentView: View {
             wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
             wordList += Array(WordList.swiftyadverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
             wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
+        case "merry ☃️":
+            wordList += Array(WordList.common.shuffled(using: &generator).prefix(5)).map { Word(text: $0, type: .common) }
+            wordList += Array(WordList.merrynouns.shuffled(using: &generator).prefix(4)).map { Word(text: $0, type: .noun) }
+            wordList += Array(WordList.merryverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .verb) }
+            wordList += Array(WordList.merryadjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
+            wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
+            wordList += Array(WordList.merryadverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
+            wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
         default:
             wordList += Array(WordList.common.shuffled(using: &generator).prefix(5)).map { Word(text: $0, type: .common) }
             wordList += Array(WordList.nouns.shuffled(using: &generator).prefix(4)).map { Word(text: $0, type: .noun) }
