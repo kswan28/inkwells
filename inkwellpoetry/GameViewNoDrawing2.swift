@@ -31,18 +31,13 @@ struct GameViewNoDrawing2: View {
     @State private var showChangeStylePopup: Bool = false
     @State private var isPuzzleCompleted: Bool
     @State private var showPopperAnimation = false
+    @State private var tileOffsets: [CGSize] = []
+    @State private var tileOpacities: [Double] = []
 
     init(entry: InkwellEntryModel, isPuzzleCompleted: Bool) {
         self.entry = entry
-        // Reset spooky puzzle type to classic
-        let initialPuzzleType = entry.puzzleType == "spooky 👻" ? "classic 🎲" : entry.puzzleType
-        _selectedPuzzleType = State(initialValue: initialPuzzleType)
+        _selectedPuzzleType = State(initialValue: entry.puzzleType)
         _isPuzzleCompleted = State(initialValue: entry.isCompleted)
-        
-        // Update the entry's puzzle type if it was spooky
-        if entry.puzzleType == "spooky 👻" {
-            entry.puzzleType = "classic 🎲"
-        }
     }
 
     var body: some View {
@@ -53,7 +48,9 @@ struct GameViewNoDrawing2: View {
                     formattedDate: $formattedDate,
                     isCapturingScreenshot: $isCapturingScreenshot,
                     animateTiles: $animateTiles,
-                    tileScale: $tileScale, // Pass the scale to GameContentView2
+                    tileScale: $tileScale,
+                    tileOffsets: $tileOffsets,
+                    tileOpacities: $tileOpacities,
                     captureScreenshot: { captureScreenshot(size: capturedGeometrySize ?? geometry.size) }
                 )
                 
@@ -84,7 +81,13 @@ struct GameViewNoDrawing2: View {
                                     .foregroundStyle(.allwhite)
                                 VStack{
                                     PuzzleTypeButton(title: "Classic 🎲", type: "classic 🎲", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "classic 🎲") })
-                                    PuzzleTypeButton(title: "Merry ☃️", type: "merry ☃️", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "merry ☃️") })
+                                    
+                                    //show old puzzles with spooky but show new merry button for all puzzles that don't have spooky selected
+                                    if selectedPuzzleType == "spooky 👻" {
+                                        PuzzleTypeButton(title: "Spooky 👻", type: "spooky 👻", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "spooky 👻") })
+                                    } else {
+                                        PuzzleTypeButton(title: "Merry ☃️", type: "merry ☃️", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "merry ☃️") })
+                                    }
                                     PuzzleTypeButton(title: "Swifty 😻", type: "swifty 😻", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "swifty 😻") })
                                     
                                 }
@@ -174,16 +177,17 @@ struct GameViewNoDrawing2: View {
         isCapturingScreenshot = true
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            // Define the portion of the view to capture
             let captureView = GameContentView2(
                 entry: entry,
                 formattedDate: $formattedDate,
                 isCapturingScreenshot: $isCapturingScreenshot,
                 animateTiles: $animateTiles,
                 tileScale: $tileScale,
+                tileOffsets: $tileOffsets,
+                tileOpacities: $tileOpacities,
                 captureScreenshot: { self.captureScreenshot(size: size) }
             )
-            .frame(width: size.width, height: size.height * 0.7)  // Capture the top 70% which contains inkspill and tiles
+            .frame(width: size.width, height: size.height * 0.7)
             
             let renderer = ImageRenderer(content: captureView)
             renderer.scale = UIScreen.main.scale
@@ -213,28 +217,37 @@ struct GameViewNoDrawing2: View {
         isPuzzleRefreshing = true
         let updatedEntry = getPuzzleOfTheDay(puzzleType: selectedPuzzleType)
         
-        entry.wordList = updatedEntry.wordList
-        entry.tileLocations = updatedEntry.tileLocations
-        entry.pathData = updatedEntry.pathData
-        entry.puzzleType = updatedEntry.puzzleType
-        entry.isCompleted = false
-        isPuzzleCompleted = false
-        
-        saveChanges()
-        isPuzzleRefreshing = false
-        
-        // Trigger the animation with a longer duration
-        withAnimation(.easeInOut(duration: 0.8)) { // Increased duration to 0.8 seconds
-            animateTiles = true
-            tileScale = 1.5 // Scale up
+        // Animate old tiles falling out
+        withAnimation(.easeIn(duration: 0.4)) {
+            for i in 0..<tileOffsets.count {
+                tileOffsets[i] = CGSize(width: 0, height: 1000) // Fall down
+                tileOpacities[i] = 0
+            }
         }
         
-        // Reset the animation flag and scale after a delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-            withAnimation(.easeInOut(duration: 0.8)) { // Smoothly scale down
-                tileScale = 1.0 // Scale back down
+        // Update entry with new puzzle after a delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            entry.wordList = updatedEntry.wordList
+            entry.tileLocations = updatedEntry.tileLocations
+            entry.pathData = updatedEntry.pathData
+            entry.puzzleType = updatedEntry.puzzleType
+            entry.isCompleted = false
+            isPuzzleCompleted = false
+            
+            // Reset arrays for new tiles
+            tileOffsets = Array(repeating: CGSize(width: 0, height: -200), count: updatedEntry.wordList.count)
+            tileOpacities = Array(repeating: 0, count: updatedEntry.wordList.count)
+            
+            // Animate new tiles falling in
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.7)) {
+                for i in 0..<tileOffsets.count {
+                    tileOffsets[i] = .zero
+                    tileOpacities[i] = 1
+                }
             }
-            animateTiles = false
+            
+            saveChanges()
+            isPuzzleRefreshing = false
         }
     }
     
@@ -265,7 +278,7 @@ struct GameViewNoDrawing2: View {
     private func getPuzzleOfTheDay(puzzleType: String) -> InkwellEntryModel {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
-        let dateString = dateFormatter.string(from: Date())
+        let dateString = dateFormatter.string(from: entry.date)
         
         // Use the passed puzzleType instead of fetching from customPuzzleSettings
         // let puzzleType = customPuzzleSettings.first?.selectedPuzzleSet ?? "classic 🎲"
@@ -484,8 +497,10 @@ struct GameContentView2: View {
     @Binding var formattedDate: String
     @Binding var isCapturingScreenshot: Bool
     @Binding var animateTiles: Bool
-    @Binding var tileScale: CGFloat // New binding for scale
-
+    @Binding var tileScale: CGFloat
+    @Binding var tileOffsets: [CGSize]
+    @Binding var tileOpacities: [Double]
+    
     var captureScreenshot: () -> Void
 
     var body: some View {
@@ -500,11 +515,8 @@ struct GameContentView2: View {
                         type: entry.wordList[index].type,
                         geometry: geometry
                     )
-                    .scaleEffect(animateTiles ? tileScale : 1.0) // Use the tileScale variable
-                    .rotation3DEffect(
-                        .degrees(animateTiles ? 360 : 0),
-                        axis: (x: 0, y: 1, z: 0)
-                    )
+                    .offset(tileOffsets.indices.contains(index) ? tileOffsets[index] : .zero)
+                    .opacity(tileOpacities.indices.contains(index) ? tileOpacities[index] : 1)
                 }
             }
         }
