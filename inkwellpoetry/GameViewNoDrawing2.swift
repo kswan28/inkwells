@@ -82,7 +82,7 @@ struct GameViewNoDrawing2: View {
                                 VStack{
                                     PuzzleTypeButton(title: "Classic 🎲", type: "classic 🎲", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "classic 🎲") })
                                     
-                                    //show old puzzles with spooky but show new merry button for all puzzles that don't have spooky selected
+                                    //show old puzzles with spooky but show new merry button for all puzzles that don't have spooky selected -- update for new puzzle types
                                     if selectedPuzzleType == "spooky 👻" {
                                         PuzzleTypeButton(title: "Spooky 👻", type: "spooky 👻", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "spooky 👻") })
                                     } else {
