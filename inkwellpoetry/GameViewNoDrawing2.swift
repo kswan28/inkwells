@@ -79,17 +79,23 @@ struct GameViewNoDrawing2: View {
                                     .stroke(lineWidth: 2)
                                     .frame(width:96, height: 120)
                                     .foregroundStyle(.allwhite)
-                                VStack{
+                                VStack {
                                     PuzzleTypeButton(title: "Classic 🎲", type: "classic 🎲", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "classic 🎲") })
                                     
-                                    //show old puzzles with spooky but show new merry button for all puzzles that don't have spooky selected -- update for new puzzle types
                                     if selectedPuzzleType == "spooky 👻" {
                                         PuzzleTypeButton(title: "Spooky 👻", type: "spooky 👻", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "spooky 👻") })
-                                    } else {
+                                    }
+                                    
+                                    if selectedPuzzleType == "merry ☃️" {
                                         PuzzleTypeButton(title: "Merry ☃️", type: "merry ☃️", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "merry ☃️") })
                                     }
-                                    PuzzleTypeButton(title: "Swifty 😻", type: "swifty 😻", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "swifty 😻") })
                                     
+                                    //the way to update puzzle types for new entries that should not show the old ones
+                                    if selectedPuzzleType != "spooky 👻" && selectedPuzzleType != "merry ☃️" {
+                                        PuzzleTypeButton(title: "Nature 🌳", type: "nature 🌳", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "nature 🌳") })
+                                    }
+
+                                    PuzzleTypeButton(title: "Swifty 😻", type: "swifty 😻", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "swifty 😻") })
                                 }
                             }
                         }
@@ -315,6 +321,14 @@ struct GameViewNoDrawing2: View {
             wordList += Array(WordList.merryadjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
             wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
             wordList += Array(WordList.merryadverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
+            wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
+        case "nature 🌳":
+            wordList += Array(WordList.common.shuffled(using: &generator).prefix(5)).map { Word(text: $0, type: .common) }
+            wordList += Array(WordList.naturenouns.shuffled(using: &generator).prefix(4)).map { Word(text: $0, type: .noun) }
+            wordList += Array(WordList.natureverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .verb) }
+            wordList += Array(WordList.natureadjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
+            wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
+            wordList += Array(WordList.natureadverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
             wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
         default:
             wordList += Array(WordList.common.shuffled(using: &generator).prefix(5)).map { Word(text: $0, type: .common) }
