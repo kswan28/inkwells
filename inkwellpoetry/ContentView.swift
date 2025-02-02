@@ -83,7 +83,9 @@ struct ContentView: View {
         let dateString = dateFormatter.string(from: Date())
         
         let selectedPuzzleSet = customPuzzleSettings.first?.selectedPuzzleSet ?? "classic 🎲"
-        let puzzleType = selectedPuzzleSet == "spooky 👻" ? "classic 🎲" : selectedPuzzleSet
+        
+        // Reset seasonal puzzle types to classic
+        let puzzleType = selectedPuzzleSet == "spooky 👻" || selectedPuzzleSet == "merry ☃️" ? "classic 🎲" : selectedPuzzleSet
         
         let seed = dateString.utf8.reduce(0) { ($0 << 8) | Int($1) }
         var generator = SeededRandomNumberGenerator(seed: seed)
@@ -114,6 +116,14 @@ struct ContentView: View {
             wordList += Array(WordList.merryadjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
             wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
             wordList += Array(WordList.merryadverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
+            wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
+        case "nature 🌳":
+            wordList += Array(WordList.common.shuffled(using: &generator).prefix(5)).map { Word(text: $0, type: .common) }
+            wordList += Array(WordList.naturenouns.shuffled(using: &generator).prefix(4)).map { Word(text: $0, type: .noun) }
+            wordList += Array(WordList.natureverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .verb) }
+            wordList += Array(WordList.natureadjectives.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adjective) }
+            wordList += Array(WordList.suffixes.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .suffix) }
+            wordList += Array(WordList.natureadverbs.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .adverb) }
             wordList += Array(WordList.prepositions.shuffled(using: &generator).prefix(2)).map { Word(text: $0, type: .preposition) }
         default:
             wordList += Array(WordList.common.shuffled(using: &generator).prefix(5)).map { Word(text: $0, type: .common) }

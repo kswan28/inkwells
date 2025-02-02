@@ -98,6 +98,43 @@ struct WordList {
         "design", "shape", "swirl", "spiral", "circle", "square", "heart"
       ]
     
+    static let naturenouns = [
+        "acorn", "air", "alligator", "ant", "antelope", "apple", "autumn", "avalanche",
+            "bamboo", "bark", "beach", "bear", "beaver", "bee", "beetle", "berry",
+            "bird", "blossom", "breeze", "brook", "bud", "buffalo", "butterfly", "cactus",
+            "canyon", "cardinal", "caterpillar", "cave", "cheetah", "chipmunk", "cliff",
+            "cloud", "coast", "cocoon", "coconut", "coral", "crab", "creek", "cricket",
+            "crocodile", "crow", "crystal", "daisy", "dandelion", "dawn", "deer",
+            "desert", "dew", "dirt", "dolphin", "dove", "dragonfly", "dusk", "eagle",
+            "earth", "earthquake", "egg", "elephant", "elk", "elm", "feather", "fern",
+            "field", "firefly", "fish", "flamingo", "flood", "flower", "fog", "forest",
+            "fox", "frog", "frost", "garden", "geyser", "giraffe", "glacier", "gorilla",
+            "grass", "grasshopper", "grove", "ground", "groundhog", "grove", "habitat",
+            "hail", "harbor", "hawk", "hedgehog", "hill", "hippopotamus", "hive",
+            "horizon", "hornet", "horse", "hummingbird", "hurricane", "hyena", "ice",
+            "iguana", "insect", "island", "ivy", "jackal", "jaguar", "jellyfish",
+            "jungle", "kangaroo", "kingfisher", "koala", "lake", "lamb", "landscape",
+            "leaf", "leopard", "lichen", "lightning", "lily", "lion", "lizard", "llama",
+            "lotus", "manatee", "maple", "meadow", "mist", "monkey", "moose", "moss",
+            "mountain", "mouse", "mushroom", "nest", "newt", "night", "oak", "ocean",
+            "octopus", "opossum", "orangutan", "orchid", "ostrich", "otter", "owl",
+            "oxygen", "oyster", "palm", "panda", "panther", "parrot", "peacock",
+            "pebble", "pelican", "penguin", "petal", "pigeon", "pine", "planet",
+            "plant", "platypus", "pond", "porcupine", "prairie", "rabbit", "raccoon",
+            "rain", "rainbow", "rainforest", "rapids", "ravine", "reef", "rhinoceros",
+            "river", "robin", "rock", "rose", "salamander", "salmon", "sand", "sapling",
+            "sea", "seagull", "seal", "season", "shark", "shell", "shore", "shrew",
+            "shrub", "skunk", "sky", "sleet", "sloth", "slug", "snail", "snake",
+            "snow", "soil", "sparrow", "spider", "spring", "squirrel", "star", "starfish",
+            "stick", "stone", "storm", "stream", "summer", "sun", "sunflower", "sunrise",
+            "sunset", "swan", "swamp", "tadpole", "thistle", "thunder", "tiger", "toad",
+            "tornado", "tortoise", "tree", "tundra", "turkey", "turtle", "twilight",
+            "typhoon", "valley", "vine", "violet", "volcano", "vulture", "walrus",
+            "wasp", "water", "waterfall", "wave", "weed", "whale", "wildflower", "willow",
+            "wind", "winter", "wolf", "woodpecker", "worm", "yak", "zebra", "zebu",
+            "zinnia", "zoo"
+    ]
+    
     static let verbs = [
         "hang", "say", "tell", "ask", "caught", "find", "shine", "listen", "dry",
         "glitter", "nestle", "flicker", "glow", "soul", "form", "cloak", "walk",
@@ -167,6 +204,55 @@ struct WordList {
         "form", "mold", "design", "plan", "organize", "arrange", "sort", "stack",
         "pile", "group", "gather", "assemble", "combine", "merge", "blend", "mix"
       ]
+    
+    static let natureverbs = [
+        "absorb", "adapt", "age", "bask", "bend", "bite", "bloom", "blossom", "blow",
+            "branch", "break", "breathe", "breed", "bristle", "budge", "build", "burrow",
+            "buzz", "caw", "change", "chirp", "climb", "cloud", "crawl", "creep", "croak",
+            "crunch", "decay", "decompose", "develop", "dewlap", "dig", "dive", "drip",
+            "drop", "dwell", "emerge", "erode", "evolve", "expand", "fade", "fall",
+            "feed", "fertilize", "filter", "float", "flood", "flow", "flower", "flutter",
+            "fly", "forage", "freeze", "gallop", "germinate", "glide", "gnaw", "graze",
+            "grow", "growl", "hatch", "hibernate", "hide", "hop", "hover", "howl",
+            "hunt", "husk", "infest", "inhabit", "jump", "land", "lay", "leap", "live",
+            "mate", "meander", "migrate", "molt", "moo", "moult", "move", "multiply",
+            "nest", "nibble", "nourish", "nurture", "paddle", "perch", "photosynthesis",
+            "plant", "plow", "plunge", "pollinate", "pounce", "pour", "prance", "prey",
+            "propagate", "prowl", "pull", "push", "rain", "reach", "regenerate", "rest",
+            "rise", "roam", "roar", "root", "rot", "run", "rustle", "scatter", "scavenge",
+            "screech", "seed", "sense", "shed", "shine", "shiver", "shoot", "shrink",
+            "sing", "sink", "slither", "slow", "soar", "spawn", "splash", "spread",
+            "spring", "sprout", "squawk", "swim", "swoop", "take", "thrive", "thunder",
+            "track", "transform", "travel", "trek", "trickle", "trumpet", "tunnel",
+            "wade", "walk", "warm", "warp", "wash", "water", "wave", "weather", "weave",
+            "web", "weed", "wiggle", "wilt", "wind", "wither", "wobble", "yawn", "yield",
+            "bloom", "blossom", "branch", "breeze", "burrow", "buzz", "call", "canter",
+            "chase", "chew", "chill", "chirp", "circle", "claw", "clear", "clutch",
+            "coil", "cool", "court", "cover", "cuddle", "curl", "dance", "dart", "dash",
+            "dive", "drag", "drift", "drip", "drum", "duck", "dwell", "eat", "echo",
+            "edge", "emerge", "erupt", "escape", "evolve", "expand", "explore", "fade",
+            "fall", "feed", "fight", "filter", "find", "fish", "flap", "flash", "flee",
+            "float", "flood", "flow", "fly", "follow", "forage", "form", "freeze",
+            "frolic", "gallop", "gather", "glow", "gnaw", "graze", "grow", "guard",
+            "guide", "gulp", "hang", "harvest", "hatch", "heal", "hear", "hide", "hiss",
+            "hit", "hoot", "hop", "hover", "howl", "huddle", "hunt", "hurry", "incubate",
+            "jump", "land", "lap", "lay", "leap", "lick", "lift", "light", "live",
+            "lodge", "loom", "lope", "lurk", "march", "mark", "mate", "melt", "migrate",
+            "mingle", "molt", "move", "munch", "nest", "nip", "nuzzle", "open", "pace",
+            "paddle", "pass", "pause", "peck", "perch", "play", "plow", "pluck", "poke",
+            "pollinate", "pounce", "pour", "prance", "prowl", "prune", "pull", "punch",
+            "push", "quack", "race", "rain", "raise", "rest", "return", "rise", "roam",
+            "roar", "roll", "root", "roost", "rub", "run", "rush", "scatter", "scent",
+            "scratch", "scurry", "seek", "shake", "shed", "shine", "shiver", "shoot",
+            "shrink", "shuffle", "sing", "sink", "sit", "sleep", "slide", "slip",
+            "slither", "snap", "sniff", "soar", "splash", "spray", "spread", "spring",
+            "sprout", "squawk", "squeak", "squirm", "stalk", "stamp", "stand", "stay",
+            "stretch", "strike", "swim", "swing", "swoop", "take", "thrive", "throw",
+            "thrust", "thunder", "toss", "track", "trail", "trap", "travel", "tread",
+            "tremble", "trot", "tumble", "turn", "twine", "twist", "wade", "walk",
+            "wander", "warm", "wash", "watch", "water", "wave", "weave", "whistle",
+            "wiggle", "wind", "wipe", "work", "wrap", "wrinkle", "yawn", "yield"
+    ]
     
     static let adjectives = [
         "cool", "pale", "sharp", "sacred", "beautiful", "dark", "infinite", "unhurried",
@@ -242,6 +328,47 @@ struct WordList {
         "infinite", "boundless", "limitless", "vast", "expansive", "wide", "broad"
       ]
     
+    static let natureadjectives = [
+        "abundant", "active", "adaptable", "aerial", "aged", "alpine", "aquatic",
+         "arid", "autumnal", "barren", "beautiful", "blooming", "bold", "botanical",
+         "brackish", "bright", "briny", "bristly", "bushy", "calm", "coastal",
+         "coarse", "cold", "colorful", "cool", "cosmic", "crisp", "crystalline",
+         "curved", "damp", "dark", "deep", "dense", "dewy", "distant", "dry",
+         "dusty", "earthy", "eastern", "ecological", "elevated", "endangered",
+         "enormous", "environmental", "exotic", "expansive", "extinct", "fast",
+         "fertile", "fierce", "filthy", "fine", "firm", "flowing", "fluffy",
+         "flying", "foggy", "fresh", "frigid", "frosty", "frozen", "gentle",
+         "geographical", "geological", "giant", "glacial", "global", "golden",
+         "grassy", "green", "growing", "grown", "healthy", "heavy", "high",
+         "hollow", "hot", "humid", "icy", "immense", "indigenous", "inland",
+         "instinctive", "intense", "internal", "jagged", "jungle", "jurassic",
+         "keen", "large", "lasting", "leafy", "light", "living", "local", "lofty",
+         "long", "loud", "low", "lush", "mammoth", "marine", "marshy", "massive",
+         "mighty", "mild", "moist", "molten", "mossy", "mountain", "muddy",
+         "natural", "native", "nearby", "nested", "new", "nocturnal", "northern",
+         "numerous", "nutrient", "old", "open", "organic", "oriental", "outdoor",
+         "oval", "pacific", "parched", "passive", "pastoral", "patient", "peaceful",
+         "perennial", "physical", "planetary", "planted", "plump", "polar", "powerful",
+         "precious", "predatory", "preserved", "prickly", "prime", "pristine",
+         "protective", "pure", "quick", "quiet", "racing", "rainy", "rapid",
+         "rare", "raw", "red", "refreshing", "remote", "restless", "rich", "ripe",
+         "rising", "robust", "rocky", "rolling", "rough", "round", "rural", "rustic",
+         "salty", "sandy", "savage", "scaly", "scattered", "scented", "seasonal",
+         "shallow", "sharp", "sheltered", "shifting", "shiny", "short", "shrubby",
+         "silent", "silky", "silver", "simple", "slender", "slimy", "slippery",
+         "slow", "small", "smooth", "snowy", "soft", "solar", "solid", "solitary",
+         "southern", "spacious", "sparse", "spatial", "speedy", "spicy", "spiky",
+         "spinning", "spotted", "spring", "sprouting", "stalking", "steady",
+         "steep", "still", "stormy", "straight", "strange", "streaming", "strong",
+         "stunted", "summer", "sunny", "swift", "tall", "tangled", "terrestrial",
+         "thick", "thin", "thorny", "thrifty", "thundering", "tidal", "timeless",
+         "tiny", "torpid", "towering", "toxic", "tranquil", "transparent",
+         "tropical", "turbulent", "twilight", "twisting", "underground", "untamed",
+         "vast", "verdant", "vernal", "vertical", "warm", "watery", "weak",
+         "western", "wet", "wide", "wild", "windy", "winged", "wintry", "woody",
+         "young", "zesty"
+    ]
+    
     static let adverbs = [
         "warmly", "barely", "sleepily", "sadly", "slowly", "here", "there", "clumsily",
         "curiously", "wistfully", "farthest", "endlessly", "darkest", "boldly",
@@ -311,6 +438,25 @@ struct WordList {
         "limitlessly", "vastly", "expansively", "widely", "broadly", "completely",
         "fully", "totally", "entirely", "absolutely", "perfectly", "precisely"
       ]
+    
+    static let natureadverbs = [
+        "abundantly", "actively", "adaptably", "aerially", "agedly", "alpinely",
+         "aquatically", "aridly", "autumnally", "barrenly", "beautifully", "bloomingly",
+         "boldly", "botanically", "brackishly", "brightly", "brinily", "bristly",
+         "bushily", "calmly", "coastally", "coarsely", "coldly", "colorfully",
+         "coolly", "cosmically", "crisply", "crystallinely", "curvedly", "damply",
+         "darkly", "deeply", "densely", "dewily", "distantly", "dryly", "dustily",
+         "earthily", "easterly", "ecologically", "elevatedly", "enormously",
+         "environmentally", "exotically", "expansively", "extensively", "fastly",
+         "fertilely", "fiercely", "filthily", "finely", "firmly", "flowingly",
+         "fluffily", "flyingly", "foggily", "freshly", "frigidly", "frostily",
+         "frozenly", "gently", "geographically", "geologically", "glacially",
+         "globally", "goldenly", "grassily", "greenly", "growingly", "healthily",
+         "heavily", "highly", "hollowly", "hotly", "humidly", "icily", "immensely",
+         "indigenously", "inlandly", "instinctively", "intensely", "internally",
+         "jaggedly", "keenly", "largely", "lastingly", "leafily", "lightly",
+         "livingly"
+    ]
     
     static let prepositions = [
         "above", "about", "around", "between", "despite", "except", "without", "within",
