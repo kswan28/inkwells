@@ -69,6 +69,7 @@
 		C00123852C8E737C00DE0A7B /* RadialGradientRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadialGradientRectangle.swift; sourceTree = "<group>"; };
 		C00123872C8E745F00DE0A7B /* OnboardingViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewComponent.swift; sourceTree = "<group>"; };
 		C00123892C8E74E000DE0A7B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		C0074EAB2E2465DE00A53F4B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C00985592C9FC8A9006782F4 /* inkwellpoetry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = inkwellpoetry.entitlements; sourceTree = "<group>"; };
 		C025078A2CB1FC1F00BD5C46 /* popper.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = popper.json; sourceTree = "<group>"; };
 		C025078C2CB2009A00BD5C46 /* AnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
@@ -94,6 +95,7 @@
 		C00123392C86458C00DE0A7B = {
 			isa = PBXGroup;
 			children = (
+				C0074EAB2E2465DE00A53F4B /* README.md */,
 				C00123442C86458C00DE0A7B /* inkwellpoetry */,
 				C00123432C86458C00DE0A7B /* Products */,
 			);
