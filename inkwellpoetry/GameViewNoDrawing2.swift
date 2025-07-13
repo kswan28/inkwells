@@ -141,18 +141,39 @@ struct GameViewNoDrawing2: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    saveChanges()
-                    dismiss()
-                } label: {
-                    HStack{
+                
+                if #available (iOS 26.0, *) {
+                    
+                    Button(action: {
+                        saveChanges()
+                        dismiss()
+                    }) {
                         Image(systemName: "arrowshape.backward")
                             .resizable()
-                            .frame(width: 24, height: 24)
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .padding(10)
+                            .foregroundColor(colorScheme == .dark ? Color.white : Color.darkNavy)
+                    }
+                    .buttonStyle(.plain)
+                    
+                }
+                
+                else {
+                    Button {
+                        saveChanges()
+                        dismiss()
+                    } label: {
+                        HStack{
+                            Image(systemName: "arrowshape.backward")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                        }
                     }
                 }
 
             }
+            
         }
         .alert("Change Inkwell style?", isPresented: $showAlert) {
             Button("Cancel", role: .cancel) {
@@ -163,7 +184,8 @@ struct GameViewNoDrawing2: View {
                 TelemetryDeck.signal("PuzzleStyle.changed")
             }
         } message: {
-            Text("This will replace your current Inkwell.\nAre you sure?")
+            Text("This replaces your current puzzle.")
+                .multilineTextAlignment(.center)
         }
          .sheet(isPresented: $isSharePresented) {
              if let screenshot = screenshotImage {

@@ -72,15 +72,35 @@ struct ArchiveView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    HStack{
+                
+                if #available (iOS 26.0, *) {
+                    
+                    Button(action: {
+                        dismiss()
+                    }) {
                         Image(systemName: "arrowshape.backward")
                             .resizable()
-                            .frame(width: 24, height: 24)
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                            .padding(10)
+                            .foregroundColor(colorScheme == .dark ? Color.white : Color.darkNavy)
                     }
+                    .buttonStyle(.plain)
                 }
+                
+                else {
+                                    Button {
+                                        dismiss()
+                                    } label: {
+                                        HStack{
+                                            Image(systemName: "arrowshape.backward")
+                                                .resizable()
+                                                .frame(width: 24, height: 24)
+                                        }
+                                    }
+                    
+                }
+                
 
             }
         }
