@@ -133,7 +133,7 @@ This project is licensed under the MIT License - see the <LICENSE> file for deta
 **Kristen Swanson**
 
 - App Store: [Developer Profile](https://apps.apple.com/us/developer/kristen-swanson/id1754882765)
-- GitHub: [@kswan18](https://github.com/kswan28)
+- GitHub: [@kswan28](https://github.com/kswan28)
 - Website: [tinyapp.studio](https://www.tinyapp.studio)
 
 -----
