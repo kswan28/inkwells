@@ -33,6 +33,7 @@
 		C025078B2CB1FC2000BD5C46 /* popper.json in Resources */ = {isa = PBXBuildFile; fileRef = C025078A2CB1FC1F00BD5C46 /* popper.json */; };
 		C025078D2CB2009A00BD5C46 /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C025078C2CB2009A00BD5C46 /* AnimationView.swift */; };
 		C04BE8E62CB38A3200D72EA8 /* MijickPopupView in Frameworks */ = {isa = PBXBuildFile; productRef = C04BE8E52CB38A3200D72EA8 /* MijickPopupView */; };
+		C07A61372E3FE105002239D6 /* Secrets.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C07A61362E3FE105002239D6 /* Secrets.xcconfig */; };
 		C0B586762C97AA6F0020FE7A /* GameViewNoDrawing2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B586752C97AA6F0020FE7A /* GameViewNoDrawing2.swift */; };
 		C0D2D3172CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2D3162CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift */; };
 /* End PBXBuildFile section */
@@ -73,6 +74,7 @@
 		C00985592C9FC8A9006782F4 /* inkwellpoetry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = inkwellpoetry.entitlements; sourceTree = "<group>"; };
 		C025078A2CB1FC1F00BD5C46 /* popper.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = popper.json; sourceTree = "<group>"; };
 		C025078C2CB2009A00BD5C46 /* AnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
+		C07A61362E3FE105002239D6 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		C0B586752C97AA6F0020FE7A /* GameViewNoDrawing2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewNoDrawing2.swift; sourceTree = "<group>"; };
 		C0B586DC2C97CEB20020FE7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0D2D3162CA1053D00C79D68 /* CustomPuzzleSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPuzzleSettingsModel.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 		C00123392C86458C00DE0A7B = {
 			isa = PBXGroup;
 			children = (
+				C07A61362E3FE105002239D6 /* Secrets.xcconfig */,
 				C0074EAB2E2465DE00A53F4B /* README.md */,
 				C00123442C86458C00DE0A7B /* inkwellpoetry */,
 				C00123432C86458C00DE0A7B /* Products */,
@@ -270,6 +273,7 @@
 			files = (
 				C001234D2C86458F00DE0A7B /* Preview Assets.xcassets in Resources */,
 				C001234A2C86458F00DE0A7B /* Assets.xcassets in Resources */,
+				C07A61372E3FE105002239D6 /* Secrets.xcconfig in Resources */,
 				C025078B2CB1FC2000BD5C46 /* popper.json in Resources */,
 				C00123812C8E6E8F00DE0A7B /* inkwell.json in Resources */,
 				C001237B2C8E54AE00DE0A7B /* DeviceModels.json in Resources */,
@@ -311,6 +315,7 @@
 /* Begin XCBuildConfiguration section */
 		C001234E2C86458F00DE0A7B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C07A61362E3FE105002239D6 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -376,6 +381,7 @@
 		};
 		C001234F2C86458F00DE0A7B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C07A61362E3FE105002239D6 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -434,6 +440,7 @@
 		};
 		C00123512C86458F00DE0A7B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C07A61362E3FE105002239D6 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -465,6 +472,7 @@
 		};
 		C00123522C86458F00DE0A7B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C07A61362E3FE105002239D6 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

@@ -83,7 +83,7 @@ struct ArchiveView: View {
                             .scaledToFit()
                             .frame(width: 20, height: 20)
                             .padding(10)
-                            .foregroundColor(colorScheme == .dark ? Color.white : Color.darkNavy)
+                            .foregroundColor(colorScheme == .dark ? Color.white : Color.white)
                     }
                     .buttonStyle(.plain)
                 }

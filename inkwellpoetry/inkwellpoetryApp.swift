@@ -48,9 +48,12 @@ struct inkwellpoetryApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     init() {
-           let config = TelemetryDeck.Config(appID: "***REMOVED***")
-           TelemetryDeck.initialize(config: config)
-       }
+        guard let appID = Bundle.main.infoDictionary?["TelemetryDeckAppID"] as? String else {
+            fatalError("TelemetryDeck App ID not found in configuration")
+        }
+        let config = TelemetryDeck.Config(appID: appID)
+        TelemetryDeck.initialize(config: config)
+    }
     
     var body: some Scene {
         WindowGroup {

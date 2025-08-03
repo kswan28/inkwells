@@ -8,5 +8,7 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+    <key>TelemetryDeckAppID</key>
+    <string>$(TELEMETRY_DECK_APP_ID)</string>
 </dict>
 </plist>
