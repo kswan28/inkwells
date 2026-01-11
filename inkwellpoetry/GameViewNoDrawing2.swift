@@ -86,13 +86,13 @@ struct GameViewNoDrawing2: View {
                                         PuzzleTypeButton(title: "Spooky 👻", type: "spooky 👻", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "spooky 👻") })
                                     }
                                     
-                                    if selectedPuzzleType == "nature 🌳" {
-                                        PuzzleTypeButton(title: "Nature 🌳", type: "nature 🌳", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "nature 🌳") })
+                                    if selectedPuzzleType == "merry ☃️" {
+                                        PuzzleTypeButton(title: "Merry ☃️", type: "merry ☃️", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "merry ☃️") })
                                     }
 
                                     //the way to update puzzle types for new entries that should not show the old ones
-                                    if selectedPuzzleType != "spooky 👻" && selectedPuzzleType != "nature 🌳" {
-                                        PuzzleTypeButton(title: "Merry ☃️", type: "merry ☃️", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "merry ☃️") })
+                                    if selectedPuzzleType != "spooky 👻" && selectedPuzzleType != "merry ☃️" {
+                                        PuzzleTypeButton(title: "Nature 🌳", type: "nature 🌳", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "nature 🌳") })
                                     }
 
                                     PuzzleTypeButton(title: "Swifty 😻", type: "swifty 😻", selectedType: $selectedPuzzleType, action: { updatePuzzleType(newType: "swifty 😻") })
